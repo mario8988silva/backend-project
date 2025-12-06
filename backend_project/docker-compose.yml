@@ -1,0 +1,10 @@
+name: backend_project_db
+
+services:
+  database:
+    image: mysql:9.0
+    environment:
+      - MYSQL_ROOT_PASSWORD=docker
+      - MYSQL_DATABASE=backend_project_system
+    ports:
+      - 3306:3306

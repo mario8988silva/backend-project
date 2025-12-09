@@ -1,5 +1,6 @@
 <x-layout>
     <h2>{{ $product->name }}</h2>
+    
     <ul>
         <li>
             {{ $product->id ?? 'N/A' }} -

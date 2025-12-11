@@ -20,7 +20,7 @@
             </ul>
             <ul>
                 <li><a href="{{ route('products.index') }}">All Products</a></li>
-                <li><a href="{{ route('products.create') }}">Create</a></li>
+                <li><a href="{{ route('products.create') }}">Add New...</a></li>
             </ul>
         </nav>
     </header>

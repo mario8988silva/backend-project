@@ -25,16 +25,16 @@
 
         @foreach($products as $product)
             <tr onclick="window.location='{{ route('products.show', $product->id) }}'">
-                <td>{{ $product->barcode ?? '' }}</td>
+                <td>{{ $product->barcode ?? 'x' }}</td>
                 <td>{{ $product->name }}</td>
-                <td>{{ $product->subcategory_id ?? '' }}</td>
-                <td>{{ $product->category_id ?? '' }}</td>
-                <td>{{ $product->family_id ?? '' }}</td>
-                <td>{{ $product->brand_id ?? '' }}</td>
-                <td>{{ $product->unit_type_id ?? '' }}</td>
-                <td>{{ $product->iva_category_id ?? '' }}</td>
-                <td>{{ $product->nutri_score_id ?? '' }}</td>
-                <td>{{ $product->eco_score_id ?? '' }}</td>
+                <td>{{ $product->subcategory->name ?? 'x' }}</td>
+                <td>{{ $product->subcategory->category->name ?? 'x' }}</td>
+                <td>{{ $product->subcategory->category->family->name ?? 'x' }}</td>
+                <td>{{ $product->brand->name ?? 'x' }}</td>
+                <td>{{ $product->unit_type->name ?? 'x' }}</td>
+                <td>{{ $product->iva_category->rate ?? 'x' }}</td>
+                <td>{{ $product->nutri_score->grade ?? 'x' }}</td>
+                <td>{{ $product->eco_score->grade ?? 'x' }}</td>
                 <td>{{ $product->sugar_free ?? '' }}</td>
                 <td>{{ $product->gluten_free ?? '' }}</td>
                 <td>{{ $product->vegan ?? '' }}</td>

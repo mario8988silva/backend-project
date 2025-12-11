@@ -15,4 +15,6 @@ class IvaCategory extends Model
         'rate',
         'description',
     ];
+
+    public function products()    {return $this->hasMany(Product::class);}
 }

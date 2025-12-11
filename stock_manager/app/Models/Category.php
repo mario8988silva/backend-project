@@ -17,13 +17,6 @@ class Category extends Model
     ];
 
     // Relationships
-    public function family()
-    {
-        return $this->belongsTo(Family::class);
-    }
-
-    public function subcategories()
-    {
-        return $this->hasMany(Subcategory::class);
-    }
+    public function family()    {return $this->belongsTo(Family::class);}
+    public function subcategories()    {return $this->hasMany(Subcategory::class);}
 }

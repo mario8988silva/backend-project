@@ -15,4 +15,6 @@ class EcoScore extends Model
         'color',
         'description',
     ];
+
+    public function products()    {return $this->hasMany(Product::class);}
 }

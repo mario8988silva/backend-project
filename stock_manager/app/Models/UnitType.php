@@ -15,4 +15,6 @@ class UnitType extends Model
         'symbol',
         'description',
     ];
+
+    public function products()    {return $this->hasMany(Product::class);}
 }

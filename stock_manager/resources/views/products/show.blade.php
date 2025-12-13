@@ -1,5 +1,11 @@
 <x-layout>
     <h2>{{ $product->name }}</h2>
+
+    <form action="{{ route('products.destroy', $product->id) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit">Delete Product</button>    
+    </form>
     
     <ul>
         <li>

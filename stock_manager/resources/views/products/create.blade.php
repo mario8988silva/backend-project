@@ -1,19 +1,74 @@
 <x-layout>
     <h2>Create Page</h2>
 
-    <form action="{{ route('products.store') }}" method="post">
+
+    {{-- --------------------------------------------------------- 
+    <h3>Debug: brands</h3>
+    <pre>
+    @foreach($brands as $brand)
+    {{ $brand->id }} - {{ $brand->name }}
+    @endforeach
+    </pre>
+
+    <h3>Debug: categories</h3>
+    <pre>
+    @foreach($categories as $category)
+    {{ $category->id }} - {{ $category->name }}
+    @endforeach
+    </pre>
+    <h3>Debug: ecoScores</h3>
+    <pre>
+    @foreach($eco_scores as $eco_score)
+    {{ $eco_score->id }} - {{ $eco_score->name }}
+    @endforeach
+    </pre>
+    <h3>Debug: families</h3>
+    <pre>
+    @foreach($families as $family)
+    {{ $family->id }} - {{ $family->name }}
+    @endforeach
+    </pre>
+    <h3>Debug: ivaCategories</h3>
+    <pre>
+    @foreach($iva_categories as $ivaCategory)
+    {{ $ivaCategory->id }} - {{ $ivaCategory->name }}
+    @endforeach
+    </pre>
+    <h3>Debug: nutriScores</h3>
+    <pre>
+    @foreach($nutri_scores as $nutriScore)
+    {{ $nutriScore->id }} - {{ $nutriScore->name }}
+    @endforeach
+    </pre>
+    <h3>Debug: subcategories</h3>
+    <pre>
+    @foreach($subcategories as $subcategory)
+    {{ $subcategory->id }} - {{ $subcategory->name }}
+    @endforeach
+    </pre>
+    <h3>Debug: unitTypes</h3>
+    <pre>
+    @foreach($unit_types as $unitType)
+    {{ $unitType->id }} - {{ $unitType->name }}
+    @endforeach
+    </pre>-
+    --------------------------------------------------------- --}}
+
+
+    <form action="{{ route('products.store') }}" method="POST">
         @csrf
 
         <!-- Barcode -->
+        <!--
         <div>
             <label for="barcode">Barcode</label>
             <input type="text" name="barcode" id="barcode" maxlength="45" placeholder="Optional barcode">
         </div>
-
+-->
         <!-- product name -->
         <div>
             <label for="name">Product Name: *</label>
-            <input type="text" id="name" name="name" required>
+            <input type="text" id="name" name="name" value={{ old('name') }} required>
         </div>
 
         <!-- Image -->
@@ -25,7 +80,7 @@
         <!-- Description -->
         <div>
             <label for="description">Description</label>
-            <textarea name="description" id="description" rows="3"></textarea>
+            <textarea name="description" id="description" rows="3">{{ old('description') }}</textarea>
         </div>
 
         <!-- Foreign Keys -->
@@ -36,7 +91,7 @@
                 <select name="unit_type_id" id="unit_type_id">
                     <option value="">-- Select --</option>
                     @foreach($unit_types as $unitType)
-                    <option value="{{ $unitType->id }}">{{ $unitType->name }}</option>
+                    <option value="{{ $unitType->id }}" {{ $unitType->id == old('unit_type_id') ? 'selected' : '' }}>{{ $unitType->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -46,7 +101,7 @@
                 <select name="iva_category_id" id="iva_category_id">
                     <option value="">-- Select --</option>
                     @foreach($iva_categories as $ivaCategory)
-                    <option value="{{ $ivaCategory->id }}">{{ $ivaCategory->name }}</option>
+                    <option value="{{ $ivaCategory->id }}" {{ $ivaCategory->id == old('iva_category_id') ? 'selected' : '' }}>{{ $ivaCategory->name }}</option>
                     @endforeach
 
                 </select>
@@ -57,7 +112,7 @@
                 <select name="brand_id" id="brand_id">
                     <option value="">-- Select --</option>
                     @foreach($brands as $brand)
-                    <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                    <option value="{{ $brand->id }}" {{ $brand->id == old('brand') ? 'selected' : '' }}>{{ $brand->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -67,7 +122,7 @@
                 <select name="subcategory_id" id="subcategory_id">
                     <option value="">-- Select --</option>
                     @foreach($subcategories as $subcategory)
-                    <option value="{{ $subcategory->id }}">{{ $subcategory->name }}</option>
+                    <option value="{{ $subcategory->id }}" {{ $subcategory->id == old('subcategory_id') ? 'selected' : '' }}>{{ $subcategory->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -77,7 +132,7 @@
                 <select name="nutri_score_id" id="nutri_score_id">
                     <option value="">-- Select --</option>
                     @foreach($nutri_scores as $nutriScore)
-                    <option value="{{ $nutriScore->id }}">{{ $nutriScore->label }}</option>
+                    <option value="{{ $nutriScore->id }}" {{ $nutriScore->id == old('nutri_score_id') ? 'selected' : '' }}>{{ $nutriScore->label }}</option>
                     @endforeach
                 </select>
             </div>
@@ -87,7 +142,7 @@
                 <select name="eco_score_id" id="eco_score_id">
                     <option value="">-- Select --</option>
                     @foreach($eco_scores as $ecoScore)
-                    <option value="{{ $ecoScore->id }}">{{ $ecoScore->label }}</option>
+                    <option value="{{ $ecoScore->id }}" {{ $ecoScore->id == old('eco_score_id') ? 'selected' : '' }}>{{ $ecoScore->label }}</option>
                     @endforeach
                 </select>
             </div>
@@ -118,9 +173,18 @@
 
         <!-- Submit -->
         <div>
-            <button type="" class="btn-primary">Cancel</button>
-            <button type="submit" class="btn-primary">Create Product</button>
+            <a href="{{ route('products.index') }}">Cancel</a>
+            <button type="submit">Create Product</button>
         </div>
+
+        <!-- Error Display -->
+        @if ($errors->any())
+        <ul>
+            @foreach($errors->all as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+        @endif
 
     </form>
 </x-layout>

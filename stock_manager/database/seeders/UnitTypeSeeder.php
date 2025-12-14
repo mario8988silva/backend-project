@@ -13,6 +13,19 @@ class UnitTypeSeeder extends Seeder
      */
     public function run(): void
     {
-        UnitType::factory()->count(8)->create();
+        $units = [
+            ['name' => 'Unit',     'symbol' => 'u',  'description' => 'Single item'],
+            ['name' => 'Gram',     'symbol' => 'g',  'description' => 'Weight in grams'],
+            ['name' => 'Kilogram', 'symbol' => 'kg', 'description' => 'Weight in kilograms'],
+            ['name' => 'Liter',    'symbol' => 'L',  'description' => 'Volume in liters'],
+            ['name' => 'Milliliter', 'symbol' => 'mL', 'description' => 'Volume in milliliters'],
+            ['name' => 'Meter',    'symbol' => 'm',  'description' => 'Length in meters'],
+            ['name' => 'Square Meter', 'symbol' => 'm²', 'description' => 'Area in square meters'],
+            ['name' => 'Cubic Meter', 'symbol' => 'm³', 'description' => 'Volume in cubic meters'],
+        ];
+
+        foreach ($units as $unit) {
+            UnitType::create($unit);
+        }
     }
 }

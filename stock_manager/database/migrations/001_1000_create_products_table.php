@@ -20,24 +20,23 @@ return new class extends Migration
             $table->text('description')->nullable(); // optional product description
 
             // Foreign keys
-            $table->foreignId('unit_type_id')->constrained('unit_types')->nullable();
-            $table->foreignId('iva_category_id')->constrained('iva_categories')->nullable();
+            $table->foreignId('unit_type_id')->nullable()->constrained('unit_types');
+            $table->foreignId('iva_category_id')->nullable()->constrained('iva_categories');
             
-            $table->foreignId('brand_id')->constrained('brands')->nullable();
-            $table->foreignId('subcategory_id')->constrained('subcategories')->nullable();            
+            $table->foreignId('brand_id')->nullable()->constrained('brands');
+            $table->foreignId('subcategory_id')->nullable()->constrained('subcategories');            
             
-            $table->foreignId('nutri_score_id')->constrained('nutri_scores')->nullable();
-            $table->foreignId('eco_score_id')->constrained('eco_scores')->nullable();
+            $table->foreignId('nutri_score_id')->nullable()->constrained('nutri_scores');
+            $table->foreignId('eco_score_id')->nullable()->constrained('eco_scores');
 
-            // Attributes
-            $table->date('expiry_date')->nullable();
-            
-            $table->boolean('sugar_free')->nullable();
-            $table->boolean('gluten_free')->nullable();
-            $table->boolean('lactose_free')->nullable();
-            $table->boolean('vegan')->nullable();
-            $table->boolean('vegetarian')->nullable();
-            $table->boolean('organic')->nullable();
+
+            // Attributes            
+            $table->boolean('sugar_free')->default(false);
+            $table->boolean('gluten_free')->default(false);
+            $table->boolean('lactose_free')->default(false);
+            $table->boolean('vegan')->default(false);
+            $table->boolean('vegetarian')->default(false);
+            $table->boolean('organic')->default(false);
 
             $table->timestamps(); // created_at, updated_at
         });

@@ -13,6 +13,16 @@ class NutriScoreSeeder extends Seeder
      */
     public function run(): void
     {
-        NutriScore::factory()->count(5)->create();
+        $nutriScores = [
+            ['grade' => 'A', 'color' => 'Green',      'description' => 'Excellent nutritional quality'],
+            ['grade' => 'B', 'color' => 'LightGreen', 'description' => 'Good nutritional quality'],
+            ['grade' => 'C', 'color' => 'Yellow',     'description' => 'Moderate nutritional quality'],
+            ['grade' => 'D', 'color' => 'Orange',     'description' => 'Poor nutritional quality'],
+            ['grade' => 'E', 'color' => 'Red',        'description' => 'Very poor nutritional quality'],
+        ];
+
+        foreach ($nutriScores as $nutriScore) {
+            NutriScore::create($nutriScore);
+        }
     }
 }

@@ -16,7 +16,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'family_id' => Family::factory(), // auto-create/link a Family
+            'family_id' => Family::inRandomOrder()->first()?->id, // auto-create/link a Family
             'name' => $this->faker->word(),   // fake category name
             'description' => $this->faker->sentence(), // optional description
         ];

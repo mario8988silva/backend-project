@@ -1,66 +1,63 @@
 <x-layout>
 
-    {{-- --------------------------------------------------------- 
+ --------------------------------------------------------- 
     <h3>Debug: brands</h3>
     <pre>
     @foreach($brands as $brand)
-    {{ $brand->id }} - {{ $brand->name }}
+    {{ $brand->id }} - {{ $brand->name }} - {{ $brand->country }} - {{ $brand->description }}
     @endforeach
     </pre>
 
     <h3>Debug: categories</h3>
     <pre>
     @foreach($categories as $category)
-    {{ $category->id }} - {{ $category->name }}
+    {{ $category->id }} - {{ $category->family_id }} - {{ $category->name }} - {{ $category->description }}
     @endforeach
     </pre>
     <h3>Debug: ecoScores</h3>
     <pre>
     @foreach($eco_scores as $eco_score)
-    {{ $eco_score->id }} - {{ $eco_score->name }}
+    {{ $eco_score->id }} - {{ $eco_score->grade }} - {{ $eco_score->color }} - {{ $eco_score->description }}
     @endforeach
     </pre>
     <h3>Debug: families</h3>
     <pre>
     @foreach($families as $family)
-    {{ $family->id }} - {{ $family->name }}
+    {{ $family->id }} - {{ $family->name }} - {{ $family->description }}
     @endforeach
     </pre>
     <h3>Debug: ivaCategories</h3>
     <pre>
     @foreach($iva_categories as $ivaCategory)
-    {{ $ivaCategory->id }} - {{ $ivaCategory->name }}
+    {{ $ivaCategory->id }} - {{ $ivaCategory->name }} - {{ $ivaCategory->rate }}% - {{ $ivaCategory->description }}
     @endforeach
     </pre>
     <h3>Debug: nutriScores</h3>
     <pre>
     @foreach($nutri_scores as $nutriScore)
-    {{ $nutriScore->id }} - {{ $nutriScore->name }}
+    {{ $nutriScore->id }} - {{ $nutriScore->grade }} - {{ $nutriScore->color }} - {{ $nutriScore->description }}
     @endforeach
     </pre>
     <h3>Debug: subcategories</h3>
     <pre>
     @foreach($subcategories as $subcategory)
-    {{ $subcategory->id }} - {{ $subcategory->name }}
+    {{ $subcategory->id }} - {{ $subcategory->category_id }} - {{ $subcategory->name }} - {{ $subcategory->description }}
     @endforeach
     </pre>
     <h3>Debug: unitTypes</h3>
     <pre>
     @foreach($unit_types as $unitType)
-    {{ $unitType->id }} - {{ $unitType->name }}
+    {{ $unitType->id }} - {{ $unitType->name }} - {{ $unitType->symbol }} - {{ $unitType->description }}
     @endforeach
     </pre>-
-    --------------------------------------------------------- --}}
+    --------------------------------------------------------- 
 
 
     <form action="{{ isset($product) ? route('products.update', $product) : route('products.store') }}" method="POST">
         @csrf
-
         @isset($product)
-        @method('PUT') {{-- Method Spoofing --}}
+        @method('PUT')
         @endisset
-
-        <h2>Create a New Product</h2>
 
         <!-- Barcode -->
         <div>
@@ -176,12 +173,15 @@
 
         <!-- Submit -->
         <div>
+            @if(isset($product))
             <a href="{{ route('products.show', $product->id) }}">Cancel</a>
             @else
             <a href="{{ route('products.index') }}">Cancel</a>
-            @endisset
-            
-            <button type="submit">{{ isset($product) ? 'Update Product' : 'Create Product' }}</button>
+            @endif
+
+            <button type="submit">
+                {{ isset($product) ? 'Update Product' : 'Create Product' }}
+            </button>
         </div>
 
         <!-- Error Display -->

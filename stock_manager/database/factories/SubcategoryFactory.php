@@ -18,7 +18,7 @@ class SubcategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id' => Category::factory(),
+            'category_id' => Category::inRandomOrder()->first()?->id,
             'name' => $this->faker->word(),
             'description' => $this->faker->sentence(),
         ];

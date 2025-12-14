@@ -13,6 +13,17 @@ class EcoScoreSeeder extends Seeder
      */
     public function run(): void
     {
-        EcoScore::factory()->count(5)->create();
+        // Define fixed grades/colors mapping
+        $ecoScores = [
+            ['grade' => 'A', 'color' => 'Green',  'description' => 'Excellent sustainability'],
+            ['grade' => 'B', 'color' => 'LightGreen', 'description' => 'Good sustainability'],
+            ['grade' => 'C', 'color' => 'Yellow', 'description' => 'Moderate sustainability'],
+            ['grade' => 'D', 'color' => 'Orange', 'description' => 'Poor sustainability'],
+            ['grade' => 'E', 'color' => 'Red',    'description' => 'Very poor sustainability'],
+        ];
+
+       foreach ($ecoScores as $ecoScore) {
+            EcoScore::create($ecoScore);
+        }
     }
 }

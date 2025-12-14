@@ -13,6 +13,15 @@ class IvaCategorySeeder extends Seeder
      */
     public function run(): void
     {
-        IvaCategory::factory()->count(4)->create();
+        // Common Portuguese IVA categories
+        $ivaRates = [
+            ['name' => 'Standard',     'rate' => 23.00, 'description' => 'Standard VAT rate'],
+            ['name' => 'Intermediate', 'rate' => 13.00, 'description' => 'Intermediate VAT rate'],
+            ['name' => 'Reduced',      'rate' => 6.00,  'description' => 'Reduced VAT rate'],
+            ['name' => 'Exempt',       'rate' => 0.00,  'description' => 'Exempt from VAT'],
+        ];
+        foreach ($ivaRates as $ivaRate) {
+            IvaCategory::create($ivaRate);
+        }
     }
 }

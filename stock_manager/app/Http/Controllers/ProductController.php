@@ -39,89 +39,47 @@ class ProductController extends Controller
         return view('products.show', ["product" => $product]);
     }
 
+    // Centralized lookup loader
+    private function getLookups(): array
+    {
+        return [
+            'brands' => Brand::all(),
+            'categories' => Category::all(),
+            'eco_scores' => EcoScore::all(),
+            'families' => Family::all(),
+            'iva_categories' => IvaCategory::all(),
+            'nutri_scores' => NutriScore::all(),
+            'subcategories' => Subcategory::all(),
+            'unit_types' => UnitType::all(),
+        ];
+    }
+
     public function create()
     {
         // route --> /products
         // render a create view (with web form) to products
 
-        // é daqui que vem o erro de repetição de dados?
-        $brands = Brand::all();
-        $categories = Category::all();
-        $ecoScores = EcoScore::all();
-        $families = Family::all();
-        $ivaCategories = IvaCategory::all();
-        $nutriScores = NutriScore::all();
-        $subcategories = Subcategory::all();
-        $unitTypes = UnitType::all();
-
-        return view('products.create', [
-            "brands" => $brands,
-            "categories" => $categories,
-            "eco_scores" => $ecoScores,
-            "families" => $families,
-            "iva_categories" => $ivaCategories,
-            "nutri_scores" => $nutriScores,
-            "subcategories" => $subcategories,
-            "unit_types" => $unitTypes
-
-        ]);
+        return view('products.create', $this->getLookups());
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
         // route --> /products
         // handle the form submission from the create view
 
-        $validated = $request->validate([
-            //
-            'barcode' => 'nullable|string|unique:products,barcode|max:45',
-            'name' => 'required|string|max:255',
-            'image' => 'nullable|url', // 'nullable|image'
-            'description' => 'nullable|string',
-            //
-            'unit_type_id' => 'nullable|exists:unit_types,id',
-            'iva_category_id' => 'nullable|exists:iva_categories,id',
-            'brand_id' => 'nullable|exists:brands,id',
-            'subcategory_id' => 'nullable|exists:subcategories,id',
-            'nutri_score_id' => 'nullable|exists:nutri_scores,id',
-            'eco_score_id' => 'nullable|exists:eco_scores,id',
-
-            'sugar_free' => 'boolean',
-            'gluten_free' => 'boolean',
-            'lactose_free' => 'boolean',
-            'vegan' => 'boolean',
-            'vegetarian' => 'boolean',
-            'organic' => 'boolean',
-            /* 
-            protected $casts = [
-            'sugar_free'   => 'boolean',
-            'gluten_free'  => 'boolean',
-            'lactose_free' => 'boolean',
-            'vegan'        => 'boolean',
-            'vegetarian'   => 'boolean',
-            'organic'      => 'boolean',    
-            ];
-            */
-        ]);
-
-        // Create a new product record
-        Product::create($validated);
+        $product = Product::create($request->validated());
 
         // Redirect to the product's detail page or the products list
-        return redirect()->route('products.index')
+        return redirect()->route('products.show', $product->id)
             ->with('success', 'Product created successfully.');
     }
 
     public function edit(Product $product)
     {
-        $unit_type = UnitType::all();
-        $iva_category = IvaCategory::all();
-        $brand = Brand::all();
-        $subcategory = Subcategory::all();
-        $nutri_score = NutriScore::all();
-        $eco_score = EcoScore::all();
-
-        return view('products.edit', ['product' => $product, 'unit_type' => $unit_type, 'iva_category' => $iva_category, 'brand' => $brand, 'subcategory' => $subcategory, 'nutri_score' => $nutri_score, 'eco_score' => $eco_score]);
+        return view('products.edit', array_merge(
+            ['product' => $product],
+            $this->getLookups()
+        ));
     }
 
     public function update(ProductRequest $request, Product $product)

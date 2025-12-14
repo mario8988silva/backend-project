@@ -27,15 +27,14 @@ class ProductFactory extends Factory
             'description' => $this->faker->sentence(),
 
             // Foreign keys (auto-create related models if not provided)
-            'unit_type_id' => UnitType::factory(),
-            'iva_category_id' => IvaCategory::factory(),
-            'brand_id' => Brand::factory(),
-            'subcategory_id' => Subcategory::factory(),
-            'nutri_score_id' => NutriScore::factory(),
-            'eco_score_id' => EcoScore::factory(),
+            'unit_type_id' => UnitType::inRandomOrder()->first()?->id,
+            'iva_category_id' => IvaCategory::inRandomOrder()->first()?->id,
+            'brand_id' => Brand::inRandomOrder()->first()?->id,
+            'subcategory_id' => Subcategory::inRandomOrder()->first()?->id,
+            'nutri_score_id' => NutriScore::inRandomOrder()->first()?->id,
+            'eco_score_id' => EcoScore::inRandomOrder()->first()?->id,
 
             // Attributes
-            'expiry_date' => $this->faker->dateTimeBetween('now', '+2 years'),
             'sugar_free' => $this->faker->boolean(),
             'gluten_free' => $this->faker->boolean(),
             'lactose_free' => $this->faker->boolean(),

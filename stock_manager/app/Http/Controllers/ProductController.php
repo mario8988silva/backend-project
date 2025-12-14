@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\EcoScore;
@@ -42,7 +43,8 @@ class ProductController extends Controller
     {
         // route --> /products
         // render a create view (with web form) to products
-        
+
+        // é daqui que vem o erro de repetição de dados?
         $brands = Brand::all();
         $categories = Category::all();
         $ecoScores = EcoScore::all();
@@ -61,8 +63,8 @@ class ProductController extends Controller
             "nutri_scores" => $nutriScores,
             "subcategories" => $subcategories,
             "unit_types" => $unitTypes
-            
-        ]);        
+
+        ]);
     }
 
     public function store(Request $request)
@@ -70,7 +72,7 @@ class ProductController extends Controller
         // route --> /products
         // handle the form submission from the create view
 
-        $validatedProduct = $request->validate([
+        $validated = $request->validate([
             //
             'barcode' => 'nullable|string|unique:products,barcode|max:45',
             'name' => 'required|string|max:255',
@@ -83,7 +85,7 @@ class ProductController extends Controller
             'subcategory_id' => 'nullable|exists:subcategories,id',
             'nutri_score_id' => 'nullable|exists:nutri_scores,id',
             'eco_score_id' => 'nullable|exists:eco_scores,id',
-            
+
             'sugar_free' => 'boolean',
             'gluten_free' => 'boolean',
             'lactose_free' => 'boolean',
@@ -103,11 +105,32 @@ class ProductController extends Controller
         ]);
 
         // Create a new product record
-        $product = Product::create($validatedProduct);
+        Product::create($validated);
 
         // Redirect to the product's detail page or the products list
-        return redirect()->route('products.index', $product)
+        return redirect()->route('products.index')
             ->with('success', 'Product created successfully.');
+    }
+
+    public function edit(Product $product)
+    {
+        $unit_type = UnitType::all();
+        $iva_category = IvaCategory::all();
+        $brand = Brand::all();
+        $subcategory = Subcategory::all();
+        $nutri_score = NutriScore::all();
+        $eco_score = EcoScore::all();
+
+        return view('products.edit', ['product' => $product, 'unit_type' => $unit_type, 'iva_category' => $iva_category, 'brand' => $brand, 'subcategory' => $subcategory, 'nutri_score' => $nutri_score, 'eco_score' => $eco_score]);
+    }
+
+    public function update(ProductRequest $request, Product $product)
+    {
+        $product->update($request->validated());
+
+        return redirect()
+            ->route('products.show', $product->id)
+            ->with('success', 'Product updated successfully!');
     }
 
     public function destroy(Product $product)

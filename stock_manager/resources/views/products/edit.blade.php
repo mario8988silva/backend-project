@@ -1,3 +1,8 @@
+@extends('products._form')
+
+@section('name', 'Edit Product')
+
+@section('slot')
 @include('products._form', [
 'brands' => $brands,
 'categories' => $categories,
@@ -8,3 +13,4 @@
 'subcategories' => $subcategories,
 'unit_types' => $unit_types
 ])
+@endsection

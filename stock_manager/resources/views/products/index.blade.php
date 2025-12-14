@@ -16,7 +16,7 @@
                 <th>brand</th>
                 <th>subcategory</th>
                 <th>category</th>
-                <th>family</th>                
+                <th>family</th>
                 <th>unit_type</th>
                 <th>iva_category</th>
                 <th>nutri_score</th>
@@ -26,6 +26,7 @@
                 <th>vegan</th>
                 <th>vegetarian</th>
                 <th>organic</th>
+                <th>delete</th>
                 <th>edit</th>
                 <th>see</th>
                 {{--
@@ -97,7 +98,7 @@
             <td>{{ $product->brand->name ?? 'x' }}</td>
             <td>{{ $product->subcategory->name ?? 'x' }}</td>
             <td>{{ $product->subcategory->category->name ?? 'x' }}</td>
-            <td>{{ $product->subcategory->category->family->name ?? 'x' }}</td>            
+            <td>{{ $product->subcategory->category->family->name ?? 'x' }}</td>
             <td>{{ $product->unit_type->name ?? 'x' }}</td>
             <td>{{ $product->iva_category->rate ?? 'x' }}</td>
             <td>{{ $product->nutri_score->grade ?? 'x' }}</td>
@@ -107,8 +108,15 @@
             <td>{{ $product->vegan ?? '' }}</td>
             <td>{{ $product->vegetarian ?? '' }}</td>
             <td>{{ $product->organic ?? '' }}</td>
-            <td>edit</td>
-            <td onclick="window.location='{{ route('products.show', $product->id) }}'">see</td>
+            <td onclick="window.location='{{ route('products.show', $product->id) }}'">
+                <form action="{{ route('products.destroy', $product->id) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+            <td onclick="window.location='{{ route('products.edit', $product->id) }}'"><button type="submit">Edit</button></td>
+            <td onclick="window.location='{{ route('products.show', $product->id) }}'"><button type="submit">See</button></td>
         </tr>
         @endforeach
     </table>

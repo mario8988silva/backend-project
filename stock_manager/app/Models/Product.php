@@ -23,7 +23,6 @@ class Product extends Model
         'subcategory_id',
         'nutri_score_id',
         'eco_score_id',
-        'expiry_date', // REMOVER! PERTENCE AO STOCK
         // Attributes
         'sugar_free',
         'gluten_free',

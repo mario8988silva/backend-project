@@ -8,6 +8,130 @@
     <h2>Stock List</h2>
     --}}
 
+    <form method="GET" action="{{ route('products.index') }}">
+        <select name="order">
+            <option value="">-- Order --</option>
+            <option value="newest" {{ request('order')=='newest' ? 'selected' : '' }}>Newest first</option>
+            <option value="oldest" {{ request('order')=='oldest' ? 'selected' : '' }}>Oldest first</option>
+        </select>
+
+        <select name="brand_id">
+            <option value="">-- Brand --</option>
+            @foreach($brands as $brand)
+            <option value="{{ $brand->id }}" {{ request('brand_id')==$brand->id ? 'selected' : '' }}>
+                {{ $brand->name }}
+            </option>
+            @endforeach
+        </select>
+
+        <select name="subcategory_id">
+            <option value="">-- Subcategory --</option>
+            @foreach($subcategories as $subcategory)
+            <option value="{{ $subcategory->id }}" {{ request('subcategory_id')==$subcategory->id ? 'selected' : '' }}>
+                {{ $subcategory->name }}
+            </option>
+            @endforeach
+        </select>
+
+        <select name="category_id">
+            <option value="">-- Category --</option>
+            @foreach($categories as $category)
+            <option value="{{ $category->id }}" {{ request('category_id')==$category->id ? 'selected' : '' }}>
+                {{ $category->name }}
+            </option>
+            @endforeach
+        </select>
+
+        <select name="family_id">
+            <option value="">-- Family --</option>
+            @foreach($families as $family)
+            <option value="{{ $family->id }}" {{ request('family_id')==$family->id ? 'selected' : '' }}>
+                {{ $family->name }}
+            </option>
+            @endforeach
+        </select>
+
+        <select name="unit_type_id">
+            <option value="">-- Unit Type --</option>
+            @foreach($unit_types as $unitType)
+            <option value="{{ $unitType->id }}" {{ request('unit_type_id')==$unitType->id ? 'selected' : '' }}>
+                {{ $unitType->name }}
+            </option>
+            @endforeach
+        </select>
+
+        <select name="iva_category_id">
+            <option value="">-- IVA Category --</option>
+            @foreach($iva_categories as $iva)
+            <option value="{{ $iva->id }}" {{ request('iva_category_id')==$iva->id ? 'selected' : '' }}>
+                {{ $iva->name }}
+            </option>
+            @endforeach
+        </select>
+
+        <select name="nutri_score_id">
+            <option value="">-- Nutri Score --</option>
+            @foreach($nutri_scores as $nutri)
+            <option value="{{ $nutri->id }}" {{ request('nutri_score_id')==$nutri->id ? 'selected' : '' }}>
+                {{ $nutri->label }}
+            </option>
+            @endforeach
+        </select>
+
+        <select name="eco_score_id">
+            <option value="">-- Eco Score --</option>
+            @foreach($eco_scores as $eco)
+            <option value="{{ $eco->id }}" {{ request('eco_score_id')==$eco->id ? 'selected' : '' }}>
+                {{ $eco->label }}
+            </option>
+            @endforeach
+        </select>
+
+
+
+        {{-- BOOLEAN FILTERS --}}
+        <select name="sugar_free">
+            <option value="">-- Sugar Free? --</option>
+            <option value="1" {{ request('sugar_free')=='1' ? 'selected' : '' }}>Yes</option>
+            <option value="0" {{ request('sugar_free')=='0' ? 'selected' : '' }}>No</option>
+        </select>
+
+        <select name="gluten_free">
+            <option value="">-- Gluten Free? --</option>
+            <option value="1" {{ request('gluten_free')=='1' ? 'selected' : '' }}>Yes</option>
+            <option value="0" {{ request('gluten_free')=='0' ? 'selected' : '' }}>No</option>
+        </select>
+
+        <select name="vegan">
+            <option value="">-- Vegan? --</option>
+            <option value="1" {{ request('vegan')=='1' ? 'selected' : '' }}>Yes</option>
+            <option value="0" {{ request('vegan')=='0' ? 'selected' : '' }}>No</option>
+        </select>
+
+        <select name="vegetarian">
+            <option value="">-- Vegetarian? --</option>
+            <option value="1" {{ request('vegetarian')=='1' ? 'selected' : '' }}>Yes</option>
+            <option value="0" {{ request('vegetarian')=='0' ? 'selected' : '' }}>No</option>
+        </select>
+
+        <select name="organic">
+            <option value="">-- Organic? --</option>
+            <option value="1" {{ request('organic')=='1' ? 'selected' : '' }}>Yes</option>
+            <option value="0" {{ request('organic')=='0' ? 'selected' : '' }}>No</option>
+        </select>
+
+        {{-- TYPE --}}
+        <input type="text" name="search" placeholder="Search" value="{{ request('search') }}">
+
+        {{-- APPLY --}}
+        <button type="submit">Apply Filters</button>
+
+        <!-- Reset button -->
+        <a href="{{ route('products.index') }}" class="btn btn-secondary">
+            Reset Filters
+        </a>
+    </form>
+
     <table>
         <thead>
             <tr>

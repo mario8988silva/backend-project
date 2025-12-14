@@ -1,0 +1,32 @@
+app/
+ ├── Http/
+ │    ├── Controllers/
+ │    │     └── ProductController.php        # Handles requests, delegates to service
+ │    ├── Middleware/                        # Request filtering (auth, logging, etc.)
+ │    └── Requests/
+ │          └── ProductRequest.php           # Validation rules for product forms
+ │
+ ├── Models/
+ │    └── Product.php                        # Eloquent model for products
+ │    └── Brand.php, Category.php, etc.      # Lookup table models
+ │
+ ├── Services/
+ │    └── ProductFilterService.php           # Business logic for filtering products
+ │
+ ├── Providers/
+ │    └── AppServiceProvider.php             # Bindings, global app setup
+ │
+database/
+ ├── migrations/                             # Table definitions
+ ├── seeders/                                # Fixed lookup seeders (EcoScore, IVA, etc.)
+ └── factories/                              # Random test data factories
+resources/
+ ├── views/
+ │    ├── products/
+ │    │     ├── index.blade.php              # Product list + filter form
+ │    │     ├── _form.blade.php              # Shared create/edit form
+ │    │     └── show.blade.php               # Product detail
+ │    └── layouts/
+ │          └── app.blade.php                # Base layout
+routes/
+ └── web.php                                 # Route definitions

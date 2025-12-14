@@ -1,6 +1,6 @@
 <x-layout>
 
- --------------------------------------------------------- 
+{{--------------------------------------------------------- 
     <h3>Debug: brands</h3>
     <pre>
     @foreach($brands as $brand)
@@ -50,7 +50,7 @@
     {{ $unitType->id }} - {{ $unitType->name }} - {{ $unitType->symbol }} - {{ $unitType->description }}
     @endforeach
     </pre>-
-    --------------------------------------------------------- 
+    ---------------------------------------------------------}}
 
 
     <form action="{{ isset($product) ? route('products.update', $product) : route('products.store') }}" method="POST">
@@ -91,7 +91,7 @@
                 <select name="unit_type_id" id="unit_type_id" class="{{ $errors->has('unit_type_id') ? 'input-error' : '' }}">
                     <option value="" disabled selected>-- Select --</option>
                     @foreach($unit_types as $unitType)
-                    <option value="{{ $unitType->id }}" {{ $unitType->id == old('unit_type_id', $product->unit_type_id ?? '') ? 'selected' : '' }}>{{ $unitType->symbol }} {{ $unitType->name }}</option>
+                    <option value="{{ $unitType->id }}" {{ $unitType->id == old('unit_type_id', $product->unit_type_id ?? '') ? 'selected' : '' }}>{{ $unitType->symbol }} - {{ $unitType->name }}</option>
                     @endforeach
                 </select>
             </div>
@@ -101,7 +101,7 @@
                 <select name="iva_category_id" id="iva_category_id" class="{{ $errors->has('iva_category_id') ? 'input-error' : '' }}">
                     <option value="" disabled selected>-- Select --</option>
                     @foreach($iva_categories as $ivaCategory)
-                    <option value="{{ $ivaCategory->id }}" {{ $ivaCategory->id == old('iva_category_id', $product->iva_category_id ?? '') ? 'selected' : '' }}>{{ $ivaCategory->rate }}</option>
+                    <option value="{{ $ivaCategory->id }}" {{ $ivaCategory->id == old('iva_category_id', $product->iva_category_id ?? '') ? 'selected' : '' }}>{{ $ivaCategory->rate }}%</option>
                     @endforeach
 
                 </select>

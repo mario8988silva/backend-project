@@ -1,0 +1,11 @@
+Stock::where('product_id', $productId)
+->sum('quantity');
+
+
+$existing = Stock::where('product_id', $productId)
+->whereNull('ordered_product_id')
+->sum('quantity');
+
+$ordered = Stock::where('product_id', $productId)
+->whereNotNull('ordered_product_id')
+->sum('quantity');

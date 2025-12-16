@@ -26,6 +26,19 @@ class DatabaseSeeder extends Seeder
             NutriScoreSeeder::class,
             EcoScoreSeeder::class,
             ProductSeeder::class,
+
+            // Retailer tables related:
+            RetailerSeeder::class,
+            RepresentativeSeeder::class,
+            InvoiceSeeder::class,
+
+            // Order & Stock tables related:
+            StatusSeeder::class,
+            LocationSeeder::class,
+            OrderSeeder::class,
+            OrderedProductSeeder::class,
+            StockSeeder::class,
+            WasteLogSeeder::class,
         ]);
     }
 }

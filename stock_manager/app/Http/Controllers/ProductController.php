@@ -12,88 +12,32 @@ use App\Models\NutriScore;
 use App\Models\Product;
 use App\Models\Subcategory;
 use App\Models\UnitType;
-
-
+use App\Settlements\ProductBooleanFilterSettlement;
+use App\Settlements\ProductFilterSettlement;
+use App\Settlements\ProductSearchSettlement;
+use App\Settlements\ProductSortSettlement;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, ProductSearchSettlement $searchSettlement, ProductSortSettlement $sortSettlement, ProductBooleanFilterSettlement $booleanSettlement, ProductFilterSettlement $filterSettlement)
     {
         $query = Product::query();
 
-        // Order by created_at
-        if ($request->get('order') === 'newest') {
-            $query->orderBy('created_at', 'desc');
-        } elseif ($request->get('order') === 'oldest') {
-            $query->orderBy('created_at', 'asc');
-        }
-
-        // Filter by brand
-        if ($request->filled('brand_id')) {
-            $query->where('brand_id', $request->get('brand_id'));
-        }
-
-        // Filter by subcategory
-        if ($request->filled('subcategory_id')) {
-            $query->where('subcategory_id', $request->get('subcategory_id'));
-        }
-
-        // Filter by category
-        if ($request->filled('category_id')) {
-            $query->where('category_id', $request->get('category_id'));
-        }
-
-        // Filter by family
-        if ($request->filled('family_id')) {
-            $query->where('family_id', $request->get('family_id'));
-        }
-
-        // Filter by unit type
-        if ($request->filled('unit_type_id')) {
-            $query->where('unit_type_id', $request->get('unit_type_id'));
-        }
-
-        // Filter by IVA category
-        if ($request->filled('iva_category_id')) {
-            $query->where('iva_category_id', $request->get('iva_category_id'));
-        }
-
-        // Filter by NutriScore
-        if ($request->filled('nutri_score_id')) {
-            $query->where('nutri_score_id', $request->get('nutri_score_id'));
-        }
-
-        // Filter by EcoScore
-        if ($request->filled('eco_score_id')) {
-            $query->where('eco_score_id', $request->get('eco_score_id'));
-        }
+        // Apply filters
+        $filterSettlement->apply($request, $query);
 
         // Search by anything
-        if ($request->filled('search')) {
-            $search = $request->get('search');
-            $query->where(function ($q) use ($search) {
-                foreach ((new Product)->getFillable() as $field) {
-                    $q->orWhere($field, 'like', "%{$search}%");
-                }
-            });
-        }
+        $searchSettlement->apply($request, $query);
 
         // Boolean filters
-        $booleanFilters = ['sugar_free', 'gluten_free', 'vegan', 'vegetarian', 'organic'];
+        $booleanSettlement->apply($request, $query);
 
-        foreach ($booleanFilters as $field) {
-            if ($request->filled($field)) {
-                $query->where($field, (bool) $request->get($field));
-            }
-        }
+        // Generic sorting
+        $sortSettlement->apply($request, $query);
 
-
-        // route --> /products
-        // fetch all records & pass into the index view
-        //$products = Product::with('subcategory', 'brand', 'unit_type', 'iva_category', 'nutri_score', 'eco_score')->paginate(25);
         $products = $query->with(
-            'subcategory',
+            'subcategory.category.family',
             'brand',
             'unit_type',
             'iva_category',

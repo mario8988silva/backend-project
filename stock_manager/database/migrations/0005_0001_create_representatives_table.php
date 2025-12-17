@@ -19,12 +19,14 @@ return new class extends Migration
             $table->unsignedBigInteger('retailer_id');
             $table->timestamps();
 
+            /*
             $table->index('retailer_id', 'fk_representative_retailer1_idx');
             $table->foreign('retailer_id')
                 ->references('id')
                 ->on('retailers')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
+            */
         });
     }
 

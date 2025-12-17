@@ -311,6 +311,7 @@
             <td>{{ $product->vegan ?? '' }}</td>
             <td>{{ $product->vegetarian ?? '' }}</td>
             <td>{{ $product->organic ?? '' }}</td>
+
             <td onclick="window.location='{{ route('products.show', $product->id) }}'">
                 <form action="{{ route('products.destroy', $product->id) }}" method="POST">
                     @csrf
@@ -318,25 +319,23 @@
                     <button type="submit">Delete</button>
                 </form>
             </td>
-            <td onclick="window.location='{{ route('products.edit', $product->id) }}'"><button type="submit">Edit</button></td>
-            <td onclick="window.location='{{ route('products.show', $product->id) }}'"><button type="submit">See</button></td>
+
+            <td>
+                <a href="{{ route('products.edit', $product->id) }}">
+                    <button type="button">Edit</button>
+                </a>
+            </td>
+            
+            <td>
+                <a href="{{ route('products.show', $product->id) }}">
+                    <button type="button">See</button>
+                </a>
+            </td>
+
         </tr>
         @endforeach
     </table>
 
-    {{--
-    <ul>
-        @foreach($products as $product)
-        <li>
-            <x-card href="{{ route('products.show', $product->id)}}">
-    <h3>{{ $product->name }}</h3>
-    <p>{{ $product->description ?? 'No description' }}</p>
-
-    </x-card>
-    </li>
-    @endforeach
-    </ul>
-    --}}
     <!-- pagination -->
     {{ $products->links()}}
 </x-layout>

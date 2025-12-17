@@ -13,6 +13,28 @@ class StatusSeeder extends Seeder
      */
     public function run(): void
     {
-        Status::factory()->count(5)->create();
+        // Define fixed Status:
+        $statuses = [
+            ['state' => 'x', 'description' => 'a'],
+            ['state' => 'y', 'description' => 'b'],
+            ['state' => 'z', 'description' => 'c'],
+        ];
+
+        foreach ($statuses as $status) {
+            Status::create($status);
+        }
     }
 }
+
+/*
+ORDER IN COURSE
+ORDER MADE
+ORDER PENDING
+ORDER ARRIVED
+ORDER CHECKED
+ORDER CLOSED
+IN WAREHOUSE
+IN STORE
+SOLD
+LOST
+*/

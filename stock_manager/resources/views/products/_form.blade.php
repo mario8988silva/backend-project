@@ -51,7 +51,7 @@
     @endforeach
     </pre>-
     ---------------------------------------------------------}}
-
+<h2>{{ isset($product) ? 'Edit Product' : 'Create New Product' }}</h2>
 
     <form action="{{ isset($product) ? route('products.update', $product) : route('products.store') }}" method="POST">
         @csrf

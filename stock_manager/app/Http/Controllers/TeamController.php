@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,4 +62,16 @@ class TeamController extends Controller
 
         return redirect()->route('show.login');
     }
+
+    /*
+    public function show(Team $teamMember)
+    {
+        // route --> /team/{id}
+        // fetch a single record & pass into the show view
+
+        $teamMember->load('name', 'brand', 'unit_type', 'iva_category', 'nutri_score', 'eco_score');
+
+        return view('products.show', ["teamMember" => $teamMember]);
+    }
+        */
 }

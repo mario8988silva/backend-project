@@ -18,6 +18,9 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('address')->nullable();
             $table->text('notes')->nullable();
+            /*
+            // DEVERÁ SER POSSIVEL ASSOCIAR ALGUMAS CATEGORIAS, PARA FACILITAR A EVENTUAL PESQUISA DE PRODUTOS PARA STOCK
+            
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('category_family_id');
             $table->timestamps();
@@ -28,6 +31,7 @@ return new class extends Migration
                   ->on('categories')
                   ->onUpdate('cascade')
                   ->onDelete('restrict');
+            */
         });
     }
 

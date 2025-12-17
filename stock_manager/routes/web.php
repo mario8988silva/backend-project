@@ -7,7 +7,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TeamController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('team.login');
 });
 
 // Team/Users Routes: ---------------------------------------------------------------------------------
@@ -18,6 +18,17 @@ Route::middleware('guest')->controller(TeamController::class)->group(function ()
     Route::post('/register', 'register')->name('register');
     Route::get('/login', 'showLogin')->name('show.login');
     Route::post('/login', 'login')->name('login');
+});
+
+
+Route::middleware('auth')->controller(TeamController::class)->group(function () {
+    Route::get('/team', 'index')->name('team.index');
+    Route::get('/team/create', 'create')->name('team.create');
+    Route::get('/team/{user}/edit', 'edit')->name('team.edit');
+    Route::post('/team', 'store')->name('team.store');
+    Route::put('/team/{user}', 'update')->name('team.update');
+    Route::get('/team/{user}', 'show')->name('team.show');    
+    Route::delete('/team/{product}', 'destroy')->name('team.destroy');
 });
 
 // Brand Routes: --------------------------------------------------------------------------------------

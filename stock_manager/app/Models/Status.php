@@ -9,10 +9,21 @@ class Status extends Model
 {
     protected $fillable = ['name', 'description'];
 
-    public function orders()
+    public function products()
     {
-        return $this->hasMany(Order::class, 'product_status_id');
+        return $this->hasMany(Product::class);
     }
+
+    public function orderedProducts()
+    {
+        return $this->hasMany(OrderHasProduct::class);
+    }
+
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
+
 
     use HasFactory;
 }

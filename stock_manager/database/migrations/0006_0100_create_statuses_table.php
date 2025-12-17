@@ -13,16 +13,9 @@ return new class extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('ordered_product_id')->nullable();
-            $table->unsignedBigInteger('status_id');
-            $table->unsignedInteger('quantity')->default(0);
-            $table->string('location')->nullable();
+            $table->string('name');
+            $table->string('description')->nullable();
             $table->timestamps();
-
-            $table->foreign('product_id')->references('id')->on('products')->onUpdate('cascade')->onDelete('restrict');
-            $table->foreign('ordered_product_id')->references('id')->on('ordered_products')->onUpdate('cascade')->onDelete('set null');
-            $table->foreign('status_id')->references('id')->on('statuses')->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

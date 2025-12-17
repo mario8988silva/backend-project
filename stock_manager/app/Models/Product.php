@@ -33,10 +33,45 @@ class Product extends Model
     ];
 
     // Relationships
-    public function unit_type()     { return $this->belongsTo(UnitType::class); }
-    public function iva_category()  { return $this->belongsTo(IvaCategory::class); }
-    public function brand()         { return $this->belongsTo(Brand::class); }
-    public function subcategory()   { return $this->belongsTo(Subcategory::class); }
-    public function nutri_score()   { return $this->belongsTo(NutriScore::class); }
-    public function eco_score()     { return $this->belongsTo(EcoScore::class); }
+    public function unit_type()
+    {
+        return $this->belongsTo(UnitType::class);
+    }
+
+    public function iva_category()
+    {
+        return $this->belongsTo(IvaCategory::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function subcategory()
+    {
+        return $this->belongsTo(Subcategory::class);
+    }
+
+    public function nutri_score()
+    {
+        return $this->belongsTo(NutriScore::class);
+    }
+
+    public function eco_score()
+    {
+        return $this->belongsTo(EcoScore::class);
+    }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_has_products')
+            ->withPivot('quantity', 'expiry_date')
+            ->withTimestamps();
+    }
+
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
 }

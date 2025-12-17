@@ -2,6 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Models\Invoice;
+use App\Models\Product;
+use App\Models\Representative;
+use App\Models\Status;
+use App\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,14 +22,14 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'quantity' => $this->faker->numberBetween(1, 100),
-            'product_id' => Product::factory(),
-            'representative_id' => Representative::factory(),
-            'team_id' => Team::factory(),
+            'quantity' => $this->faker->numberBetween(1, 20),
+            'product_id' => Product::inRandomOrder()->first()?->id,
+            'representative_id' => Representative::inRandomOrder()->first()?->id,
+            'team_id' => Team::inRandomOrder()->first()?->id,
             'order_date' => $this->faker->date(),
             'delivery_date' => $this->faker->date(),
-            'invoice_id' => Invoice::factory(),
-            'product_status_id' => Status::factory(),
+            'invoice_id' => Invoice::inRandomOrder()->first()?->id,
+            'status_id' => Status::inRandomOrder()->first()?->id,
         ];
     }
 }

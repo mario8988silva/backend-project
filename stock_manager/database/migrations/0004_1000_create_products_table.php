@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id(); // auto-increment primary key
+            $table->id();
 
             $table->string('barcode', 45)->unique()->nullable(); // optional unique barcode
             $table->string('name', 255); // product name

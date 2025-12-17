@@ -9,12 +9,13 @@ class Stock extends Model
 {
     protected $fillable = [
         'product_id',
-        'ordered_product_id',
+        'order_has_product_id',
         'status_id',
         'quantity',
         'location',
     ];
 
+    // Relationships
     public function product()
     {
         return $this->belongsTo(Product::class);
@@ -22,7 +23,7 @@ class Stock extends Model
 
     public function orderedProduct()
     {
-        return $this->belongsTo(OrderedProduct::class);
+        return $this->belongsTo(OrderHasProduct::class);
     }
 
     public function status()

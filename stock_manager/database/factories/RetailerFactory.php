@@ -22,8 +22,6 @@ class RetailerFactory extends Factory
             'email' => $this->faker->companyEmail,
             'address' => $this->faker->address,
             'notes' => $this->faker->sentence,
-            'category_id' => 1, // adjust or randomize
-            'category_family_id' => 1, // adjust or randomize
         ];
     }
 }

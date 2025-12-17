@@ -12,21 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('representatives', function (Blueprint $table) {
-            $table->id(); // auto-increment PK
+            $table->id();
             $table->string('name');
-            $table->string('phone', 45)->nullable();
+            $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->unsignedBigInteger('retailer_id');
+            $table->unsignedBigInteger('retailer_id')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
 
-            /*
-            $table->index('retailer_id', 'fk_representative_retailer1_idx');
             $table->foreign('retailer_id')
                 ->references('id')
                 ->on('retailers')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
-            */
+                ->onDelete('set null');
         });
     }
 

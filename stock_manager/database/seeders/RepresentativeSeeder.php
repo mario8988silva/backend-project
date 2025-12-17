@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Representative;
+use App\Models\Retailer;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -13,6 +14,12 @@ class RepresentativeSeeder extends Seeder
      */
     public function run(): void
     {
-        Representative::factory()->count(50)->create();
+        $retailers = Retailer::all();
+
+        foreach ($retailers as $retailer) {
+            Representative::factory()->count(rand(1, 3))->create([
+                'retailer_id' => $retailer->id,
+            ]);
+        }
     }
 }

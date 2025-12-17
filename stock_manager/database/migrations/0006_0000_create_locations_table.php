@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');              // e.g. "Warehouse A", "Café Front"
+            $table->string('name');
             $table->string('address')->nullable();
-            $table->string('type')->nullable();  // e.g. "warehouse", "store", "café"
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

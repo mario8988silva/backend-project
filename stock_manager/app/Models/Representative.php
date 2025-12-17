@@ -12,6 +12,7 @@ class Representative extends Model
         'phone',
         'email',
         'retailer_id',
+        'notes'
     ];
 
     public function retailer()

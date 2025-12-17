@@ -17,10 +17,10 @@ class InvoiceFactory extends Factory
     public function definition(): array
     {
         return [
-            'invoice' => $this->faker->unique()->numerify('INV-#####'),
-            'date' => $this->faker->dateTimeThisYear(),
-            'order_id' => Order::factory(),
-            'retailer_id' => Retailer::factory(),
+            'invoice' => strtoupper($this->faker->bothify('INV-#####')),
+            'date' => $this->faker->dateTime(),
+            'order_id' => Order::inRandomOrder()->first()?->id,
+            'retailer_id' => Retailer::inRandomOrder()->first()?->id,
         ];
     }
 }

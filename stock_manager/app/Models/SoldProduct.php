@@ -5,14 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WasteLog extends Model
+class SoldProduct extends Model
 {
+    /** @use HasFactory<\Database\Factories\SoldProductFactory> */
+    use HasFactory;
+
     protected $fillable = [
         'product_id',
-        'quantity',
-        'logged_at',
-        'status_id',
         'order_id',
+        'quantity',
+        'price',
+        'total',
+        'sold_at',
+        'location',
         'notes',
     ];
 
@@ -21,15 +26,8 @@ class WasteLog extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
-    }
-
     public function order()
     {
         return $this->belongsTo(Order::class);
     }
-
-    use HasFactory;
 }

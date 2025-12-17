@@ -15,26 +15,20 @@ class StatusSeeder extends Seeder
     {
         // Define fixed Status:
         $statuses = [
-            ['state' => 'x', 'description' => 'a'],
-            ['state' => 'y', 'description' => 'b'],
-            ['state' => 'z', 'description' => 'c'],
+            ['state' => 'ORDER', 'description' => 'creates order list'],
+            ['state' => 'ORDER PENDING', 'description' => 'waiting for retailer visit'],
+            ['state' => 'ORDER MADE', 'description' => 'confirms retailer received order'],
+            ['state' => 'RETAILER', 'description' => 'out of our control / order pending'],
+            ['state' => 'ARRIVAL', 'description' => 'order arrives'],
+            ['state' => 'ARRIVAL CHECK', 'description' => 'confirms order arrived with invoice and was paid'],
+            ['state' => 'ORDER CHECK', 'description' => 'order is waiting to be checked and to be stored'],
+            ['state' => 'ORDER CLOSED', 'description' => 'order is checked. closes this order'],
+            ['state' => 'IN STOCK', 'description' => 'all products in stock and where they are'],
+            ['state' => 'STORED', 'description' => 'if products are stored. Links product to a physical place.'],
+            ['state' => 'SOLD', 'description' => 'sold items and how many of each.'],
+            ['state' => 'LOST', 'description' => 'sometimes items are lost, broken, stolen.'],
         ];
 
-        foreach ($statuses as $status) {
-            Status::create($status);
-        }
+        Status::insert($statuses);
     }
 }
-
-/*
-ORDER IN COURSE
-ORDER MADE
-ORDER PENDING
-ORDER ARRIVED
-ORDER CHECKED
-ORDER CLOSED
-IN WAREHOUSE
-IN STORE
-SOLD
-LOST
-*/

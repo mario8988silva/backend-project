@@ -11,20 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('retailers', function (Blueprint $table) {
+        Schema::create('category_has_retailers', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('phone')->nullable();
-            $table->string('email')->unique()->nullable();
-            $table->string('address')->nullable();
-            $table->unsignedBigInteger('retailer_id')->nullable();
-            $table->text('notes')->nullable();
             $table->timestamps();
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('retailer_id');
+            $table->primary(['category_id', 'retailer_id']);
 
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('retailer_id')->references('id')->on('retailers')->onDelete('cascade');
-
-            // mudar nome para 'suppliers'
-
         });
     }
 
@@ -33,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('retailers');
+        Schema::dropIfExists('category_has_retailers');
     }
 };

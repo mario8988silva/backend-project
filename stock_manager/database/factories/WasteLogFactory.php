@@ -18,12 +18,12 @@ class WasteLogFactory extends Factory
     public function definition(): array
     {
         return [
-            'product_id' => Product::factory(),
-            'product_subcategory_id' => 1, // adjust if you seed subcategories
-            'quantity' => $this->faker->numberBetween(1, 50),
-            'date' => $this->faker->dateTimeThisYear(),
-            'status_id' => Status::factory(),
-            'order_id' => Order::factory(),
+            'product_id' => Product::inRandomOrder()->first()?->id,
+            'quantity' => $this->faker->numberBetween(1, 10),
+            'logged_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
+            'status_id' => Status::inRandomOrder()->first()?->id,
+            'order_id' => Order::inRandomOrder()->first()?->id,
+            'notes' => $this->faker->sentence(),
         ];
     }
 }

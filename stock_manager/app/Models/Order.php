@@ -15,12 +15,21 @@ class Order extends Model
         'order_date',
         'delivery_date',
         'invoice_id',
-        'product_status_id',
+        'status_id',
     ];
 
+    // Relationships
+    /*
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+    */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'order_has_products')
+            ->withPivot('quantity', 'expiry_date')
+            ->withTimestamps();
     }
 
     public function representative()
@@ -35,12 +44,12 @@ class Order extends Model
 
     public function invoice()
     {
-        return $this->belongsTo(Invoice::class);
+        return $this->hasOne(Invoice::class);
     }
 
     public function status()
     {
-        return $this->belongsTo(Status::class, 'product_status_id');
+        return $this->belongsTo(Status::class);
     }
 
     use HasFactory;

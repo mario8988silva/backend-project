@@ -16,10 +16,11 @@ class RepresentativeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'phone' => $this->faker->phoneNumber,
-            'email' => $this->faker->safeEmail,
-            'retailer_id' => Retailer::factory(), // ensures a retailer exists
+            'name' => $this->faker->name(),
+            'phone' => $this->faker->phoneNumber(),
+            'email' => $this->faker->unique()->safeEmail(),
+            'notes' => $this->faker->sentence(),
+            'retailer_id' => Retailer::inRandomOrder()->first()?->id,
         ];
     }
 }

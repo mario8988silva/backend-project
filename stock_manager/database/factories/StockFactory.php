@@ -3,6 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\OrderedProduct;
+use App\Models\OrderHasProduct;
+use App\Models\Product;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,10 +21,11 @@ class StockFactory extends Factory
     public function definition(): array
     {
         return [
-            'ordered_product_id' => OrderedProduct::factory(),
-            'status_id' => Status::factory(),
-            'quantity' => $this->faker->numberBetween(0, 200),
-            'location' => $this->faker->word,
+            'product_id' => Product::inRandomOrder()->first()?->id,
+            'ordered_product_id' => OrderHasProduct::inRandomOrder()->first()?->id,
+            'status_id' => Status::inRandomOrder()->first()?->id,
+            'quantity' => $this->faker->numberBetween(0, 100),
+            'location' => $this->faker->optional()->word(),
         ];
     }
 }

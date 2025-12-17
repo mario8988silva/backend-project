@@ -13,20 +13,36 @@ class Retailer extends Model
         'email',
         'address',
         'notes',
-        'category_id',
-        'category_family_id',
     ];
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class, 'category_id', 'id')
-            ->where('family_id', $this->category_family_id);
-    }
 
     public function representatives()
     {
         return $this->hasMany(Representative::class);
     }
+
+    public function retailer()
+    {
+        return $this->belongsTo(Retailer::class);
+    }
+
+    // A retailer can belong to many categories
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_has_retailer');
+    }
+
+    /*
+    // A retailer can have many products
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+    */
+
+    public function invoices()
+{
+    return $this->hasMany(Invoice::class);
+}
 
     use HasFactory;
 }

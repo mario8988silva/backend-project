@@ -14,31 +14,24 @@ return new class extends Migration
         Schema::create('waste_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('product_subcategory_id');
             $table->unsignedInteger('quantity');
-            $table->dateTime('date')->nullable();
+            $table->dateTime('logged_at')->nullable();
             $table->unsignedBigInteger('status_id');
-            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('order_id')->nullable();
+            $table->text('notes')->nullable();
             $table->timestamps();
 
-            // Foreign keys
-            $table->foreign(['product_id', 'product_subcategory_id'])
-                ->references(['id', 'subcategory_id'])
-                ->on('products')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
+            $table->foreign('product_id')
+                ->references('id')->on('products')
+                ->onUpdate('cascade')->onDelete('restrict');
 
             $table->foreign('status_id')
-                ->references('id')
-                ->on('statuses')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
+                ->references('id')->on('statuses')
+                ->onUpdate('cascade')->onDelete('restrict');
 
             $table->foreign('order_id')
-                ->references('id')
-                ->on('orders')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
+                ->references('id')->on('orders')
+                ->onUpdate('cascade')->onDelete('set null');
         });
     }
 

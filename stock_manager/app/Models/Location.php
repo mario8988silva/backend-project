@@ -13,11 +13,13 @@ class Location extends Model
         'type',
     ];
 
+    /*
     public function stocks()
     {
         return $this->hasMany(Stock::class);
     }
-    
+    */
+
     /** @use HasFactory<\Database\Factories\LocationFactory> */
     use HasFactory;
 }

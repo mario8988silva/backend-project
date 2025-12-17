@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
 
             // Core fields
-            $table->unsignedBigInteger('product_id');             // link to product
-            $table->unsignedBigInteger('ordered_product_id')->nullable(); // optional link to ordered product
-            $table->unsignedBigInteger('status_id');              // link to status (available, reserved, etc.)
-            $table->unsignedInteger('quantity')->default(0);      // how many units
-            $table->string('location')->nullable();               // optional warehouse/shelf/café location
+            $table->unsignedBigInteger('product_id');                  // link to product
+            $table->unsignedBigInteger('order_has_product_id')->nullable(); // optional link to order_has_products
+            $table->unsignedBigInteger('status_id');                   // link to status (available, reserved, etc.)
+            $table->unsignedInteger('quantity')->default(0);           // how many units
+            $table->string('location')->nullable();                    // optional warehouse/shelf/café location
 
             $table->timestamps();
 
@@ -28,8 +28,8 @@ return new class extends Migration
                 ->references('id')->on('products')
                 ->onUpdate('cascade')->onDelete('restrict');
 
-            $table->foreign('ordered_product_id')
-                ->references('id')->on('ordered_products')
+            $table->foreign('order_has_product_id')
+                ->references('id')->on('order_has_products')
                 ->onUpdate('cascade')->onDelete('set null');
 
             $table->foreign('status_id')

@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Representative;
 use App\Models\Retailer;
+use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,7 @@ class RepresentativeFactory extends Factory
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'notes' => $this->faker->sentence(),
-            'retailer_id' => Retailer::inRandomOrder()->first()?->id,
+            'supplier_id' => Supplier::inRandomOrder()->first()?->id,
         ];
     }
 }

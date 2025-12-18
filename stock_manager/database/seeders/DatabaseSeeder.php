@@ -33,7 +33,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
 
             // Retailer tables related:
-            RetailerSeeder::class,
+            SupplierSeeder::class,
+            CategoryHasSupplierSeeder::class,
             RepresentativeSeeder::class,
             InvoiceSeeder::class,
 
@@ -41,9 +42,10 @@ class DatabaseSeeder extends Seeder
             StatusSeeder::class,
             LocationSeeder::class,
             OrderSeeder::class,
-            OrderedProductSeeder::class,
+            OrderHasProductSeeder::class,
             StockSeeder::class,
             WasteLogSeeder::class,
+            SoldProductSeeder::class,
         ]);
     }
 }

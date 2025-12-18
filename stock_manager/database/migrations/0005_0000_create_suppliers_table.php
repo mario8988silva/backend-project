@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('retailers', function (Blueprint $table) {
+        Schema::create('suppliers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('phone')->nullable();
@@ -21,10 +21,7 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->timestamps();
 
-            $table->foreign('retailer_id')->references('id')->on('retailers')->onDelete('cascade');
-
-            // mudar nome para 'suppliers'
-
+            $table->foreign('retailer_id')->references('id')->on('suppliers')->onDelete('cascade');
         });
     }
 
@@ -33,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('retailers');
+        Schema::dropIfExists('suppliers');
     }
 };

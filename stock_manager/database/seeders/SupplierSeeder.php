@@ -2,18 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Retailer;
+use App\Models\Supplier;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class RetailerSeeder extends Seeder
+class SupplierSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-
         /*
         $categories = \App\Models\Category::pluck('id')->toArray();
         
@@ -22,6 +21,6 @@ class RetailerSeeder extends Seeder
         });
         */
 
-        Retailer::factory()->count(20)->create();
+        Supplier::factory()->count(20)->create();
     }
 }

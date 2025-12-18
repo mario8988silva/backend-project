@@ -11,15 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_has_retailers', function (Blueprint $table) {
+        Schema::create('category_has_suppliers', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('retailer_id');
-            $table->primary(['category_id', 'retailer_id']);
+            $table->unsignedBigInteger('supplier_id');
+            $table->primary(['category_id', 'supplier_id']);
 
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('retailer_id')->references('id')->on('retailers')->onDelete('cascade');
+            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category_has_retailers');
+        Schema::dropIfExists('category_has_suppliers');
     }
 };

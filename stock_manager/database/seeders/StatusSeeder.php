@@ -29,6 +29,8 @@ class StatusSeeder extends Seeder
             ['state' => 'LOST', 'description' => 'sometimes items are lost, broken, stolen.'],
         ];
 
-        Status::insert($statuses);
+        foreach ($statuses as $status) {
+            Status::create(['name' => $status]);
+        }
     }
 }

@@ -17,7 +17,7 @@ class Representative extends Model
 
     public function retailer()
     {
-        return $this->belongsTo(Retailer::class);
+        return $this->belongsTo(Supplier::class);
     }
 
     use HasFactory;

@@ -14,11 +14,11 @@ class RepresentativeSeeder extends Seeder
      */
     public function run(): void
     {
-        $retailers = Retailer::all();
+        $suppliers = Retailer::all();
 
-        foreach ($retailers as $retailer) {
+        foreach ($suppliers as $supplier) {
             Representative::factory()->count(rand(1, 3))->create([
-                'retailer_id' => $retailer->id,
+                'supplier_id' => $supplier->id,
             ]);
         }
     }

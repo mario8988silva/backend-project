@@ -16,13 +16,13 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->unsignedBigInteger('retailer_id')->nullable();
+            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
 
-            $table->foreign('retailer_id')
+            $table->foreign('supplier_id')
                 ->references('id')
-                ->on('retailers')
+                ->on('suppliers')
                 ->onDelete('set null');
         });
     }

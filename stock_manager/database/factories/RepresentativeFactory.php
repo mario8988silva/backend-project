@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Representative;
-use App\Models\Retailer;
 use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

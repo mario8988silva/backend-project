@@ -28,7 +28,7 @@ class Supplier extends Model
         return $this->belongsTo(Supplier::class);
     }
 
-    // A retailer can belong to many categories
+    // A supplier can belong to many categories
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_has_supplier');

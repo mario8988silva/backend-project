@@ -18,7 +18,7 @@ class RoleHasPermissionSeeder extends Seeder
         $admin = Role::where('value', 'Admin')->first();
         $manager = Role::where('value', 'Manager')->first();
         $staff = Role::where('value', 'Staff')->first();
-        $retailerRep = Role::where('value', 'Retailer Representative')->first();
+        $supplierRep = Role::where('value', 'Supplier Representative')->first();
         $customer = Role::where('value', 'Customer')->first();
 
 
@@ -57,9 +57,9 @@ class RoleHasPermissionSeeder extends Seeder
             );
         }
 
-        // Retailer Representative can view products, orders and stock
-        if ($retailerRep) {
-            $retailerRep->permissions()->sync(
+        // Supplier Representative can view products, orders and stock
+        if ($supplierRep) {
+            $supplierRep->permissions()->sync(
                 Permission::whereIn('value', [
                     'view_products',
                     'view_orders',

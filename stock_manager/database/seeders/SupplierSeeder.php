@@ -16,8 +16,8 @@ class SupplierSeeder extends Seeder
         /*
         $categories = \App\Models\Category::pluck('id')->toArray();
         
-        Retailer::factory()->count(20)->create()->each(function ($retailer) use ($categories) {
-            $retailer->categories()->attach(fake()->randomElements($categories, rand(1, 3)));
+        Supplier::factory()->count(20)->create()->each(function ($supplier) use ($categories) {
+            $supplier->categories()->attach(fake()->randomElements($categories, rand(1, 3)));
         });
         */
 

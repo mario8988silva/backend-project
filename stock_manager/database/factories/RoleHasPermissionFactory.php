@@ -19,8 +19,8 @@ class RoleHasPermissionFactory extends Factory
     public function definition(): array
     {
         return [
-            'role_id' => Role::factory(),
-            'permission_id' => Permission::factory(),
+            'role_id' => Role::inRandomOrder()->first()?->id,
+            'permission_id' => Permission::inRandomOrder()->first()?->id,
         ];
     }
 }

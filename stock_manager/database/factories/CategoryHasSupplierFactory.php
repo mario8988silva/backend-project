@@ -17,7 +17,8 @@ class CategoryHasSupplierFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'category_id' => \App\Models\Category::inRandomOrder()->first()?->id,
+            'supplier_id' => \App\Models\Supplier::inRandomOrder()->first()?->id,
         ];
     }
 }

@@ -15,13 +15,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            // User tables related:
+            // Users tables related:
             RoleSeeder::class,
             PermissionSeeder::class,
             RoleHasPermissionSeeder::class,
             UserSeeder::class,
 
-            // Product tables related:
+            // Products tables related:
             FamilySeeder::class,
             CategorySeeder::class,
             SubcategorySeeder::class,
@@ -32,13 +32,13 @@ class DatabaseSeeder extends Seeder
             EcoScoreSeeder::class,
             ProductSeeder::class,
 
-            // Retailer tables related:
+            // Suppliers tables related:
             SupplierSeeder::class,
             CategoryHasSupplierSeeder::class,
             RepresentativeSeeder::class,
             InvoiceSeeder::class,
 
-            // Order & Stock tables related:
+            // Orders & Stock tables related:
             StatusSeeder::class,
             LocationSeeder::class,
             OrderSeeder::class,

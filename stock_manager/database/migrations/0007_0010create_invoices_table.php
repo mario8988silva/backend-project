@@ -13,17 +13,15 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
             $table->string('number')->nullable();
             $table->dateTime('issue_date')->nullable();
             $table->dateTime('due_date')->nullable();
             $table->unsignedBigInteger('order_id')->nullable();
-            $table->unsignedBigInteger('retailer_id')->nullable();
+            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->string('currency', 3)->default('EUR');
             $table->text('notes')->nullable();
-            $table->timestamps();
-            $table->index('order_id', 'fk_invoice_order1_idx');
-            $table->index('retailer_id', 'fk_invoice_retailer1_idx');
 
             $table->foreign('order_id')
                 ->references('id')
@@ -31,9 +29,9 @@ return new class extends Migration
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
 
-            $table->foreign('retailer_id')
+            $table->foreign('supplier_id')
                 ->references('id')
-                ->on('retailers')
+                ->on('suppliers')
                 ->onUpdate('cascade')
                 ->onDelete('restrict');
         });

@@ -12,14 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('category_has_suppliers', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->id(); // single primary key
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('supplier_id');
-            $table->primary(['category_id', 'supplier_id']);
+            $table->timestamps();
 
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('supplier_id')->references('id')->on('suppliers')->onDelete('cascade');
+            $table->foreign('category_id')
+                ->references('id')->on('categories')
+                ->onDelete('cascade');
+
+            $table->foreign('supplier_id')
+                ->references('id')->on('suppliers')
+                ->onDelete('cascade');
+
+            // prevent duplicates without composite PK
+            $table->unique(['category_id', 'supplier_id']);
         });
     }
 

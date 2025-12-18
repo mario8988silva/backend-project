@@ -16,9 +16,9 @@ class StatusSeeder extends Seeder
         // Define fixed Status:
         $statuses = [
             ['state' => 'ORDER', 'description' => 'creates order list'],
-            ['state' => 'ORDER PENDING', 'description' => 'waiting for retailer visit'],
-            ['state' => 'ORDER MADE', 'description' => 'confirms retailer received order'],
-            ['state' => 'RETAILER', 'description' => 'out of our control / order pending'],
+            ['state' => 'ORDER PENDING', 'description' => 'waiting for supplier visit'],
+            ['state' => 'ORDER MADE', 'description' => 'confirms supplier received order'],
+            ['state' => 'SUPPLIER', 'description' => 'out of our control / order pending'],
             ['state' => 'ARRIVAL', 'description' => 'order arrives'],
             ['state' => 'ARRIVAL CHECK', 'description' => 'confirms order arrived with invoice and was paid'],
             ['state' => 'ORDER CHECK', 'description' => 'order is waiting to be checked and to be stored'],

@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Permission;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -13,10 +14,10 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('permissions')->insert([
+        $permissions = [
             // Users
             ['value' => 'manage_users'],
-            
+
             // Products
             ['value' => 'view_products'],
             ['value' => 'edit_products'],
@@ -31,6 +32,10 @@ class PermissionSeeder extends Seeder
             ['value' => 'view_stock'],
             ['value' => 'edit_stock'],
             ['value' => 'delete_stock'],
-        ]);
+        ];
+
+        foreach ($permissions as $perm) {
+            Permission::create(['value' => $perm]);
+        }
     }
 }

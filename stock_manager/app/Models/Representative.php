@@ -11,11 +11,11 @@ class Representative extends Model
         'name',
         'phone',
         'email',
-        'retailer_id',
+        'supplier_id',
         'notes'
     ];
 
-    public function retailer()
+    public function supplier()
     {
         return $this->belongsTo(Supplier::class);
     }

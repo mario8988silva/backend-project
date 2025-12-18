@@ -2,7 +2,7 @@
     <h2>Products List</h2>
     {{--
     <h2>Orders List</h2>
-    <h2>Retailers List</h2>
+    <h2>Suppliers List</h2>
     <h2>Representatives List</h2>
     <h2>Team List</h2>
     <h2>Stock List</h2>
@@ -236,11 +236,11 @@
                 <h2>Orders List</h2>
                 <th>Order Date</th>
                 <th>Representative</th>
-                <th>Retailer</th>
+                <th>Supplier</th>
                 <th>Status</th>
                 <th>See Detail</th>
                 
-                <h2>Retailers List</h2>
+                <h2>Suppliers List</h2>
                 <th>Name</th>
                 <th>Contact</th>
                 <th>E-mail</th>
@@ -253,7 +253,7 @@
                 <th>Name</th>
                 <th>Contact</th>
                 <th>E-mail</th>
-                <th>Retailer</th>
+                <th>Supplier</th>
                 <th>Edit</th>
                 <th>See Detail</th>
 

@@ -2,16 +2,24 @@
 
 namespace App\Models;
 
+namespace App\Models;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Invoice extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'invoice',
-        'date',
+        'number',
+        'issue_date',
+        'due_date',
         'order_id',
-        'retailer_id',
+        'supplier_id',
+        'total_amount',
+        'currency',
+        'notes',
     ];
 
     public function order()
@@ -19,10 +27,8 @@ class Invoice extends Model
         return $this->belongsTo(Order::class);
     }
 
-    public function retailer()
+    public function supplier()
     {
-        return $this->belongsTo(Retailer::class);
+        return $this->belongsTo(Supplier::class);
     }
-    /** @use HasFactory<\Database\Factories\InvoiceFactory> */
-    use HasFactory;
 }

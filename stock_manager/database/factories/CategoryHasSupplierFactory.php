@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,8 +19,8 @@ class CategoryHasSupplierFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id' => \App\Models\Category::inRandomOrder()->first()?->id,
-            'supplier_id' => \App\Models\Supplier::inRandomOrder()->first()?->id,
+            'category_id' => Category::inRandomOrder()->first()?->id,
+            'supplier_id' => Supplier::inRandomOrder()->first()?->id,
         ];
     }
 }

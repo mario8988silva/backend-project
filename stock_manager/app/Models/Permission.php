@@ -13,6 +13,8 @@ class Permission extends Model
     protected $fillable = ['value'];
 
     // Example relationship: many-to-many with roles
+
+    
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_has_permissions');

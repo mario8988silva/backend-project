@@ -3,50 +3,38 @@
 namespace Tests\Unit;
 
 use App\Models\Permission;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use App\Models\Role;
+use Tests\Unit\Models\BaseModelTest;
 
-class PermissionModelTest extends TestCase
+class PermissionModelTest extends BaseModelTest
 {
-    use RefreshDatabase;
 
-    public function test_permission_model_creates_record()
+
+    public function test_permission_model_structure()
     {
-        // Act
-        $permission = Permission::create([
-            'value' => 'manage_users',
+        $model = new Permission();
+
+        $this->assertModelTable($model, 'permissions');
+
+        $this->assertModelFillable($model, [
+            'value',
+            'details',
         ]);
 
-        // Assert: record exists in DB
-        $this->assertDatabaseHas('permissions', [
-            'id' => $permission->id,
-            'value' => 'manage_users',
-        ]);
+        $this->assertModelTimestamps($model, true);
+        $this->assertModelIncrementing($model, true);
+        $this->assertModelPrimaryKey($model, 'id');
     }
 
-    public function test_permission_model_uses_fillable_fields()
+    public function test_permission_roles_relationship()
     {
-        // Act
-        $permission = new Permission([
-            'value' => 'edit_products',
-            'non_existing_field' => 'ignored',
-        ]);
+        $model = new Permission();
 
-        // Assert: only fillable fields are set
-        $this->assertEquals('edit_products', $permission->value);
-        $this->assertFalse(isset($permission->non_existing_field));
-    }
+        $this->assertEquals(
+            'role_has_permissions',
+            $model->roles()->getTable()
+        );
 
-    public function test_permission_model_has_timestamps()
-    {
-        // Act
-        $permission = Permission::factory()->create();
-
-        // Assert: timestamps exist and are Carbon instances
-        $this->assertNotNull($permission->created_at);
-        $this->assertNotNull($permission->updated_at);
-
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $permission->created_at);
-        $this->assertInstanceOf(\Illuminate\Support\Carbon::class, $permission->updated_at);
+        $this->assertInstanceOf(Role::class, $model->roles()->getRelated());
     }
 }

@@ -35,7 +35,10 @@ class PermissionSeeder extends Seeder
         ];
 
         foreach ($permissions as $perm) {
-            Permission::create($perm);
+            Permission::create([
+                'value' => $perm['value'],
+                'details' => fake()->sentence(),
+            ]);
         }
     }
 }

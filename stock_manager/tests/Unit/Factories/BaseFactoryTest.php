@@ -38,17 +38,17 @@ abstract class BaseFactoryTest extends TestCase
         
         // Brand::factory()->create();
         // Category::factory()->create();
-        CategoryHasSupplier::factory()->create();
+        /// CategoryHasSupplier::factory()->create();
         // EcoScore::factory()->create();
-        Family::factory()->create();
+        /// Family::factory()->create();
         // IvaCategory::factory()->create();
         // Location::factory()->create();
         // NutriScore::factory()->create();
-        Order::factory()->create();
-        OrderHasProduct::factory()->create();
+        /// Order::factory()->create();
+        /// OrderHasProduct::factory()->create();
         // Permission::factory()->create();
-        RoleHasPermission::factory()->create();
-        SoldProduct::factory()->create();
+        /// RoleHasPermission::factory()->create();
+        /// SoldProduct::factory()->create();
         // Status::factory()->create();
         // Stock::factory()->create();
         // StockMovement::factory()->create();

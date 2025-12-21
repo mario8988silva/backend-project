@@ -1,27 +1,24 @@
 <?php
 
-namespace Tests\Unit;
+namespace Tests\Unit\Seeders;
 
-use App\Models\Permission;
 use Database\Seeders\PermissionSeeder;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
 
-class PermissionSeederTest extends TestCase
+class PermissionSeederTest extends BaseSeederTest
 {
-    use RefreshDatabase;
-
-    public function test_permission_seeder_populates_permissions_table()
+    public function test_permission_seeder_populates_table()
     {
-        // Act: run the seeder
-        $this->seed(PermissionSeeder::class);
+        $this->runSeeder(PermissionSeeder::class);
 
-        // Assert: count matches expected number
-        $this->assertEquals(10, Permission::count());
+        // Should have at least 10 permissions
+        $this->assertTableHasRows('permissions', 10);
 
-        // Assert: specific permissions exist
-        $this->assertDatabaseHas('permissions', ['value' => 'manage_users']);
-        $this->assertDatabaseHas('permissions', ['value' => 'view_products']);
-        $this->assertDatabaseHas('permissions', ['value' => 'delete_stock']);
+        // Check a few known permissions
+        $this->assertRowExists('permissions', ['value' => 'manage_users']);
+        $this->assertRowExists('permissions', ['value' => 'view_products']);
+        $this->assertRowExists('permissions', ['value' => 'delete_stock']);
+
+        // Ensure details column is populated
+        $this->assertColumnsNotNull('permissions', ['details']);
     }
 }

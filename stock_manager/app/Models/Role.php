@@ -10,7 +10,7 @@ class Role extends Model
     /** @use HasFactory<\Database\Factories\RoleFactory> */
     use HasFactory;
 
-    protected $fillable = ['value'];
+    protected $fillable = ['value', 'details'];
 
     // A role can have many permissions
     public function permissions()

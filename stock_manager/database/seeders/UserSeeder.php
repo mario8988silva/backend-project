@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
             'Admin' => 'admin@example.com',
             'Manager' => 'manager@example.com',
             'Staff' => 'staff@example.com',
-            'Representative' => 'representative@example.com',
+            'Supplier Representative' => 'representative@example.com',
             'Customer' => 'customer@example.com',
         ];
 

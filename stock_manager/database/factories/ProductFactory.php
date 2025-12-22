@@ -18,6 +18,17 @@ class ProductFactory extends Factory
 {
     protected $model = Product::class;
 
+    protected function randomExistingOrNull($model)
+    {
+        $existing = $model::inRandomOrder()->first();
+        if ($existing) {
+            return $this->faker->boolean(10) // 10% null 
+                ? null
+                : $existing->id; // 90% existing 
+        }
+        return null; // no rows exist 
+    }
+
     public function definition(): array
     {
         return [
@@ -27,12 +38,12 @@ class ProductFactory extends Factory
             'description' => $this->faker->sentence(),
 
             // Foreign keys (auto-create related models if not provided)
-            'unit_type_id' => UnitType::inRandomOrder()->first()?->id,
-            'iva_category_id' => IvaCategory::inRandomOrder()->first()?->id,
-            'brand_id' => Brand::inRandomOrder()->first()?->id,
-            'subcategory_id' => Subcategory::inRandomOrder()->first()?->id,
-            'nutri_score_id' => NutriScore::inRandomOrder()->first()?->id,
-            'eco_score_id' => EcoScore::inRandomOrder()->first()?->id,
+            'unit_type_id' => $this->randomExistingOrNull(UnitType::class),
+            'iva_category_id' => $this->randomExistingOrNull(IvaCategory::class),
+            'brand_id' => $this->randomExistingOrNull(Brand::class),
+            'subcategory_id' => $this->randomExistingOrNull(Subcategory::class),
+            'nutri_score_id' => $this->randomExistingOrNull(NutriScore::class),
+            'eco_score_id' => $this->randomExistingOrNull(EcoScore::class),
 
             // Attributes
             'sugar_free' => $this->faker->boolean(),

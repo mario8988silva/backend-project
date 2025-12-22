@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
-class UnitTypesMigrationTest extends BaseMigrationTest
+class UnitTypeMigrationTest extends BaseMigrationTest
 {
     public function test_unit_types_table_structure()
     {

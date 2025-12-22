@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
-class IvaCategoriesMigrationTest extends BaseMigrationTest
+class IvaCategoryMigrationTest extends BaseMigrationTest
 {
     public function test_iva_categories_table_structure()
     {

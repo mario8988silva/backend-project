@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
-class EcoScoresMigrationTest extends BaseMigrationTest
+class EcoScoreMigrationTest extends BaseMigrationTest
 {
     public function test_eco_scores_table_structure()
     {

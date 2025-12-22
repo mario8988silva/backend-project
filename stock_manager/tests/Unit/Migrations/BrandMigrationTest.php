@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
-class BrandsMigrationTest extends BaseMigrationTest
+class BrandMigrationTest extends BaseMigrationTest
 {
     public function test_brands_table_structure()
     {

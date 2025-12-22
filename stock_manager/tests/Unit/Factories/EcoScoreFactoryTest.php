@@ -6,13 +6,22 @@ use App\Models\EcoScore;
 
 class EcoScoreFactoryTest extends BaseFactoryTest
 {
-    public function test_factory_creates_record()
+    public function test_eco_score_factory_creates()
     {
         $this->assertFactoryCreates(EcoScore::class);
     }
 
-    public function test_factory_makes_record()
+    public function test_eco_score_factory_makes()
     {
         $this->assertFactoryMakes(EcoScore::class);
+    }
+
+    public function test_eco_score_factory_generates_valid_attributes()
+    {
+        $instance = EcoScore::factory()->make();
+
+        $this->assertNotEmpty($instance->grade);
+        $this->assertNotEmpty($instance->color);
+        $this->assertNotEmpty($instance->description);
     }
 }

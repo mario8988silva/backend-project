@@ -6,13 +6,22 @@ use App\Models\Brand;
 
 class BrandFactoryTest extends BaseFactoryTest
 {
-    public function test_factory_creates_record()
+    public function test_brand_factory_creates()
     {
         $this->assertFactoryCreates(Brand::class);
     }
 
-    public function test_factory_makes_record()
+    public function test_brand_factory_makes()
     {
         $this->assertFactoryMakes(Brand::class);
+    }
+
+    public function test_brand_factory_generates_valid_attributes()
+    {
+        $instance = Brand::factory()->make();
+
+        $this->assertNotEmpty($instance->name);
+        $this->assertNotEmpty($instance->country);
+        $this->assertNotEmpty($instance->description);
     }
 }

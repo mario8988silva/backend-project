@@ -20,15 +20,14 @@ return new class extends Migration
             $table->text('description')->nullable(); // optional product description
 
             // Foreign keys
-            $table->foreignId('unit_type_id')->nullable()->constrained('unit_types');
-            $table->foreignId('iva_category_id')->nullable()->constrained('iva_categories');
-            
-            $table->foreignId('brand_id')->nullable()->constrained('brands');
-            $table->foreignId('subcategory_id')->nullable()->constrained('subcategories');            
-            
-            $table->foreignId('nutri_score_id')->nullable()->constrained('nutri_scores');
-            $table->foreignId('eco_score_id')->nullable()->constrained('eco_scores');
+            $table->foreignId('unit_type_id')->nullable()->constrained('unit_types')->nullOnDelete();
+            $table->foreignId('iva_category_id')->nullable()->constrained('iva_categories')->nullOnDelete();
 
+            $table->foreignId('brand_id')->nullable()->constrained('brands')->nullOnDelete();
+            $table->foreignId('subcategory_id')->nullable()->constrained('subcategories')->nullOnDelete();
+
+            $table->foreignId('nutri_score_id')->nullable()->constrained('nutri_scores')->nullOnDelete();
+            $table->foreignId('eco_score_id')->nullable()->constrained('eco_scores')->nullOnDelete();
 
             // Attributes            
             $table->boolean('sugar_free')->default(false);

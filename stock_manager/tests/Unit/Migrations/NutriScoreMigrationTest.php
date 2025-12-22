@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
-class NutriScoresMigrationTest extends BaseMigrationTest
+class NutriScoreMigrationTest extends BaseMigrationTest
 {
     public function test_nutri_scores_table_structure()
     {

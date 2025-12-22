@@ -2,9 +2,7 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
-class SubcategoriesMigrationTest extends BaseMigrationTest
+class SubcategoryMigrationTest extends BaseMigrationTest
 {
     public function test_subcategories_table_structure()
     {

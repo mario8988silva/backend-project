@@ -23,24 +23,18 @@ class Supplier extends Model
         return $this->hasMany(Representative::class);
     }
 
-    public function supplier()
-    {
-        return $this->belongsTo(Supplier::class);
-    }
-
     // A supplier can belong to many categories
     public function categories()
     {
         return $this->belongsToMany(Category::class, 'category_has_supplier');
     }
 
-    /*
+    
     // A supplier can have many products
     public function products()
     {
         return $this->hasMany(Product::class);
     }
-    */
 
     public function invoices()
     {

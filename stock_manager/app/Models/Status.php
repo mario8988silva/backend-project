@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Status extends Model
 {
+    use HasFactory;
+
     protected $fillable = ['name', 'description'];
 
     public function products()
@@ -23,7 +25,4 @@ class Status extends Model
     {
         return $this->hasMany(Stock::class);
     }
-
-
-    use HasFactory;
 }

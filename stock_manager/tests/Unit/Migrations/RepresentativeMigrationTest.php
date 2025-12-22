@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
 class RepresentativeMigrationTest extends BaseMigrationTest
 {
     public function test_representatives_table_structure()

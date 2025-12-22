@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use App\Models\Supplier;
+use Database\Factories\Concerns\PicksExistingOrNull;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,11 +17,14 @@ class CategoryHasSupplierFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
+    use PicksExistingOrNull;
+
     public function definition(): array
     {
         return [
-            'category_id' => Category::inRandomOrder()->first()?->id,
-            'supplier_id' => Supplier::inRandomOrder()->first()?->id,
+            'category_id' => $this->randomExistingOrNull(Category::class),
+            'supplier_id' => $this->randomExistingOrNull(Supplier::class),
         ];
     }
 }

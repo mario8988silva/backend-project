@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Representative extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'phone',
@@ -19,6 +21,4 @@ class Representative extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
-
-    use HasFactory;
 }

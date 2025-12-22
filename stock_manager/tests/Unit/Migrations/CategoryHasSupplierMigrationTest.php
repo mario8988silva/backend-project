@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
 class CategoryHasSupplierMigrationTest extends BaseMigrationTest
 {
     public function test_category_has_suppliers_table_structure()

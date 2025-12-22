@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
 class StatusMigrationTest extends BaseMigrationTest
 {
     public function test_statuses_table_structure()

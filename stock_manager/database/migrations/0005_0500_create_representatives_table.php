@@ -16,14 +16,14 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->text('notes')->nullable();
-            $table->timestamps();
 
-            $table->foreign('supplier_id')
-                ->references('id')
-                ->on('suppliers')
-                ->onDelete('set null');
+            $table->foreignId('supplier_id')
+                ->nullable()
+                ->constrained('suppliers')
+                ->nullOnDelete();
+
+            $table->timestamps();
         });
     }
 

@@ -6,13 +6,21 @@ use App\Models\Status;
 
 class StatusFactoryTest extends BaseFactoryTest
 {
-    public function test_factory_creates_record()
+    public function test_status_factory_creates()
     {
         $this->assertFactoryCreates(Status::class);
     }
 
-    public function test_factory_makes_record()
+    public function test_status_factory_makes()
     {
         $this->assertFactoryMakes(Status::class);
+    }
+
+    public function test_status_factory_generates_valid_attributes()
+    {
+        $instance = Status::factory()->make();
+
+        $this->assertNotEmpty($instance->name);
+        $this->assertNotEmpty($instance->description);
     }
 }

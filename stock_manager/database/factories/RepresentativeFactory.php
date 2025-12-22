@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Representative;
 use App\Models\Supplier;
+use Database\Factories\Concerns\PicksExistingOrNull;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,8 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class RepresentativeFactory extends Factory
 {
-    protected $model = Representative::class;
-
+    use PicksExistingOrNull;
     public function definition(): array
     {
         return [
@@ -20,7 +20,7 @@ class RepresentativeFactory extends Factory
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),
             'notes' => $this->faker->sentence(),
-            'supplier_id' => Supplier::inRandomOrder()->first()?->id,
+            'supplier_id' => $this->randomExistingOrNull(Supplier::class),
         ];
     }
 }

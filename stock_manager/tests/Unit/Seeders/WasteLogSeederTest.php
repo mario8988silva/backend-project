@@ -12,6 +12,6 @@ class WasteLogSeederTest extends BaseSeederTest
 
         $this->assertTableHasRows('waste_logs', 30);
 
-        $this->assertColumnsNotNull('waste_logs', ['product_id', 'quantity', 'status_id']);
+        $this->assertColumnsNotNull('waste_logs', ['product_id', 'quantity']);
     }
 }

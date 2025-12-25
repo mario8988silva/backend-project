@@ -5,6 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\UnitType;
+use App\Models\IvaCategory;
+use App\Models\Brand;
+use App\Models\Subcategory;
+use App\Models\NutriScore;
+use App\Models\EcoScore;
+use App\Models\Order;
+use App\Models\Stock;
+
 class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductsFactory> */

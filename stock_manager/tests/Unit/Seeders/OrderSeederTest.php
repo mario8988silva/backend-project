@@ -10,8 +10,10 @@ class OrderSeederTest extends BaseSeederTest
     {
         $this->runSeeder(OrderSeeder::class);
 
+        // Should create 50 orders
         $this->assertTableHasRows('orders', 50);
 
-        $this->assertColumnsNotNull('orders', ['representative_id', 'status_id']);
+        // Only supplier_id is mandatory
+        $this->assertColumnsNotNull('orders', ['supplier_id']);
     }
 }

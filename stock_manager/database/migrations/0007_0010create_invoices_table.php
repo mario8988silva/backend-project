@@ -24,14 +24,12 @@ return new class extends Migration
             $table->foreignId('order_id')
                 ->nullable()
                 ->constrained('orders')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
+                ->nullOnDelete();
 
             $table->foreignId('supplier_id')
                 ->nullable()
                 ->constrained('suppliers')
-                ->cascadeOnUpdate()
-                ->restrictOnDelete();
+                ->nullOnDelete();
         });
     }
 

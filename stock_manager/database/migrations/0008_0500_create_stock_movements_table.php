@@ -13,29 +13,27 @@ return new class extends Migration
     {
         Schema::create('stock_movements', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
 
-            $table->unsignedBigInteger('product_id');
             $table->unsignedInteger('quantity');
             $table->enum('movement_type', ['in', 'out']);
-            $table->unsignedBigInteger('order_id')->nullable();
-            $table->unsignedBigInteger('stock_id')->nullable();
             $table->dateTime('moved_at')->nullable();
             $table->text('notes')->nullable();
 
-            $table->timestamps();
-
-            $table->foreign('product_id')
-                ->references('id')->on('products')
+            $table->foreignId('product_id')
+                ->constrained('products')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
-            $table->foreign('order_id')
-                ->references('id')->on('orders')
+            $table->foreignId('order_id')
+                ->nullable()
+                ->constrained('orders')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
 
-            $table->foreign('stock_id')
-                ->references('id')->on('stocks')
+            $table->foreignId('stock_id')
+                ->nullable()
+                ->constrained('stocks')
                 ->cascadeOnUpdate()
                 ->nullOnDelete();
         });

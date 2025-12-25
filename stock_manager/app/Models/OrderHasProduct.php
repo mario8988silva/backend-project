@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Stock;
+
 class OrderHasProduct extends Model
 {
     /** @use HasFactory<\Database\Factories\OrderHasProductFactory> */

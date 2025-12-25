@@ -5,6 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Product;
+use App\Models\OrderHasProduct;
+use App\Models\Status;
+
 class Stock extends Model
 {
     protected $fillable = [

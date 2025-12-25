@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\CategoryHasSupplier;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,7 @@ class CategoryHasSupplierSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        CategoryHasSupplier::factory()->count(50)->create();
+
     }
 }

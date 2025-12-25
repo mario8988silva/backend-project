@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Models\Representative;
 use App\Models\Supplier;
 use Database\Factories\Concerns\PicksExistingOrNull;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -13,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class RepresentativeFactory extends Factory
 {
     use PicksExistingOrNull;
+
     public function definition(): array
     {
         return [

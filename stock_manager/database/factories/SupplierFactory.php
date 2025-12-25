@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Supplier;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,7 @@ class SupplierFactory extends Factory
     public function definition(): array
     {
         return [
+            //'supplier_id' => $this->randomExistingOrNull(Supplier::class),
             'name' => $this->faker->company,
             'phone' => $this->faker->phoneNumber,
             'email' => $this->faker->companyEmail,

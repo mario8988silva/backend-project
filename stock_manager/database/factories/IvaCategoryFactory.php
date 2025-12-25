@@ -5,8 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\iva-category>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\IvaCategory>
  */
+
 class IvaCategoryFactory extends Factory
 {
     /**

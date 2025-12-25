@@ -1,23 +1,35 @@
 <?php
 
-namespace Tests\Unit\Migrations;
+namespace App\Models;
 
-class WasteLogMigrationTest extends BaseMigrationTest
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class WasteLog extends Model
 {
-    public function test_waste_logs_table_structure()
-    {
-        $this->assertTableExists('waste_logs');
+    use HasFactory;
 
-        $this->assertTableColumns('waste_logs', [
-            'id',
-            'product_id',
-            'quantity',
-            'logged_at',
-            'status_id',
-            'order_id',
-            'notes',
-            'created_at',
-            'updated_at',
-        ]);
+    protected $fillable = [
+        'product_id',
+        'order_id',
+        'status_id',
+        'quantity',
+        'logged_at',
+        'notes',
+    ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

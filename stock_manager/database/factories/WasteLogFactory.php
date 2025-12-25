@@ -7,23 +7,29 @@ use App\Models\Product;
 use App\Models\Status;
 use App\Models\WasteLog;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Database\Factories\Concerns\PicksExistingOrNull;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\WasteLog>
  */
+
+
 class WasteLogFactory extends Factory
 {
-    protected $model = WasteLog::class;
+    use PicksExistingOrNull;
 
     public function definition(): array
     {
         return [
-            'product_id' => Product::inRandomOrder()->first()?->id,
             'quantity' => $this->faker->numberBetween(1, 10),
             'logged_at' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            'status_id' => Status::inRandomOrder()->first()?->id,
-            'order_id' => Order::inRandomOrder()->first()?->id,
             'notes' => $this->faker->sentence(),
+
+            'product_id' => Product::inRandomOrder()->first()?->id
+                ?? Product::factory()->create()->id,
+            'status_id' => $this->randomExistingOrNull(Status::class),
+            'order_id' => $this->randomExistingOrNull(Order::class),
+
         ];
     }
 }

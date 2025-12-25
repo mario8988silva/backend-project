@@ -14,11 +14,24 @@ class StatusFactory extends Factory
 
     public function definition(): array
     {
+        $statuses = [
+            'ORDER',
+            'ORDER PENDING',
+            'ORDER MADE',
+            'SUPPLIER',
+            'ARRIVAL',
+            'ARRIVAL CHECK',
+            'ORDER CHECK',
+            'ORDER CLOSED',
+            'IN STOCK',
+            'STORED',
+            'SOLD',
+            'LOST',
+        ];
+
         return [
-            'name' => $this->faker->randomElement([
-                'Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'
-            ]),
-            'description' => $this->faker->sentence,
+            'state' => $this->faker->randomElement($statuses),
+            'description' => $this->faker->sentence(),
         ];
     }
 }

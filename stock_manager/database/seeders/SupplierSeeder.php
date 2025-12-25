@@ -13,14 +13,6 @@ class SupplierSeeder extends Seeder
      */
     public function run(): void
     {
-        /*
-        $categories = \App\Models\Category::pluck('id')->toArray();
-        
-        Supplier::factory()->count(20)->create()->each(function ($supplier) use ($categories) {
-            $supplier->categories()->attach(fake()->randomElements($categories, rand(1, 3)));
-        });
-        */
-
         Supplier::factory()->count(20)->create();
     }
 }

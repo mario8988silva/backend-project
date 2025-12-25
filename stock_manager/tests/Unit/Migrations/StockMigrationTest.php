@@ -14,7 +14,7 @@ class StockMigrationTest extends BaseMigrationTest
             'order_has_product_id',
             'status_id',
             'quantity',
-            'location',
+            'location_id',
             'created_at',
             'updated_at',
         ]);

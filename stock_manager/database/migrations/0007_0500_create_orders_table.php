@@ -13,33 +13,35 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('representative_id');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->date('order_date')->nullable();
-            $table->date('delivery_date')->nullable();
-            $table->unsignedBigInteger('invoice_id')->nullable();
-            $table->unsignedBigInteger('status_id');
-
-
             $table->timestamps();
 
+            $table->date('order_date')->nullable();
+            $table->date('delivery_date')->nullable();
+
             // Foreign keys
-            $table->foreign('representative_id')
-                ->references('id')->on('representatives')
-                ->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('representative_id')
+                ->nullable()
+                ->constrained('representatives')
+                ->nullOnDelete();
 
-            $table->foreign('user_id')
-                ->references('id')->on('users')
-                ->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignId('supplier_id')
+                ->constrained('suppliers')
+                ->nullOnDelete();
 
-            $table->foreign('invoice_id')
-                ->references('id')->on('invoices')
-                ->cascadeOnUpdate()->nullOnDelete();
+            $table->foreignId('user_id')
+                ->nullable()
+                ->constrained('users')
+                ->nullOnDelete();
 
-            $table->foreign('status_id')
-                ->references('id')->on('statuses')
-                ->cascadeOnUpdate()->restrictOnDelete();
+            $table->foreignId('invoice_id')
+                ->nullable()
+                ->constrained('invoices')
+                ->nullOnDelete();
+
+            $table->foreignId('status_id')
+                ->nullable()
+                ->constrained('statuses')
+                ->nullOnDelete();
         });
     }
 

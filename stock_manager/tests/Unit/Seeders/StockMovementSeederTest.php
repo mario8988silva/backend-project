@@ -2,16 +2,17 @@
 
 namespace Tests\Unit\Seeders;
 
-use Database\Seeders\StockSeeder;
+use Database\Seeders\StockMovementSeeder;
+
 
 class StockSeederTest extends BaseSeederTest
 {
-    public function test_stock_seeder_populates_table()
+    public function test_stock_movement_seeder_populates_table()
     {
-        $this->runSeeder(StockSeeder::class);
+        $this->runSeeder(StockMovementSeeder::class);
 
-        $this->assertTableHasRows('stocks', 50);
+        $this->assertTableHasRows('stock_movements', 50);
 
-        $this->assertColumnsNotNull('stocks', ['product_id', 'status_id']);
+        $this->assertColumnsNotNull('stock_movements', ['product_id', 'quantity']);
     }
 }

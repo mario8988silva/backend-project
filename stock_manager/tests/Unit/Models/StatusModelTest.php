@@ -16,7 +16,7 @@ class StatusModelTest extends BaseModelTest
         $this->assertModelTable($model, 'statuses');
 
         $this->assertModelFillable($model, [
-            'name',
+            'state',
             'description',
         ]);
 

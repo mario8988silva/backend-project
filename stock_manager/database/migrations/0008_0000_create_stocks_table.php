@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
+
+            $table->unsignedInteger('quantity')->default(0);
 
             $table->foreignId('product_id')
                 ->constrained('products')
@@ -26,14 +29,16 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->foreignId('status_id')
+                ->nullable()
                 ->constrained('statuses')
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
-            $table->unsignedInteger('quantity')->default(0);
-            $table->string('location')->nullable();
-
-            $table->timestamps();
+            $table->foreignId('location_id')
+                ->nullable()
+                ->constrained('locations')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
         });
     }
 

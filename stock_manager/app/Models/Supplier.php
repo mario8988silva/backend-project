@@ -5,6 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Representative;
+use App\Models\Category;
+use App\Models\Product;
+use App\Models\Invoice;
+
 class Supplier extends Model
 {
     /** @use HasFactory<\Database\Factories\SupplierFactory> */

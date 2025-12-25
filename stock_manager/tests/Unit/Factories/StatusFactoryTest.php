@@ -20,7 +20,7 @@ class StatusFactoryTest extends BaseFactoryTest
     {
         $instance = Status::factory()->make();
 
-        $this->assertNotEmpty($instance->name);
+        $this->assertNotEmpty($instance->state);
         $this->assertNotEmpty($instance->description);
     }
 }

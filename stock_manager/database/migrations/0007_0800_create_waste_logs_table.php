@@ -13,25 +13,29 @@ return new class extends Migration
     {
         Schema::create('waste_logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedInteger('quantity');
-            $table->dateTime('logged_at')->nullable();
-            $table->unsignedBigInteger('status_id');
-            $table->unsignedBigInteger('order_id')->nullable();
-            $table->text('notes')->nullable();
             $table->timestamps();
 
-            $table->foreign('product_id')
-                ->references('id')->on('products')
-                ->onUpdate('cascade')->onDelete('restrict');
+            $table->unsignedInteger('quantity');
+            $table->dateTime('logged_at')->nullable();
+            $table->text('notes')->nullable();
 
-            $table->foreign('status_id')
-                ->references('id')->on('statuses')
-                ->onUpdate('cascade')->onDelete('restrict');
+            //
+            $table->foreignId('product_id')
+                ->constrained('products')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
 
-            $table->foreign('order_id')
-                ->references('id')->on('orders')
-                ->onUpdate('cascade')->onDelete('set null');
+            $table->foreignId('status_id')
+                ->nullable()
+                ->constrained('statuses')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->foreignId('order_id')
+                ->nullable()
+                ->constrained('orders')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
         });
     }
 

@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('category_has_suppliers', function (Blueprint $table) {
             $table->id();
+            $table->timestamps();
 
             $table->foreignId('category_id')
+                ->nullable()
                 ->constrained('categories')
                 ->cascadeOnDelete();
 
             $table->foreignId('supplier_id')
+                ->nullable()
                 ->constrained('suppliers')
                 ->cascadeOnDelete();
-
-            $table->timestamps();
 
             $table->unique(['category_id', 'supplier_id']);
         });

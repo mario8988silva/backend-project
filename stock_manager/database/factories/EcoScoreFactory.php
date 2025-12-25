@@ -5,8 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\eco-score>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\EcoScore>
  */
+
 class EcoScoreFactory extends Factory
 {
     /**

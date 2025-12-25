@@ -1,10 +1,18 @@
-<ul>
-    <li><a href="">Stock</a></li>
-    <li><a href="">Suppliers</a></li>
-    <li><a href="">Orders</a></li>
-    <li><a href="/products">Products</a></li>
-    <li><a href="">Team</a></li>
-    <li><a href="">Waste Log</a></li>
+@php
+$menu = [
+    ['stocks.index', 'Stock'],
+    ['suppliers.index', 'Suppliers'],
+    ['orders.index', 'Orders'],
+    ['products.index', 'Products'],
+    ['users.index', 'Team'],
+    ['waste-logs.index', 'Waste Log'],
+];
+@endphp
+
+<ul class="nav-menu">
+    @foreach ($menu as [$route, $label])
+        <li><a href="{{ route($route) }}">{{ $label }}</a></li>
+    @endforeach
 </ul>
 
 <hr>

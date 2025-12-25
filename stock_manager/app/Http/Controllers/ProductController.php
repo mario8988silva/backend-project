@@ -22,20 +22,25 @@ class ProductController extends Controller
 {
     public function index(Request $request, ProductSearchSettlement $searchSettlement, ProductSortSettlement $sortSettlement, ProductBooleanFilterSettlement $booleanSettlement, ProductFilterSettlement $filterSettlement)
     {
+
+        // 1. Generate headers
+        $headers = Product::indexHeaders();
+        // 2. Build query
         $query = Product::query();
 
-        // Apply filters
+        // 3. Apply filters
         $filterSettlement->apply($request, $query);
 
-        // Search by anything
+        // 4. Apply search
         $searchSettlement->apply($request, $query);
 
-        // Boolean filters
+        // 5. Apply boolean filters
         $booleanSettlement->apply($request, $query);
 
-        // Generic sorting
+        // 6. Apply sorting
         $sortSettlement->apply($request, $query);
 
+        // 7. Pagination
         $products = $query->with(
             'subcategory.category.family',
             'brand',
@@ -45,10 +50,14 @@ class ProductController extends Controller
             'eco_score'
         )->paginate(25);
 
+        // 8. Return view WITH headers
         //return view('products.index', ["products" => $products]);
         // Merge products with lookup tables
         return view('products.index', array_merge(
-            ['products' => $products],
+            [
+                'products' => $products,
+                'headers'  => $headers,
+            ],
             $this->getLookups()
         ));
     }

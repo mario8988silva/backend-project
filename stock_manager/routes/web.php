@@ -1,53 +1,72 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\BrandController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\TeamController;
+use App\Http\Controllers\{
+    BrandController,
+    CategoryController,
+    EcoScoreController,
+    FamilyController,
+    InvoiceController,
+    IvaCategoryController,
+    LocationController,
+    NutriScoreController,
+    OrderController,
+    RepresentativeController,
+    SoldProductController,
+    StatusController,
+    StockController,
+    StockMovementController,
+    SubcategoryController,
+    SupplierController,
+    UnitTypeController,
+    WasteLogController
+};
 
-Route::get('/', function () {
-    return view('team.login');
+// Landing page
+Route::get('/', fn() => view('auth.login'));
+
+// -----------------------------------------------------------------------------------------------------------
+// Authentication Routes: ------------------------------------------------------------------------------------
+// Logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Guest-only routes -----------------------------------------------------------------------------------------
+Route::middleware('guest')->controller(AuthController::class)->group(function () {
+    Route::get('/login', 'showLogin')->name('login');
+    Route::post('/login', 'login');
+    Route::get('/register', 'showRegister')->name('register');
+    Route::post('/register', 'register');
 });
 
-// Team/Users Routes: ---------------------------------------------------------------------------------
-Route::post('/logout', [TeamController::class, 'logout'])->name('logout');
+// Full CRUD for Users ---------------------------------------------------------------------------------------
+Route::middleware('auth')->resource('users', UserController::class);
 
-Route::middleware('guest')->controller(TeamController::class)->group(function () {
-    Route::get('/register', 'showRegister')->name('show.register');
-    Route::post('/register', 'register')->name('register');
-    Route::get('/login', 'showLogin')->name('show.login');
-    Route::post('/login', 'login')->name('login');
-});
+// Full CRUD for all other controllers -----------------------------------------------------------------------
+$crudControllers = [
+    'brands' => BrandController::class,
+    'categories' => CategoryController::class,
+    'subcategories' => SubcategoryController::class,
+    'families' => FamilyController::class,
+    'unit-types' => UnitTypeController::class,
+    'iva-categories' => IvaCategoryController::class,
+    'nutri-scores' => NutriScoreController::class,
+    'eco-scores' => EcoScoreController::class,
+    'products' => ProductController::class,
+    'suppliers' => SupplierController::class,
+    'representatives' => RepresentativeController::class,
+    'locations' => LocationController::class,
+    'status' => StatusController::class,
+    'invoices' => InvoiceController::class,
+    'orders' => OrderController::class,
+    'sold-products' => SoldProductController::class,
+    'waste-logs' => WasteLogController::class,
+    'stocks' => StockController::class,
+    'stock-movements' => StockMovementController::class,
+];
 
-
-Route::middleware('auth')->controller(TeamController::class)->group(function () {
-    Route::get('/team', 'index')->name('team.index');
-    Route::get('/team/create', 'create')->name('team.create');
-    Route::get('/team/{user}/edit', 'edit')->name('team.edit');
-    Route::post('/team', 'store')->name('team.store');
-    Route::put('/team/{user}', 'update')->name('team.update');
-    Route::get('/team/{user}', 'show')->name('team.show');    
-    Route::delete('/team/{product}', 'destroy')->name('team.destroy');
-});
-
-// Brand Routes: --------------------------------------------------------------------------------------
-Route::middleware('auth')->controller(BrandController::class)->group(function () {
-    Route::get('/brands', 'index')->name('brands.index');
-    Route::get('/brands/create', 'create')->name('brands.create');
-    Route::get('/brands/{brand}', 'show')->name('brands.show');
-
-    Route::post('/brands', 'store')->name('brands.store');
-    Route::delete('/brands/{brand}', 'destroy')->name('brands.destroy');
-});
-
-// Product Routes: ------------------------------------------------------------------------------------
-Route::middleware('auth')->controller(ProductController::class)->group(function () {
-    Route::get('/products', 'index')->name('products.index');
-    Route::get('/products/create', 'create')->name('products.create');
-    Route::get('/products/{product}/edit', 'edit')->name('products.edit');
-    Route::post('/products', 'store')->name('products.store');
-    Route::put('/products/{product}', 'update')->name('products.update');
-    Route::get('/products/{product}', 'show')->name('products.show');    
-    Route::delete('/products/{product}', 'destroy')->name('products.destroy');
-});
+foreach ($crudControllers as $uri => $controller) {
+    Route::middleware('auth')->resource($uri, $controller);
+}

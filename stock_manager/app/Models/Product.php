@@ -13,6 +13,7 @@ use App\Models\NutriScore;
 use App\Models\EcoScore;
 use App\Models\Order;
 use App\Models\Stock;
+use Illuminate\Support\Facades\Schema;
 
 class Product extends Model
 {
@@ -82,5 +83,21 @@ class Product extends Model
     public function stocks()
     {
         return $this->hasMany(Stock::class);
+    }
+
+    //
+    public static function indexHeaders()
+    {
+        $columns = Schema::getColumnListing((new self)->getTable());
+
+        // Remove columns you don’t want in the index 
+        $hidden = ['id', 'created_at', 'updated_at', 'description', 'image',];
+
+        $columns = array_diff($columns, $hidden);
+
+        // Convert snake_case to Human Readable 
+        return array_map(function ($col) {
+            return ucwords(str_replace('_', ' ', $col));
+        }, $columns);
     }
 }

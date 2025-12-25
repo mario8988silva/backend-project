@@ -1,0 +1,21 @@
+4. partials/ — small reusable chunks
+These are not components, but Blade includes:
+
+_form.blade.php
+
+_table.blade.php
+
+_filters.blade.php
+
+_header.blade.php
+
+Example:
+
+Code
+resources/views/products/_form.blade.php
+resources/views/users/_filters.blade.php
+Use partials when:
+
+it’s not a component
+
+but you want to reuse it across multiple views

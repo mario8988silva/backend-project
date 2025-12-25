@@ -65,4 +65,25 @@ class AuthController extends Controller
 
         return redirect()->route('login'); // adjust to your real route name
     }
+
+    public function index(Request $request)
+    {
+        $query = User::query();
+
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('email')) {
+            $query->where('email', 'like', '%' . $request->email . '%');
+        }
+
+        if ($request->filled('role')) {
+            $query->where('role', $request->role);
+        }
+
+        $users = $query->paginate(20)->withQueryString();
+
+        return view('users.index', compact('users'));
+    }
 }

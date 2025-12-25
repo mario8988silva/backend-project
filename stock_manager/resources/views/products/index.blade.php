@@ -1,3 +1,24 @@
+@php
+$columns = [
+['updated_at', 'Updated At'],
+['barcode', 'Barcode'],
+['name', 'Name'],
+['brand', 'Brand'],
+['subcategory', 'Subcategory'],
+['category', 'Category'],
+['family', 'Family'],
+['unit_type_id', 'Unit Type'],
+['iva_category_id', 'IVA Category'],
+['nutri_score_id', 'Nutri Score'],
+['eco_score_id', 'Eco Score'],
+['sugar_free', 'Sugar Free'],
+['gluten_free', 'Gluten Free'],
+['vegan', 'Vegan'],
+['vegetarian', 'Vegetarian'],
+['organic', 'Organic'],
+];
+@endphp
+
 <x-layout>
     <h2>Products List</h2>
     {{--
@@ -11,6 +32,7 @@
     <form method="GET" action="{{ route('products.index') }}">
 
         <table>
+            
             <thead>
                 <tr>
                     <th>Brand</th>
@@ -30,76 +52,30 @@
                 </tr>
             </thead>
 
+            {{--
+            <thead>
+                <tr>
+                    @foreach($headers as $header)
+                    <th>{{ $header }}</th>
+            @endforeach
+
+            <th>Search</th>
+            </tr>
+            </thead>
+            --}}
+
+
             <tbody>
                 <tr>
-                    <td>
-                        <select name="brand_id">
-                            <option value="">-- Brand --</option>
-                            @foreach($brands as $brand)
-                            <option value="{{ $brand->id }}" {{ request('brand_id')==$brand->id ? 'selected' : '' }}>
-                                {{ $brand->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </td>
+                    <x-filter-select name="brand_id" label="Brand" :options="$brands" />
+                    <x-filter-select name="subcategory_id" label="Subcategory" :options="$subcategories" />
+                    <x-filter-select name="category_id" label="Category" :options="$categories" />
+                    <x-filter-select name="family_id" label="Family" :options="$families" />
+                    <x-filter-select name="unit_type_id" label="Unit Type" :options="$unit_types" />
+                    <x-filter-select name="iva_category_id" label="IVA Category" :options="$iva_categories" />
 
                     <td>
-                        <select name="subcategory_id">
-                            <option value="">-- Subcategory --</option>
-                            @foreach($subcategories as $subcategory)
-                            <option value="{{ $subcategory->id }}" {{ request('subcategory_id')==$subcategory->id ? 'selected' : '' }}>
-                                {{ $subcategory->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </td>
-
-                    <td>
-                        <select name="category_id">
-                            <option value="">-- Category --</option>
-                            @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ request('category_id')==$category->id ? 'selected' : '' }}>
-                                {{ $category->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </td>
-
-                    <td>
-                        <select name="family_id">
-                            <option value="">-- Family --</option>
-                            @foreach($families as $family)
-                            <option value="{{ $family->id }}" {{ request('family_id')==$family->id ? 'selected' : '' }}>
-                                {{ $family->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </td>
-
-                    <td>
-                        <select name="unit_type_id">
-                            <option value="">-- Unit Type --</option>
-                            @foreach($unit_types as $unitType)
-                            <option value="{{ $unitType->id }}" {{ request('unit_type_id')==$unitType->id ? 'selected' : '' }}>
-                                {{ $unitType->symbol }} - {{ $unitType->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </td>
-
-                    <td>
-                        <select name="iva_category_id">
-                            <option value="">-- IVA Category --</option>
-                            @foreach($iva_categories as $iva)
-                            <option value="{{ $iva->id }}" {{ request('iva_category_id')==$iva->id ? 'selected' : '' }}>
-                                {{ $iva->rate }} -
-                                {{ $iva->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </td>
-
-                    <td>
+                        <!-- mudar grade para name, para normalizar arquitectura -->
                         <select name="nutri_score_id">
                             <option value="">-- Nutri Score --</option>
                             @foreach($nutri_scores as $nutri)
@@ -122,38 +98,26 @@
                     </td>
 
                     {{-- BOOLEAN FILTERS --}}
-                    <td>
-                        <input type="checkbox" name="sugar_free" value="1" {{ request('sugar_free') == '1' ? 'checked' : '' }}>
-                    </td>
+                    <x-filter-boolean name="sugar_free" />
+                    <x-filter-boolean name="gluten_free" />
+                    <x-filter-boolean name="vegan" />
+                    <x-filter-boolean name="vegetarian" />
+                    <x-filter-boolean name="organic" />
 
+                    {{-- TYPE --}}
                     <td>
-                        <input type="checkbox" name="gluten_free" value="1" {{ request('gluten_free') == '1' ? 'checked' : '' }}>
-                    </td>
-
-                    <td>
-                        <input type="checkbox" name="vegan" value="1" {{ request('vegan') == '1' ? 'checked' : '' }}>
-                    </td>
-
-                    <td>
-                        <input type="checkbox" name="vegetarian" value="1" {{ request('vegetarian') == '1' ? 'checked' : '' }}>
-                    </td>
-
-                    <td>
-                        <input type="checkbox" name="organic" value="1" {{ request('organic') == '1' ? 'checked' : '' }}>
-                    </td>
-
-                    <td>
-                        {{-- TYPE --}}
                         <input type="text" name="search" placeholder="Search" value="{{ request('search') }}">
                     </td>
                 <tr>
+
+                    {{-- APPLY --}}
                     <td>
-                        {{-- APPLY --}}
+
                         <button type="submit">Apply Filters</button>
                     </td>
 
+                    <!-- Reset button -->
                     <td>
-                        <!-- Reset button -->
                         <a href="{{ route('products.index') }}" class="btn btn-secondary">
                             Reset Filters
                         </a>
@@ -163,75 +127,23 @@
 
     <table>
         <thead>
-            <tr>
-                <th>
-                    <x-sort-links column="updated_at" label="Updated At" />
-                </th>
+            <thead>
+                <tr>
+                    @foreach($columns as [$column, $label])
+                    <th>
+                        <x-sort-links :column="$column" :label="$label" />
+                    </th>
+                    @endforeach
+                    <!--
+                </tr>
+            </thead>
+                    -->
 
-                <th>
-                    <x-sort-links column="barcode" label="Barcode" />
-                </th>
 
-                <th>
-                    <x-sort-links column="name" label="Name" />
-                </th>
-
-                <th>
-                    <x-sort-links column="brand" label="Brand" />
-                </th>
-
-                <th>
-                    <x-sort-links column="subcategory" label="Subcategory" />
-                </th>
-
-                <th>
-                    <x-sort-links column="category" label="Category" />
-                </th>
-
-                <th>
-                    <x-sort-links column="family" label="Family" />
-                </th>
-
-                <th>
-                    <x-sort-links column="unit_type_id" label="Unit Type" />
-                </th>
-
-                <th>
-                    <x-sort-links column="iva_category_id" label="IVA Category" />
-                </th>
-
-                <th>
-                    <x-sort-links column="nutri_score_id" label="Nutri Score" />
-                </th>
-
-                <th>
-                    <x-sort-links column="eco_score_id" label="Eco Score" />
-                </th>
-
-                <th>
-                    <x-sort-links column="sugar_free" label="Sugar Free" />
-                </th>
-
-                <th>
-                    <x-sort-links column="gluten_free" label="Gluten Free" />
-                </th>
-
-                <th>
-                    <x-sort-links column="vegan" label="Vegan" />
-                </th>
-
-                <th>
-                    <x-sort-links column="vegetarian" label="Vegetarian" />
-                </th>
-
-                <th>
-                    <x-sort-links column="organic" label="Organic" />
-                </th>
-
-                <th>delete</th>
-                <th>edit</th>
-                <th>see</th>
-                {{--
+                    <th>delete</th>
+                    <th>edit</th>
+                    <th>see</th>
+                    {{--
 
                 <h2>Orders List</h2>
                 <th>Order Date</th>
@@ -290,50 +202,50 @@
 
                 --}}
 
+                </tr>
+            </thead>
+
+            @foreach($products as $product)
+            <tr>
+                <td>{{ $product->created_at->format('Y/m/d g:i a') ?? 'x' }}</td>
+                <td>{{ $product->barcode ?? 'x' }}</td>
+                <td>{{ $product->name }}</td>
+                <td>{{ $product->brand->name ?? 'x' }}</td>
+                <td>{{ $product->subcategory->name ?? 'x' }}</td>
+                <td>{{ $product->subcategory->category->name ?? 'x' }}</td>
+                <td>{{ $product->subcategory->category->family->name ?? 'x' }}</td>
+                <td>{{ $product->unit_type->name ?? 'x' }}</td>
+                <td>{{ $product->iva_category->rate ?? 'x' }} %</td>
+                <td>{{ $product->nutri_score->grade ?? 'x' }}</td>
+                <td>{{ $product->eco_score->grade ?? 'x' }}</td>
+                <td>{{ $product->sugar_free ?? '' }}</td>
+                <td>{{ $product->gluten_free ?? '' }}</td>
+                <td>{{ $product->vegan ?? '' }}</td>
+                <td>{{ $product->vegetarian ?? '' }}</td>
+                <td>{{ $product->organic ?? '' }}</td>
+
+                <td onclick="window.location='{{ route('products.show', $product->id) }}'">
+                    <form action="{{ route('products.destroy', $product->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                </td>
+
+                <td>
+                    <a href="{{ route('products.edit', $product->id) }}">
+                        <button type="button">Edit</button>
+                    </a>
+                </td>
+
+                <td>
+                    <a href="{{ route('products.show', $product->id) }}">
+                        <button type="button">See</button>
+                    </a>
+                </td>
+
             </tr>
-        </thead>
-
-        @foreach($products as $product)
-        <tr>
-            <td>{{ $product->created_at->format('Y/m/d g:i a') ?? 'x' }}</td>
-            <td>{{ $product->barcode ?? 'x' }}</td>
-            <td>{{ $product->name }}</td>
-            <td>{{ $product->brand->name ?? 'x' }}</td>
-            <td>{{ $product->subcategory->name ?? 'x' }}</td>
-            <td>{{ $product->subcategory->category->name ?? 'x' }}</td>
-            <td>{{ $product->subcategory->category->family->name ?? 'x' }}</td>
-            <td>{{ $product->unit_type->name ?? 'x' }}</td>
-            <td>{{ $product->iva_category->rate ?? 'x' }} %</td>
-            <td>{{ $product->nutri_score->grade ?? 'x' }}</td>
-            <td>{{ $product->eco_score->grade ?? 'x' }}</td>
-            <td>{{ $product->sugar_free ?? '' }}</td>
-            <td>{{ $product->gluten_free ?? '' }}</td>
-            <td>{{ $product->vegan ?? '' }}</td>
-            <td>{{ $product->vegetarian ?? '' }}</td>
-            <td>{{ $product->organic ?? '' }}</td>
-
-            <td onclick="window.location='{{ route('products.show', $product->id) }}'">
-                <form action="{{ route('products.destroy', $product->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Delete</button>
-                </form>
-            </td>
-
-            <td>
-                <a href="{{ route('products.edit', $product->id) }}">
-                    <button type="button">Edit</button>
-                </a>
-            </td>
-            
-            <td>
-                <a href="{{ route('products.show', $product->id) }}">
-                    <button type="button">See</button>
-                </a>
-            </td>
-
-        </tr>
-        @endforeach
+            @endforeach
     </table>
 
     <!-- pagination -->

@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
 class InvoiceMigrationTest extends BaseMigrationTest
 {
     public function test_invoices_table_structure()

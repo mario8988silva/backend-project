@@ -6,7 +6,8 @@ use App\Models\Invoice;
 use App\Models\Product;
 use App\Models\Representative;
 use App\Models\Status;
-use App\Models\Team;
+use App\Models\User;
+use Database\Factories\Concerns\PicksExistingOrNull;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,22 +15,31 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class OrderFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    use PicksExistingOrNull;
+
     public function definition(): array
     {
         return [
-            'quantity' => $this->faker->numberBetween(1, 20),
-            'product_id' => Product::inRandomOrder()->first()?->id,
-            'representative_id' => Representative::inRandomOrder()->first()?->id,
-            'team_id' => Team::inRandomOrder()->first()?->id,
+            'representative_id' => $this->randomExistingOrNull(Representative::class),
+            'user_id' => $this->randomExistingOrNull(User::class),
             'order_date' => $this->faker->date(),
             'delivery_date' => $this->faker->date(),
-            'invoice_id' => Invoice::inRandomOrder()->first()?->id,
-            'status_id' => Status::inRandomOrder()->first()?->id,
+            //'invoice_id' => $this->randomExistingOrNull(Invoice::class),
+            'status_id' => $this->randomExistingOrNull(Status::class),
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function ($order) {
+            $product = Product::inRandomOrder()->first();
+
+            if ($product) {
+                $order->products()->attach($product->id, [
+                    'quantity' => $this->faker->numberBetween(1, 20),
+                    'expiry_date' => $this->faker->dateTimeBetween('now', '+1 year'),
+                ]);
+            }
+        });
     }
 }

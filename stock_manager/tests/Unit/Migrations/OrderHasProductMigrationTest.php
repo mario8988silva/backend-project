@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
 class OrderHasProductMigrationTest extends BaseMigrationTest
 {
     public function test_order_has_products_table_structure()

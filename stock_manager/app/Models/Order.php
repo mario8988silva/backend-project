@@ -7,24 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'quantity',
-        'product_id',
         'representative_id',
-        'team_id',
+        'user_id',
         'order_date',
         'delivery_date',
         'invoice_id',
         'status_id',
     ];
 
-    // Relationships
-    /*
-    public function product()
-    {
-        return $this->belongsTo(Product::class);
-    }
-    */
     public function products()
     {
         return $this->belongsToMany(Product::class, 'order_has_products')
@@ -37,14 +30,14 @@ class Order extends Model
         return $this->belongsTo(Representative::class);
     }
 
-    public function team()
+    public function user()
     {
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(User::class);
     }
 
     public function invoice()
     {
-        return $this->hasOne(Invoice::class);
+        return $this->belongsTo(Invoice::class);
     }
 
     public function status()

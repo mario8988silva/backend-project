@@ -17,23 +17,21 @@ return new class extends Migration
             $table->string('number')->nullable();
             $table->dateTime('issue_date')->nullable();
             $table->dateTime('due_date')->nullable();
-            $table->unsignedBigInteger('order_id')->nullable();
-            $table->unsignedBigInteger('supplier_id')->nullable();
             $table->decimal('total_amount', 10, 2)->default(0);
             $table->string('currency', 3)->default('EUR');
             $table->text('notes')->nullable();
 
-            $table->foreign('order_id')
-                ->references('id')
-                ->on('orders')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
+            $table->foreignId('order_id')
+                ->nullable()
+                ->constrained('orders')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
 
-            $table->foreign('supplier_id')
-                ->references('id')
-                ->on('suppliers')
-                ->onUpdate('cascade')
-                ->onDelete('restrict');
+            $table->foreignId('supplier_id')
+                ->nullable()
+                ->constrained('suppliers')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
         });
     }
 

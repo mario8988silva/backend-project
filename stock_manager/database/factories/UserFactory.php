@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Role;
+use Database\Factories\Concerns\PicksExistingOrNull;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -12,6 +13,9 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+
+    use PicksExistingOrNull;
+
     /**
      * The current password being used by the factory.
      */
@@ -30,7 +34,7 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
             'phone' => $this->faker->phoneNumber(),
-            'role_id' => Role::inRandomOrder()->first()?->id,
+            'role_id' => $this->randomExistingOrNull(Role::class),
             'remember_token' => Str::random(10),
         ];
     }

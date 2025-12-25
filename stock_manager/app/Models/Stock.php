@@ -21,7 +21,7 @@ class Stock extends Model
         return $this->belongsTo(Product::class);
     }
 
-    public function orderedProduct()
+    public function orderHasProduct()
     {
         return $this->belongsTo(OrderHasProduct::class);
     }

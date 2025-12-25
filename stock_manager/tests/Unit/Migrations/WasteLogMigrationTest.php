@@ -2,8 +2,6 @@
 
 namespace Tests\Unit\Migrations;
 
-use Tests\Unit\Migrations\BaseMigrationTest;
-
 class WasteLogMigrationTest extends BaseMigrationTest
 {
     public function test_waste_logs_table_structure()

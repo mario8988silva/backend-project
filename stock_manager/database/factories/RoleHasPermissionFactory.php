@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Permission;
 use App\Models\Role;
+use Database\Factories\Concerns\PicksExistingOrNull;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -11,16 +12,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class RoleHasPermissionFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    use PicksExistingOrNull;
+
     public function definition(): array
     {
         return [
-            'role_id' => Role::inRandomOrder()->first()?->id,
-            'permission_id' => Permission::inRandomOrder()->first()?->id,
+            'role_id' => $this->randomExistingOrNull(Role::class),
+            'permission_id' => $this->randomExistingOrNull(Permission::class),
         ];
     }
 }

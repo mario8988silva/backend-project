@@ -14,27 +14,26 @@ return new class extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->id();
 
-            // Core fields
-            $table->unsignedBigInteger('product_id');                  // link to product
-            $table->unsignedBigInteger('order_has_product_id')->nullable(); // optional link to order_has_products
-            $table->unsignedBigInteger('status_id');                   // link to status (available, reserved, etc.)
-            $table->unsignedInteger('quantity')->default(0);           // how many units
-            $table->string('location')->nullable();                    // optional warehouse/shelf/café location
+            $table->foreignId('product_id')
+                ->constrained('products')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->foreignId('order_has_product_id')
+                ->nullable()
+                ->constrained('order_has_products')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
+
+            $table->foreignId('status_id')
+                ->constrained('statuses')
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
+            $table->unsignedInteger('quantity')->default(0);
+            $table->string('location')->nullable();
 
             $table->timestamps();
-
-            // Foreign keys
-            $table->foreign('product_id')
-                ->references('id')->on('products')
-                ->onUpdate('cascade')->onDelete('restrict');
-
-            $table->foreign('order_has_product_id')
-                ->references('id')->on('order_has_products')
-                ->onUpdate('cascade')->onDelete('set null');
-
-            $table->foreign('status_id')
-                ->references('id')->on('statuses')
-                ->onUpdate('cascade')->onDelete('restrict');
         });
     }
 

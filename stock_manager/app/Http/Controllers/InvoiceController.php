@@ -2,9 +2,81 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
-    //
+    public function index()
+    {
+        $invoices = Invoice::orderBy('date', 'desc')->paginate(25);
+
+        return view('invoices.index', [
+            'invoices' => $invoices,
+        ]);
+    }
+
+    public function show(Invoice $invoice)
+    {
+        return view('invoices.show', [
+            'invoice' => $invoice,
+        ]);
+    }
+
+    public function create()
+    {
+        return view('invoices.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'number'        => 'required|string|max:255|unique:invoices,number',
+            'date'          => 'required|date',
+            'supplier_id'   => 'nullable|exists:suppliers,id',
+            'total'         => 'nullable|numeric|min:0',
+            'notes'         => 'nullable|string|max:1000',
+            'status'        => 'nullable|string|max:50',
+        ]);
+
+        $invoice = Invoice::create($validated);
+
+        return redirect()
+            ->route('invoices.show', $invoice->id)
+            ->with('success', 'Invoice created successfully.');
+    }
+
+    public function edit(Invoice $invoice)
+    {
+        return view('invoices.edit', [
+            'invoice' => $invoice,
+        ]);
+    }
+
+    public function update(Request $request, Invoice $invoice)
+    {
+        $validated = $request->validate([
+            'number'        => 'required|string|max:255|unique:invoices,number,' . $invoice->id,
+            'date'          => 'required|date',
+            'supplier_id'   => 'nullable|exists:suppliers,id',
+            'total'         => 'nullable|numeric|min:0',
+            'notes'         => 'nullable|string|max:1000',
+            'status'        => 'nullable|string|max:50',
+        ]);
+
+        $invoice->update($validated);
+
+        return redirect()
+            ->route('invoices.show', $invoice->id)
+            ->with('success', 'Invoice updated successfully.');
+    }
+
+    public function destroy(Invoice $invoice)
+    {
+        $invoice->delete();
+
+        return redirect()
+            ->route('invoices.index')
+            ->with('success', 'Invoice deleted successfully.');
+    }
 }

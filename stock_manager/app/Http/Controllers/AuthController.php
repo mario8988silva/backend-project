@@ -2,31 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
-class TeamController extends Controller
+class AuthController extends Controller
 {
     public function showRegister()
     {
-        return view('team.register');
+        return view('auth.register');
     }
 
     public function showLogin()
     {
-        return view('team.login');
+        return view('auth.login');
     }
 
     public function register(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
+            'name'     => 'required|string|max:255',
+            'email'    => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ]);
+
+        // Hash password before saving
+        $validated['password'] = Hash::make($validated['password']);
 
         $user = User::create($validated);
 
@@ -38,7 +41,7 @@ class TeamController extends Controller
     public function login(Request $request)
     {
         $validated = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required|string',
         ]);
 
@@ -60,18 +63,6 @@ class TeamController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('show.login');
+        return redirect()->route('login'); // adjust to your real route name
     }
-
-    /*
-    public function show(Team $teamMember)
-    {
-        // route --> /team/{id}
-        // fetch a single record & pass into the show view
-
-        $teamMember->load('name', 'brand', 'unit_type', 'iva_category', 'nutri_score', 'eco_score');
-
-        return view('products.show', ["teamMember" => $teamMember]);
-    }
-        */
 }

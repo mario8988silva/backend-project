@@ -11,21 +11,21 @@ class IvaCategoryController extends Controller
     {
         $ivaCategories = IvaCategory::orderBy('name')->paginate(25);
 
-        return view('iva_categories.index', [
+        return view('reference.iva_categories.index', [
             'iva_categories' => $ivaCategories,
         ]);
     }
 
     public function show(IvaCategory $ivaCategory)
     {
-        return view('iva_categories.show', [
+        return view('reference.iva_categories.show', [
             'iva_category' => $ivaCategory,
         ]);
     }
 
     public function create()
     {
-        return view('iva_categories.create');
+        return view('reference.iva_categories.create');
     }
 
     public function store(Request $request)
@@ -39,13 +39,13 @@ class IvaCategoryController extends Controller
         $ivaCategory = IvaCategory::create($validated);
 
         return redirect()
-            ->route('iva-categories.show', $ivaCategory->id)
+            ->route('reference.iva-categories.show', $ivaCategory->id)
             ->with('success', 'IVA category created successfully.');
     }
 
     public function edit(IvaCategory $ivaCategory)
     {
-        return view('iva_categories.edit', [
+        return view('reference.iva_categories.edit', [
             'iva_category' => $ivaCategory,
         ]);
     }
@@ -61,7 +61,7 @@ class IvaCategoryController extends Controller
         $ivaCategory->update($validated);
 
         return redirect()
-            ->route('iva-categories.show', $ivaCategory->id)
+            ->route('reference.iva-categories.show', $ivaCategory->id)
             ->with('success', 'IVA category updated successfully.');
     }
 
@@ -70,7 +70,7 @@ class IvaCategoryController extends Controller
         $ivaCategory->delete();
 
         return redirect()
-            ->route('iva-categories.index')
+            ->route('reference.iva-categories.index')
             ->with('success', 'IVA category deleted successfully.');
     }
 }

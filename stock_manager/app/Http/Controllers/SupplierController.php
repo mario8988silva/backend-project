@@ -11,21 +11,21 @@ class SupplierController extends Controller
     {
         $suppliers = Supplier::orderBy('name')->paginate(25);
 
-        return view('suppliers.index', [
+        return view('business.suppliers.index', [
             'suppliers' => $suppliers,
         ]);
     }
 
     public function show(Supplier $supplier)
     {
-        return view('suppliers.show', [
+        return view('business.suppliers.show', [
             'supplier' => $supplier,
         ]);
     }
 
     public function create()
     {
-        return view('suppliers.create');
+        return view('business.suppliers.create');
     }
 
     public function store(Request $request)
@@ -42,13 +42,13 @@ class SupplierController extends Controller
         $supplier = Supplier::create($validated);
 
         return redirect()
-            ->route('suppliers.show', $supplier->id)
+            ->route('business.suppliers.show', $supplier->id)
             ->with('success', 'Supplier created successfully.');
     }
 
     public function edit(Supplier $supplier)
     {
-        return view('suppliers.edit', [
+        return view('business.suppliers.edit', [
             'supplier' => $supplier,
         ]);
     }
@@ -67,7 +67,7 @@ class SupplierController extends Controller
         $supplier->update($validated);
 
         return redirect()
-            ->route('suppliers.show', $supplier->id)
+            ->route('business.suppliers.show', $supplier->id)
             ->with('success', 'Supplier updated successfully.');
     }
 
@@ -76,7 +76,7 @@ class SupplierController extends Controller
         $supplier->delete();
 
         return redirect()
-            ->route('suppliers.index')
+            ->route('business.suppliers.index')
             ->with('success', 'Supplier deleted successfully.');
     }
 }

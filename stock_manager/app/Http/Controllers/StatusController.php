@@ -11,21 +11,21 @@ class StatusController extends Controller
     {
         $statuses = Status::orderBy('name')->paginate(25);
 
-        return view('statuses.index', [
+        return view('operations.statuses.index', [
             'statuses' => $statuses,
         ]);
     }
 
     public function show(Status $status)
     {
-        return view('statuses.show', [
+        return view('operations.statuses.show', [
             'status' => $status,
         ]);
     }
 
     public function create()
     {
-        return view('statuses.create');
+        return view('operations.statuses.create');
     }
 
     public function store(Request $request)
@@ -39,13 +39,13 @@ class StatusController extends Controller
         $status = Status::create($validated);
 
         return redirect()
-            ->route('statuses.show', $status->id)
+            ->route('operations.statuses.show', $status->id)
             ->with('success', 'Status created successfully.');
     }
 
     public function edit(Status $status)
     {
-        return view('statuses.edit', [
+        return view('operations.statuses.edit', [
             'status' => $status,
         ]);
     }
@@ -61,7 +61,7 @@ class StatusController extends Controller
         $status->update($validated);
 
         return redirect()
-            ->route('statuses.show', $status->id)
+            ->route('operations.statuses.show', $status->id)
             ->with('success', 'Status updated successfully.');
     }
 
@@ -70,7 +70,7 @@ class StatusController extends Controller
         $status->delete();
 
         return redirect()
-            ->route('statuses.index')
+            ->route('operations.statuses.index')
             ->with('success', 'Status deleted successfully.');
     }
 }

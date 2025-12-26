@@ -11,21 +11,22 @@ class BrandController extends Controller
     {
         $brands = Brand::orderBy('name')->paginate(25);
 
-        return view('brands.index', [
+        return view('reference.brands.index', [
             'brands' => $brands,
         ]);
+        
     }
 
     public function show(Brand $brand)
     {
-        return view('brands.show', [
+        return view('reference.brands.show', [
             'brand' => $brand,
         ]);
     }
 
     public function create()
     {
-        return view('brands.create');
+        return view('reference.brands.create');
     }
 
     public function store(Request $request)
@@ -38,13 +39,13 @@ class BrandController extends Controller
         $brand = Brand::create($validated);
 
         return redirect()
-            ->route('brands.show', $brand->id)
+            ->route('reference.brands.show', $brand->id)
             ->with('success', 'Brand created successfully.');
     }
 
     public function edit(Brand $brand)
     {
-        return view('brands.edit', [
+        return view('reference.brands.edit', [
             'brand' => $brand,
         ]);
     }
@@ -59,7 +60,7 @@ class BrandController extends Controller
         $brand->update($validated);
 
         return redirect()
-            ->route('brands.show', $brand->id)
+            ->route('reference.brands.show', $brand->id)
             ->with('success', 'Brand updated successfully.');
     }
 
@@ -68,7 +69,7 @@ class BrandController extends Controller
         $brand->delete();
 
         return redirect()
-            ->route('brands.index')
+            ->route('reference.brands.index')
             ->with('success', 'Brand deleted successfully.');
     }
 }

@@ -11,21 +11,21 @@ class OrderController extends Controller
     {
         $orders = Order::orderBy('date', 'desc')->paginate(25);
 
-        return view('orders.index', [
+        return view('transactions.orders.index', [
             'orders' => $orders,
         ]);
     }
 
     public function show(Order $order)
     {
-        return view('orders.show', [
+        return view('transactions.orders.show', [
             'order' => $order,
         ]);
     }
 
     public function create()
     {
-        return view('orders.create');
+        return view('transactions.orders.create');
     }
 
     public function store(Request $request)
@@ -42,13 +42,13 @@ class OrderController extends Controller
         $order = Order::create($validated);
 
         return redirect()
-            ->route('orders.show', $order->id)
+            ->route('transactions.orders.show', $order->id)
             ->with('success', 'Order created successfully.');
     }
 
     public function edit(Order $order)
     {
-        return view('orders.edit', [
+        return view('transactions.orders.edit', [
             'order' => $order,
         ]);
     }
@@ -67,7 +67,7 @@ class OrderController extends Controller
         $order->update($validated);
 
         return redirect()
-            ->route('orders.show', $order->id)
+            ->route('transactions.orders.show', $order->id)
             ->with('success', 'Order updated successfully.');
     }
 
@@ -76,7 +76,7 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()
-            ->route('orders.index')
+            ->route('transactions.orders.index')
             ->with('success', 'Order deleted successfully.');
     }
 }

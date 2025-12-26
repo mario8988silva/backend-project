@@ -11,21 +11,21 @@ class NutriScoreController extends Controller
     {
         $nutriScores = NutriScore::orderBy('name')->paginate(25);
 
-        return view('nutri_scores.index', [
+        return view('reference.nutri_scores.index', [
             'nutri_scores' => $nutriScores,
         ]);
     }
 
     public function show(NutriScore $nutriScore)
     {
-        return view('nutri_scores.show', [
+        return view('reference.nutri_scores.show', [
             'nutri_score' => $nutriScore,
         ]);
     }
 
     public function create()
     {
-        return view('nutri_scores.create');
+        return view('reference.nutri_scores.create');
     }
 
     public function store(Request $request)
@@ -39,13 +39,13 @@ class NutriScoreController extends Controller
         $nutriScore = NutriScore::create($validated);
 
         return redirect()
-            ->route('nutri-scores.show', $nutriScore->id)
+            ->route('reference.nutri-scores.show', $nutriScore->id)
             ->with('success', 'NutriScore created successfully.');
     }
 
     public function edit(NutriScore $nutriScore)
     {
-        return view('nutri_scores.edit', [
+        return view('reference.nutri_scores.edit', [
             'nutri_score' => $nutriScore,
         ]);
     }
@@ -61,7 +61,7 @@ class NutriScoreController extends Controller
         $nutriScore->update($validated);
 
         return redirect()
-            ->route('nutri-scores.show', $nutriScore->id)
+            ->route('reference.nutri-scores.show', $nutriScore->id)
             ->with('success', 'NutriScore updated successfully.');
     }
 
@@ -70,7 +70,7 @@ class NutriScoreController extends Controller
         $nutriScore->delete();
 
         return redirect()
-            ->route('nutri-scores.index')
+            ->route('reference.nutri-scores.index')
             ->with('success', 'NutriScore deleted successfully.');
     }
 }

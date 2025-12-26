@@ -11,21 +11,21 @@ class RepresentativeController extends Controller
     {
         $representatives = Representative::orderBy('name')->paginate(25);
 
-        return view('representatives.index', [
+        return view('business.representatives.index', [
             'representatives' => $representatives,
         ]);
     }
 
     public function show(Representative $representative)
     {
-        return view('representatives.show', [
+        return view('business.representatives.show', [
             'representative' => $representative,
         ]);
     }
 
     public function create()
     {
-        return view('representatives.create');
+        return view('business.representatives.create');
     }
 
     public function store(Request $request)
@@ -40,13 +40,13 @@ class RepresentativeController extends Controller
         $representative = Representative::create($validated);
 
         return redirect()
-            ->route('representatives.show', $representative->id)
+            ->route('business.representatives.show', $representative->id)
             ->with('success', 'Representative created successfully.');
     }
 
     public function edit(Representative $representative)
     {
-        return view('representatives.edit', [
+        return view('business.representatives.edit', [
             'representative' => $representative,
         ]);
     }
@@ -63,7 +63,7 @@ class RepresentativeController extends Controller
         $representative->update($validated);
 
         return redirect()
-            ->route('representatives.show', $representative->id)
+            ->route('business.representatives.show', $representative->id)
             ->with('success', 'Representative updated successfully.');
     }
 
@@ -72,7 +72,7 @@ class RepresentativeController extends Controller
         $representative->delete();
 
         return redirect()
-            ->route('representatives.index')
+            ->route('business.representatives.index')
             ->with('success', 'Representative deleted successfully.');
     }
 }

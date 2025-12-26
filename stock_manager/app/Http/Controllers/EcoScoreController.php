@@ -11,21 +11,21 @@ class EcoScoreController extends Controller
     {
         $ecoScores = EcoScore::orderBy('name')->paginate(25);
 
-        return view('eco_scores.index', [
+        return view('reference.eco_scores.index', [
             'eco_scores' => $ecoScores,
         ]);
     }
 
     public function show(EcoScore $ecoScore)
     {
-        return view('eco_scores.show', [
+        return view('reference.eco_scores.show', [
             'eco_score' => $ecoScore,
         ]);
     }
 
     public function create()
     {
-        return view('eco_scores.create');
+        return view('reference.eco_scores.create');
     }
 
     public function store(Request $request)
@@ -45,7 +45,7 @@ class EcoScoreController extends Controller
 
     public function edit(EcoScore $ecoScore)
     {
-        return view('eco_scores.edit', [
+        return view('reference.eco_scores.edit', [
             'eco_score' => $ecoScore,
         ]);
     }
@@ -61,7 +61,7 @@ class EcoScoreController extends Controller
         $ecoScore->update($validated);
 
         return redirect()
-            ->route('eco-scores.show', $ecoScore->id)
+            ->route('reference.eco-scores.show', $ecoScore->id)
             ->with('success', 'EcoScore updated successfully.');
     }
 
@@ -70,7 +70,7 @@ class EcoScoreController extends Controller
         $ecoScore->delete();
 
         return redirect()
-            ->route('eco-scores.index')
+            ->route('reference.eco-scores.index')
             ->with('success', 'EcoScore deleted successfully.');
     }
 }

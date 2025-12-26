@@ -31,14 +31,14 @@ class CategoryController extends Controller
     {
         $category->load('family');
 
-        return view('categories.show', [
+        return view('reference.categories.show', [
             'category' => $category,
         ]);
     }
 
     public function create()
     {
-        return view('categories.create', [
+        return view('reference.categories.create', [
             'families' => Family::orderBy('name')->get(),
         ]);
     }
@@ -54,13 +54,13 @@ class CategoryController extends Controller
         $category = Category::create($validated);
 
         return redirect()
-            ->route('categories.show', $category->id)
+            ->route('reference.categories.show', $category->id)
             ->with('success', 'Category created successfully.');
     }
 
     public function edit(Category $category)
     {
-        return view('categories.edit', [
+        return view('reference.categories.edit', [
             'category' => $category,
             'families' => Family::orderBy('name')->get(),
         ]);
@@ -77,7 +77,7 @@ class CategoryController extends Controller
         $category->update($validated);
 
         return redirect()
-            ->route('categories.show', $category->id)
+            ->route('reference.categories.show', $category->id)
             ->with('success', 'Category updated successfully.');
     }
 
@@ -86,7 +86,7 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()
-            ->route('categories.index')
+            ->route('reference.categories.index')
             ->with('success', 'Category deleted successfully.');
     }
 }

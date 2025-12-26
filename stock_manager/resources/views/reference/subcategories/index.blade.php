@@ -1,10 +1,10 @@
 @php
 $columns = [
-    ['name', 'Name'],
-    ['category', 'Category'],
-    ['family', 'Family'],
-    ['created_at', 'Created'],
-    ['updated_at', 'Updated'],
+['name', 'Name'],
+['category', 'Category'],
+['family', 'Family'],
+['created_at', 'Created'],
+['updated_at', 'Updated'],
 ];
 @endphp
 
@@ -12,24 +12,21 @@ $columns = [
 
     <x-slot name="filters">
         <td>
-            <input type="text"
-                   name="name"
-                   placeholder="Name"
-                   value="{{ request('name') }}">
+            <input type="text" name="name" placeholder="Name" value="{{ request('name') }}">
         </td>
-
+        {{--
         <td>
             <select name="category_id">
                 <option value="">-- Category --</option>
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}"
-                        {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                        {{ $category->name }}
-                    </option>
-                @endforeach
-            </select>
+        {{ request('category_id') == $category->id ? 'selected' : '' }}>
+        {{ $category->name }}
+        </option>
+        @endforeach
+        </select>
         </td>
-
+        --}}
         <td></td>
         <td></td>
         <td></td>

@@ -38,14 +38,14 @@ class StockController extends Controller
     {
         $stock->load(['product', 'location']);
 
-        return view('stocks.show', [
+        return view('stock.stocks.show', [
             'stock' => $stock,
         ]);
     }
 
     public function create()
     {
-        return view('stocks.create', [
+        return view('stock.stocks.create', [
             'products'  => Product::orderBy('name')->get(),
             'locations' => Location::orderBy('name')->get(),
         ]);
@@ -63,13 +63,13 @@ class StockController extends Controller
         $stock = Stock::create($validated);
 
         return redirect()
-            ->route('stocks.show', $stock->id)
+            ->route('stock.stocks.show', $stock->id)
             ->with('success', 'Stock entry created successfully.');
     }
 
     public function edit(Stock $stock)
     {
-        return view('stocks.edit', [
+        return view('stock.stocks.edit', [
             'stock'     => $stock,
             'products'  => Product::orderBy('name')->get(),
             'locations' => Location::orderBy('name')->get(),
@@ -88,7 +88,7 @@ class StockController extends Controller
         $stock->update($validated);
 
         return redirect()
-            ->route('stocks.show', $stock->id)
+            ->route('stock.stocks.show', $stock->id)
             ->with('success', 'Stock updated successfully.');
     }
 
@@ -97,7 +97,7 @@ class StockController extends Controller
         $stock->delete();
 
         return redirect()
-            ->route('stocks.index')
+            ->route('stock.stocks.index')
             ->with('success', 'Stock entry deleted successfully.');
     }
 }

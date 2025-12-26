@@ -11,21 +11,21 @@ class SoldProductController extends Controller
     {
         $soldProducts = SoldProduct::orderBy('sold_at', 'desc')->paginate(25);
 
-        return view('sold_products.index', [
+        return view('transactions.sold_products.index', [
             'sold_products' => $soldProducts,
         ]);
     }
 
     public function show(SoldProduct $soldProduct)
     {
-        return view('sold_products.show', [
+        return view('transactions.sold_products.show', [
             'sold_product' => $soldProduct,
         ]);
     }
 
     public function create()
     {
-        return view('sold_products.create');
+        return view('transactions.sold_products.create');
     }
 
     public function store(Request $request)
@@ -42,13 +42,13 @@ class SoldProductController extends Controller
         $soldProduct = SoldProduct::create($validated);
 
         return redirect()
-            ->route('sold-products.show', $soldProduct->id)
+            ->route('transactions.sold-products.show', $soldProduct->id)
             ->with('success', 'Sold product recorded successfully.');
     }
 
     public function edit(SoldProduct $soldProduct)
     {
-        return view('sold_products.edit', [
+        return view('transactions.sold_products.edit', [
             'sold_product' => $soldProduct,
         ]);
     }
@@ -67,7 +67,7 @@ class SoldProductController extends Controller
         $soldProduct->update($validated);
 
         return redirect()
-            ->route('sold-products.show', $soldProduct->id)
+            ->route('transactions.sold-products.show', $soldProduct->id)
             ->with('success', 'Sold product updated successfully.');
     }
 
@@ -76,7 +76,7 @@ class SoldProductController extends Controller
         $soldProduct->delete();
 
         return redirect()
-            ->route('sold-products.index')
+            ->route('transactions.sold-products.index')
             ->with('success', 'Sold product deleted successfully.');
     }
 }

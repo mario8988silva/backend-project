@@ -14,7 +14,7 @@ class SubcategoryController extends Controller
             ->orderBy('name')
             ->paginate(25);
 
-        return view('subcategories.index', [
+        return view('reference.subcategories.index', [
             'subcategories' => $subcategories,
         ]);
     }
@@ -23,14 +23,14 @@ class SubcategoryController extends Controller
     {
         $subcategory->load('category');
 
-        return view('subcategories.show', [
+        return view('reference.subcategories.show', [
             'subcategory' => $subcategory,
         ]);
     }
 
     public function create()
     {
-        return view('subcategories.create', [
+        return view('reference.subcategories.create', [
             'categories' => Category::orderBy('name')->get(),
         ]);
     }
@@ -46,13 +46,13 @@ class SubcategoryController extends Controller
         $subcategory = Subcategory::create($validated);
 
         return redirect()
-            ->route('subcategories.show', $subcategory->id)
+            ->route('reference.subcategories.show', $subcategory->id)
             ->with('success', 'Subcategory created successfully.');
     }
 
     public function edit(Subcategory $subcategory)
     {
-        return view('subcategories.edit', [
+        return view('reference.subcategories.edit', [
             'subcategory' => $subcategory,
             'categories'  => Category::orderBy('name')->get(),
         ]);
@@ -69,7 +69,7 @@ class SubcategoryController extends Controller
         $subcategory->update($validated);
 
         return redirect()
-            ->route('subcategories.show', $subcategory->id)
+            ->route('reference.subcategories.show', $subcategory->id)
             ->with('success', 'Subcategory updated successfully.');
     }
 
@@ -78,7 +78,7 @@ class SubcategoryController extends Controller
         $subcategory->delete();
 
         return redirect()
-            ->route('subcategories.index')
+            ->route('reference.subcategories.index')
             ->with('success', 'Subcategory deleted successfully.');
     }
 }

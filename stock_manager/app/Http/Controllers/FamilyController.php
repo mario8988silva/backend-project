@@ -23,7 +23,7 @@ class FamilyController extends Controller
 
     public function show(Family $family)
     {
-        return view('families.show', [
+        return view('reference.families.show', [
             'family' => $family,
         ]);
     }
@@ -43,13 +43,13 @@ class FamilyController extends Controller
         $family = Family::create($validated);
 
         return redirect()
-            ->route('families.show', $family->id)
+            ->route('reference.families.show', $family->id)
             ->with('success', 'Family created successfully.');
     }
 
     public function edit(Family $family)
     {
-        return view('families.edit', [
+        return view('reference.families.edit', [
             'family' => $family,
         ]);
     }
@@ -64,7 +64,7 @@ class FamilyController extends Controller
         $family->update($validated);
 
         return redirect()
-            ->route('families.show', $family->id)
+            ->route('reference.families.show', $family->id)
             ->with('success', 'Family updated successfully.');
     }
 
@@ -73,7 +73,7 @@ class FamilyController extends Controller
         $family->delete();
 
         return redirect()
-            ->route('families.index')
+            ->route('reference.families.index')
             ->with('success', 'Family deleted successfully.');
     }
 }

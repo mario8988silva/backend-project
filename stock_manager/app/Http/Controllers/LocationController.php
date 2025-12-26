@@ -31,14 +31,14 @@ class LocationController extends Controller
 
     public function show(Location $location)
     {
-        return view('locations.show', [
+        return view('operations.locations.show', [
             'location' => $location,
         ]);
     }
 
     public function create()
     {
-        return view('locations.create');
+        return view('operations.locations.create');
     }
 
     public function store(Request $request)
@@ -52,13 +52,13 @@ class LocationController extends Controller
         $location = Location::create($validated);
 
         return redirect()
-            ->route('locations.show', $location->id)
+            ->route('operations.locations.show', $location->id)
             ->with('success', 'Location created successfully.');
     }
 
     public function edit(Location $location)
     {
-        return view('locations.edit', [
+        return view('operations.locations.edit', [
             'location' => $location,
         ]);
     }
@@ -74,7 +74,7 @@ class LocationController extends Controller
         $location->update($validated);
 
         return redirect()
-            ->route('locations.show', $location->id)
+            ->route('operations.locations.show', $location->id)
             ->with('success', 'Location updated successfully.');
     }
 
@@ -83,7 +83,7 @@ class LocationController extends Controller
         $location->delete();
 
         return redirect()
-            ->route('locations.index')
+            ->route('operations.locations.index')
             ->with('success', 'Location deleted successfully.');
     }
 }

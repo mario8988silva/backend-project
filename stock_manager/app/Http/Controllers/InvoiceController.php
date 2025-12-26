@@ -11,21 +11,21 @@ class InvoiceController extends Controller
     {
         $invoices = Invoice::orderBy('date', 'desc')->paginate(25);
 
-        return view('invoices.index', [
+        return view('transactions.invoices.index', [
             'invoices' => $invoices,
         ]);
     }
 
     public function show(Invoice $invoice)
     {
-        return view('invoices.show', [
+        return view('transactions.invoices.show', [
             'invoice' => $invoice,
         ]);
     }
 
     public function create()
     {
-        return view('invoices.create');
+        return view('transactions.invoices.create');
     }
 
     public function store(Request $request)
@@ -42,13 +42,13 @@ class InvoiceController extends Controller
         $invoice = Invoice::create($validated);
 
         return redirect()
-            ->route('invoices.show', $invoice->id)
+            ->route('transactions.invoices.show', $invoice->id)
             ->with('success', 'Invoice created successfully.');
     }
 
     public function edit(Invoice $invoice)
     {
-        return view('invoices.edit', [
+        return view('transactions.invoices.edit', [
             'invoice' => $invoice,
         ]);
     }
@@ -67,7 +67,7 @@ class InvoiceController extends Controller
         $invoice->update($validated);
 
         return redirect()
-            ->route('invoices.show', $invoice->id)
+            ->route('transactions.invoices.show', $invoice->id)
             ->with('success', 'Invoice updated successfully.');
     }
 
@@ -76,7 +76,7 @@ class InvoiceController extends Controller
         $invoice->delete();
 
         return redirect()
-            ->route('invoices.index')
+            ->route('transactions.invoices.index')
             ->with('success', 'Invoice deleted successfully.');
     }
 }

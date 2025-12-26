@@ -11,21 +11,21 @@ class WasteLogController extends Controller
     {
         $wasteLogs = WasteLog::orderBy('wasted_at', 'desc')->paginate(25);
 
-        return view('waste_logs.index', [
+        return view('transactions.waste_logs.index', [
             'waste_logs' => $wasteLogs,
         ]);
     }
 
     public function show(WasteLog $wasteLog)
     {
-        return view('waste_logs.show', [
+        return view('transactions.waste_logs.show', [
             'waste_log' => $wasteLog,
         ]);
     }
 
     public function create()
     {
-        return view('waste_logs.create');
+        return view('transactions.waste_logs.create');
     }
 
     public function store(Request $request)
@@ -41,13 +41,13 @@ class WasteLogController extends Controller
         $wasteLog = WasteLog::create($validated);
 
         return redirect()
-            ->route('waste-logs.show', $wasteLog->id)
+            ->route('transactions.waste-logs.show', $wasteLog->id)
             ->with('success', 'Waste log created successfully.');
     }
 
     public function edit(WasteLog $wasteLog)
     {
-        return view('waste_logs.edit', [
+        return view('transactions.waste_logs.edit', [
             'waste_log' => $wasteLog,
         ]);
     }
@@ -65,7 +65,7 @@ class WasteLogController extends Controller
         $wasteLog->update($validated);
 
         return redirect()
-            ->route('waste-logs.show', $wasteLog->id)
+            ->route('transactions.waste-logs.show', $wasteLog->id)
             ->with('success', 'Waste log updated successfully.');
     }
 
@@ -74,7 +74,7 @@ class WasteLogController extends Controller
         $wasteLog->delete();
 
         return redirect()
-            ->route('waste-logs.index')
+            ->route('transactions.waste-logs.index')
             ->with('success', 'Waste log deleted successfully.');
     }
 }

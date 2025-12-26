@@ -43,14 +43,14 @@ class StockMovementController extends Controller
     {
         $stockMovement->load(['product', 'location']);
 
-        return view('stock_movements.show', [
+        return view('stock.stock_movements.show', [
             'movement' => $stockMovement,
         ]);
     }
 
     public function create()
     {
-        return view('stock_movements.create', [
+        return view('stock.stock_movements.create', [
             'products'  => Product::orderBy('name')->get(),
             'locations' => Location::orderBy('name')->get(),
         ]);
@@ -70,13 +70,13 @@ class StockMovementController extends Controller
         $movement = StockMovement::create($validated);
 
         return redirect()
-            ->route('stock-movements.show', $movement->id)
+            ->route('stock.stock-movements.show', $movement->id)
             ->with('success', 'Stock movement recorded successfully.');
     }
 
     public function edit(StockMovement $stockMovement)
     {
-        return view('stock_movements.edit', [
+        return view('stock.stock_movements.edit', [
             'movement'  => $stockMovement,
             'products'  => Product::orderBy('name')->get(),
             'locations' => Location::orderBy('name')->get(),
@@ -97,7 +97,7 @@ class StockMovementController extends Controller
         $stockMovement->update($validated);
 
         return redirect()
-            ->route('stock-movements.show', $stockMovement->id)
+            ->route('stock.stock-movements.show', $stockMovement->id)
             ->with('success', 'Stock movement updated successfully.');
     }
 
@@ -106,7 +106,7 @@ class StockMovementController extends Controller
         $stockMovement->delete();
 
         return redirect()
-            ->route('stock-movements.index')
+            ->route('stock.stock-movements.index')
             ->with('success', 'Stock movement deleted successfully.');
     }
 }

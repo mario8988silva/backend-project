@@ -1,8 +1,7 @@
-<!--
 <x-layout>
--->
 
-{{--------------------------------------------------------- 
+
+    {{---------------------------------------------------------
     <h3>Debug: brands</h3>
     <pre>
     @foreach($brands as $brand)
@@ -53,7 +52,7 @@
     @endforeach
     </pre>-
     ---------------------------------------------------------}}
-<h2>{{ isset($product) ? 'Edit Product' : 'Create New Product' }}</h2>
+    <h2>{{ isset($product) ? 'Edit Product' : 'Create New Product' }}</h2>
 
     <form action="{{ isset($product) ? route('products.update', $product) : route('products.store') }}" method="POST">
         @csrf
@@ -196,7 +195,4 @@
         @endif
 
     </form>
-
-<!--   
 </x-layout>
--->

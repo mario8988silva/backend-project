@@ -5,20 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\StockMovement;
 use App\Models\Product;
 use App\Models\Location;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class StockMovementController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $movements = StockMovement::with(['product', 'location'])
-            ->orderBy('moved_at', 'desc')
-            ->paginate(25);
+        $query = StockMovement::with(['product', 'order', 'stock']);
 
-        return view('stock_movements.index', [
-            'movements' => $movements,
-        ]);
+        if ($request->filled('product_id')) {
+            $query->where('product_id', $request->product_id);
+        }
+
+        if ($request->filled('movement_type')) {
+            $query->where('movement_type', $request->movement_type);
+        }
+
+        if ($request->filled('order_id')) {
+            $query->where('order_id', $request->order_id);
+        }
+
+        if ($request->filled('moved_from')) {
+            $query->whereDate('moved_at', '>=', $request->moved_from);
+        }
+
+        $stockMovements = $query->paginate(20)->withQueryString();
+
+        $products = Product::all();
+        $orders = Order::all();
+
+        return view('stock.stock-movements.index', compact('stockMovements', 'products', 'orders'));
     }
+
 
     public function show(StockMovement $stockMovement)
     {

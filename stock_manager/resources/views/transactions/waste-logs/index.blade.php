@@ -1,55 +1,91 @@
 @php
 $columns = [
-    ['name', 'Name'],
-    ['email', 'Email'],
-    ['role', 'Role'],
-    ['created_at', 'Created'],
-    ['updated_at', 'Updated'],
+['product', 'Product'],
+['order', 'Order'],
+['status', 'Status'],
+['quantity', 'Qty'],
+['logged_at', 'Logged At'],
+['created_at', 'Created'],
+['updated_at', 'Updated'],
 ];
 @endphp
 
-<x-index :title="'Users List'" :columns="$columns">
+<x-index :title="'Waste Logs List'" :columns="$columns">
 
     <x-slot name="filters">
-        <td><input type="text" name="name" placeholder="Name" value="{{ request('name') }}"></td>
-        <td><input type="text" name="email" placeholder="Email" value="{{ request('email') }}"></td>
+        <td>
+            <select name="product_id">
+                <option value="">-- Product --</option>
+                @foreach($products as $product)
+                <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
+                    {{ $product->name }}
+                </option>
+                @endforeach
+            </select>
+        </td>
 
         <td>
-            <select name="role">
-                <option value="">-- Role --</option>
-                <option value="admin" {{ request('role')=='admin' ? 'selected' : '' }}>Admin</option>
-                <option value="manager" {{ request('role')=='manager' ? 'selected' : '' }}>Manager</option>
-                <option value="staff" {{ request('role')=='staff' ? 'selected' : '' }}>Staff</option>
+            <select name="order_id">
+                <option value="">-- Order --</option>
+                @foreach($orders as $order)
+                <option value="{{ $order->id }}" {{ request('order_id') == $order->id ? 'selected' : '' }}>
+                    Order #{{ $order->id }}
+                </option>
+                @endforeach
             </select>
+        </td>
+
+        <td>
+            <select name="status_id">
+                <option value="">-- Status --</option>
+                @foreach($statuses as $status)
+                <option value="{{ $status->id }}" {{ request('status_id') == $status->id ? 'selected' : '' }}>
+                    {{ $status->name }}
+                </option>
+                @endforeach
+            </select>
+        </td>
+
+        <td></td>
+
+        <td>
+            <input type="date" name="logged_from" value="{{ request('logged_from') }}">
         </td>
 
         <td></td>
         <td></td>
     </x-slot>
 
-    @foreach($users as $user)
-        <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->role }}</td>
-            <td>{{ $user->created_at->format('Y-m-d') }}</td>
-            <td>{{ $user->updated_at->format('Y-m-d') }}</td>
+    @foreach($wasteLogs as $log)
+    <tr>
+        <td>{{ $log->product->name ?? '—' }}</td>
 
-            <td>
-                <a href="{{ route('users.edit', $user) }}">Edit</a>
-            </td>
+        <td>{{ $log->order->id ?? '—' }}</td>
 
-            <td>
-                <form method="POST" action="{{ route('users.destroy', $user) }}">
-                    @csrf @method('DELETE')
-                    <button>Delete</button>
-                </form>
-            </td>
+        <td>{{ $log->status->name ?? '—' }}</td>
 
-            <td>
-                <a href="{{ route('users.show', $user) }}">See</a>
-            </td>
-        </tr>
+        <td>{{ $log->quantity }}</td>
+
+        <td>{{ $log->logged_at }}</td>
+
+        <td>{{ $log->created_at->format('Y-m-d') }}</td>
+        <td>{{ $log->updated_at->format('Y-m-d') }}</td>
+
+        <td>
+            <form method="POST" action="{{ route('waste-logs.destroy', $log) }}">
+                @csrf @method('DELETE')
+                <button>Delete</button>
+            </form>
+        </td>
+
+        <td>
+            <a href="{{ route('waste-logs.edit', $log) }}">Edit</a>
+        </td>
+
+        <td>
+            <a href="{{ route('waste-logs.show', $log) }}">See</a>
+        </td>
+    </tr>
     @endforeach
 
 </x-index>

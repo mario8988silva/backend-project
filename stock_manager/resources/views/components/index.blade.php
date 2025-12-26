@@ -1,7 +1,7 @@
 @props([
-    'title',
-    'columns',     // array: [['column', 'Label'], ...]
-    'filters' => null, // Blade slot for filters
+'title',
+'columns', // array: [['column', 'Label'], ...]
+'filters' => null, // Blade slot for filters
 ])
 
 <x-layout>
@@ -12,7 +12,7 @@
             <thead>
                 <tr>
                     @foreach($filters as $filter)
-                        {!! $filter !!}
+                    {!! $filter !!}
                     @endforeach
                 </tr>
             </thead>
@@ -26,14 +26,14 @@
         <thead>
             <tr>
                 @foreach($columns as [$column, $label])
-                    <th>
-                        <x-sort-links :column="$column" :label="$label" />
-                    </th>
+                <th>
+                    <x-sort-links :column="$column" :label="$label" />
+                </th>
                 @endforeach
 
-                <th>edit</th>
-                <th>delete</th>
-                <th>see</th>
+                <th>Delete</th>
+                <th>Edit</th>
+                <th>See</th>
             </tr>
         </thead>
 

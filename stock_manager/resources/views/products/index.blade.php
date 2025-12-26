@@ -31,8 +31,7 @@ $columns = [
 
     <form method="GET" action="{{ route('products.index') }}">
 
-        <table>
-            
+        <table>            
             <thead>
                 <tr>
                     <th>Brand</th>

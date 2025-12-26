@@ -7,14 +7,27 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $locations = Location::orderBy('name')->paginate(25);
+        $query = Location::with('stocks');
 
-        return view('locations.index', [
-            'locations' => $locations,
-        ]);
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('address')) {
+            $query->where('address', 'like', '%' . $request->address . '%');
+        }
+
+        if ($request->filled('type')) {
+            $query->where('type', 'like', '%' . $request->type . '%');
+        }
+
+        $locations = $query->paginate(20)->withQueryString();
+
+        return view('operations.locations.index', compact('locations'));
     }
+
 
     public function show(Location $location)
     {

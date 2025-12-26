@@ -8,16 +8,24 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::with('family')
-            ->orderBy('name')
-            ->paginate(25);
+        $query = Category::with('family');
 
-        return view('categories.index', [
-            'categories' => $categories,
-        ]);
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        if ($request->filled('family_id')) {
+            $query->where('family_id', $request->family_id);
+        }
+
+        $categories = $query->paginate(20)->withQueryString();
+        $families = Family::all();
+
+        return view('reference.categories.index', compact('categories', 'families'));
     }
+
 
     public function show(Category $category)
     {

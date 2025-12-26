@@ -18,8 +18,8 @@
 
         @guest
         <ul>
-            <li><a href="{{ route('show.login') }}"><button>Login</button></a></li>
-            <li><a href="{{ route('show.register') }}"><button>Register</button></a></li>
+            <li><a href="{{ route('login') }}"><button>Login</button></a></li>
+            <li><a href="{{ route('register') }}"><button>Register</button></a></li>
         </ul>
         <hr>
         @endguest

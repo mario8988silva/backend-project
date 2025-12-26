@@ -7,14 +7,19 @@ use Illuminate\Http\Request;
 
 class FamilyController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $families = Family::orderBy('name')->paginate(25);
+        $query = Family::with('categories');
 
-        return view('families.index', [
-            'families' => $families,
-        ]);
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        $families = $query->paginate(20)->withQueryString();
+
+        return view('reference.families.index', compact('families'));
     }
+
 
     public function show(Family $family)
     {

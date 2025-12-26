@@ -1,10 +1,10 @@
 @php
 $columns = [
-    ['name', 'Name'],
-    ['email', 'Email'],
-    ['role', 'Role'],
-    ['created_at', 'Created'],
-    ['updated_at', 'Updated'],
+['name', 'Name'],
+['email', 'Email'],
+['role', 'Role'],
+['created_at', 'Created'],
+['updated_at', 'Updated'],
 ];
 @endphp
 
@@ -28,28 +28,28 @@ $columns = [
     </x-slot>
 
     @foreach($users as $user)
-        <tr>
-            <td>{{ $user->name }}</td>
-            <td>{{ $user->email }}</td>
-            <td>{{ $user->role }}</td>
-            <td>{{ $user->created_at->format('Y-m-d') }}</td>
-            <td>{{ $user->updated_at->format('Y-m-d') }}</td>
+    <tr>
+        <td>{{ $user->name }}</td>
+        <td>{{ $user->email }}</td>
+        <td>{{ $user->role }}</td>
+        <td>{{ $user->created_at->format('Y-m-d') }}</td>
+        <td>{{ $user->updated_at->format('Y-m-d') }}</td>
 
-            <td>
-                <a href="{{ route('users.edit', $user) }}">Edit</a>
-            </td>
+        <td>
+            <form method="POST" action="{{ route('users.destroy', $user) }}">
+                @csrf @method('DELETE')
+                <button>Delete</button>
+            </form>
+        </td>
 
-            <td>
-                <form method="POST" action="{{ route('users.destroy', $user) }}">
-                    @csrf @method('DELETE')
-                    <button>Delete</button>
-                </form>
-            </td>
+        <td>
+            <a href="{{ route('users.edit', $user) }}">Edit</a>
+        </td>
 
-            <td>
-                <a href="{{ route('users.show', $user) }}">See</a>
-            </td>
-        </tr>
+        <td>
+            <a href="{{ route('users.show', $user) }}">See</a>
+        </td>
+    </tr>
     @endforeach
 
 </x-index>

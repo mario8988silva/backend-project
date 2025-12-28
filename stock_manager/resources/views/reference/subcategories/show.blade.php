@@ -1,4 +1,4 @@
-<x-show :title="$subcategory->name" :editRoute="route('subcategories.edit', $subcategory)" :deleteRoute="route('subcategories.destroy', $subcategory)" :fields="[
+<x-show :title="$subcategory->name" :editRoute="route('subcategories.edit', $subcategory)" :deleteRoute="route('subcategories.destroy', $subcategory)" :indexRoute="route('subcategories.index')" :fields="[
         'ID' => $subcategory->id,
         'Name' => $subcategory->name,
         'Description' => $subcategory->description ?? '—',

@@ -1,4 +1,4 @@
-<x-show :title="'Waste Log #' . $wasteLog->id" :editRoute="route('waste-logs.edit', $wasteLog)" :deleteRoute="route('waste-logs.destroy', $wasteLog)" :fields="[
+<x-show :title="'Waste Log #' . $wasteLog->id" :editRoute="route('waste-logs.edit', $wasteLog)" :deleteRoute="route('waste-logs.destroy', $wasteLog)" :indexRoute="route('waste-logs.index')" :fields="[
         'ID' => $wasteLog->id,
         'Product' => $wasteLog->product->name ?? '—',
         'Order' => $wasteLog->order ? 'Order #' . $wasteLog->order->id : '—',

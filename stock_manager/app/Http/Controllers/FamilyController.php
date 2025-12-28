@@ -30,7 +30,7 @@ class FamilyController extends Controller
 
     public function create()
     {
-        return view('families.create');
+        return view('reference.families.create');
     }
 
     public function store(Request $request)
@@ -43,7 +43,7 @@ class FamilyController extends Controller
         $family = Family::create($validated);
 
         return redirect()
-            ->route('reference.families.show', $family->id)
+            ->route('families.show', $family->id)
             ->with('success', 'Family created successfully.');
     }
 
@@ -64,7 +64,7 @@ class FamilyController extends Controller
         $family->update($validated);
 
         return redirect()
-            ->route('reference.families.show', $family->id)
+            ->route('families.show', $family->id)
             ->with('success', 'Family updated successfully.');
     }
 
@@ -73,7 +73,7 @@ class FamilyController extends Controller
         $family->delete();
 
         return redirect()
-            ->route('reference.families.index')
+            ->route('families.index')
             ->with('success', 'Family deleted successfully.');
     }
 }

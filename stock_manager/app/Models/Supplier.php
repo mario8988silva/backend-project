@@ -33,7 +33,6 @@ class Supplier extends Model
     {
         return $this->belongsToMany(Category::class, 'category_has_suppliers');
     }
-
     
     // A supplier can have many products
     public function products()

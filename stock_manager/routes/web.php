@@ -46,6 +46,7 @@ Route::middleware('auth')->resource('users', UserController::class);
 
 // Full CRUD for all other controllers -----------------------------------------------------------------------
 $crudControllers = [
+    //
     'brands' => BrandController::class,
     'categories' => CategoryController::class,
     'subcategories' => SubcategoryController::class,
@@ -54,15 +55,20 @@ $crudControllers = [
     'iva-categories' => IvaCategoryController::class,
     'nutri-scores' => NutriScoreController::class,
     'eco-scores' => EcoScoreController::class,
+    //
     'products' => ProductController::class,
+    //
     'suppliers' => SupplierController::class,
     'representatives' => RepresentativeController::class,
+    //
     'locations' => LocationController::class,
     'status' => StatusController::class,
+    //
     'invoices' => InvoiceController::class,
     'orders' => OrderController::class,
     'sold-products' => SoldProductController::class,
     'waste-logs' => WasteLogController::class,
+    //
     'stocks' => StockController::class,
     'stock-movements' => StockMovementController::class,
 ];

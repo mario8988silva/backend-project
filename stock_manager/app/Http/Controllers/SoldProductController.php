@@ -42,7 +42,7 @@ class SoldProductController extends Controller
         $soldProduct = SoldProduct::create($validated);
 
         return redirect()
-            ->route('transactions.sold-products.show', $soldProduct->id)
+            ->route('sold-products.show', $soldProduct->id)
             ->with('success', 'Sold product recorded successfully.');
     }
 
@@ -67,7 +67,7 @@ class SoldProductController extends Controller
         $soldProduct->update($validated);
 
         return redirect()
-            ->route('transactions.sold-products.show', $soldProduct->id)
+            ->route('sold-products.show', $soldProduct->id)
             ->with('success', 'Sold product updated successfully.');
     }
 
@@ -76,7 +76,7 @@ class SoldProductController extends Controller
         $soldProduct->delete();
 
         return redirect()
-            ->route('transactions.sold-products.index')
+            ->route('sold-products.index')
             ->with('success', 'Sold product deleted successfully.');
     }
 }

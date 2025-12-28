@@ -50,7 +50,7 @@ class WasteLogController extends Controller
         $wasteLog = WasteLog::create($validated);
 
         return redirect()
-            ->route('transactions.waste-logs.show', $wasteLog->id)
+            ->route('waste-logs.show', $wasteLog->id)
             ->with('success', 'Waste log created successfully.');
     }
 
@@ -74,7 +74,7 @@ class WasteLogController extends Controller
         $wasteLog->update($validated);
 
         return redirect()
-            ->route('transactions.waste-logs.show', $wasteLog->id)
+            ->route('waste-logs.show', $wasteLog->id)
             ->with('success', 'Waste log updated successfully.');
     }
 
@@ -83,7 +83,7 @@ class WasteLogController extends Controller
         $wasteLog->delete();
 
         return redirect()
-            ->route('transactions.waste-logs.index')
+            ->route('waste-logs.index')
             ->with('success', 'Waste log deleted successfully.');
     }
 }

@@ -1,4 +1,4 @@
-<x-show :title="'Stock Movement #' . $stockMovement->id" :editRoute="route('stock-movements.edit', $stockMovement)" :deleteRoute="route('stock-movements.destroy', $stockMovement)" :fields="[
+<x-show :title="'Stock Movement #' . $stockMovement->id" :editRoute="route('stock-movements.edit', $stockMovement)" :deleteRoute="route('stock-movements.destroy', $stockMovement)" :indexRoute="route('stock-movements.index')" :fields="[
         'ID' => $stockMovement->id,
         'Product' => $stockMovement->product->name ?? '—',
         'Movement Type' => ucfirst($stockMovement->movement_type),

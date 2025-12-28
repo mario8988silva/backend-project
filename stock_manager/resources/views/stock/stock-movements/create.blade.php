@@ -1,2 +1,2 @@
 
-@include('products._form', get_defined_vars())
+@include('stock.stock-movements._form', get_defined_vars())

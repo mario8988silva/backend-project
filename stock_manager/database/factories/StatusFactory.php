@@ -26,7 +26,12 @@ class StatusFactory extends Factory
             'IN STOCK',
             'STORED',
             'SOLD',
+            'REMOVED FROM STOCK',
+            'DAMAGED',
+            'EXPIRED',
+            'BROKEN',
             'LOST',
+            'REMOVED FROM CATALOG',
         ];
 
         return [

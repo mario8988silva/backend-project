@@ -1,9 +1,9 @@
 @php
 $columns = [
+['quantity', 'Qty'],
 ['product', 'Product'],
 ['order', 'Order'],
 ['status', 'Status'],
-['quantity', 'Qty'],
 ['location', 'Location'],
 ['created_at', 'Created'],
 ['updated_at', 'Updated'],
@@ -49,6 +49,8 @@ $columns = [
 
     @foreach($stocks as $stock)
     <tr>
+        <td>{{ $stock->quantity }}</td>
+        
         <td>{{ $stock->product->name ?? '—' }}</td>
 
         <td>
@@ -59,7 +61,7 @@ $columns = [
 
         <td>{{ $stock->status->name ?? '—' }}</td>
 
-        <td>{{ $stock->quantity }}</td>
+
 
         <td>{{ $stock->location ?? '—' }}</td>
 

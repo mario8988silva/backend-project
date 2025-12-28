@@ -42,7 +42,7 @@ class InvoiceController extends Controller
         $invoice = Invoice::create($validated);
 
         return redirect()
-            ->route('transactions.invoices.show', $invoice->id)
+            ->route('invoices.show', $invoice->id)
             ->with('success', 'Invoice created successfully.');
     }
 
@@ -67,7 +67,7 @@ class InvoiceController extends Controller
         $invoice->update($validated);
 
         return redirect()
-            ->route('transactions.invoices.show', $invoice->id)
+            ->route('invoices.show', $invoice->id)
             ->with('success', 'Invoice updated successfully.');
     }
 
@@ -76,7 +76,7 @@ class InvoiceController extends Controller
         $invoice->delete();
 
         return redirect()
-            ->route('transactions.invoices.index')
+            ->route('invoices.index')
             ->with('success', 'Invoice deleted successfully.');
     }
 }

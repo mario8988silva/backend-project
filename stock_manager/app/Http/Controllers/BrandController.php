@@ -14,7 +14,6 @@ class BrandController extends Controller
         return view('reference.brands.index', [
             'brands' => $brands,
         ]);
-        
     }
 
     public function show(Brand $brand)
@@ -26,7 +25,7 @@ class BrandController extends Controller
 
     public function create()
     {
-        return view('reference.brands.create');
+        return view('reference.brands._form');
     }
 
     public function store(Request $request)
@@ -39,13 +38,13 @@ class BrandController extends Controller
         $brand = Brand::create($validated);
 
         return redirect()
-            ->route('reference.brands.show', $brand->id)
+            ->route('brands.show', $brand->id)
             ->with('success', 'Brand created successfully.');
     }
 
     public function edit(Brand $brand)
     {
-        return view('reference.brands.edit', [
+        return view('reference.brands._form', [
             'brand' => $brand,
         ]);
     }
@@ -60,7 +59,7 @@ class BrandController extends Controller
         $brand->update($validated);
 
         return redirect()
-            ->route('reference.brands.show', $brand->id)
+            ->route('brands.show', $brand->id)
             ->with('success', 'Brand updated successfully.');
     }
 
@@ -69,7 +68,7 @@ class BrandController extends Controller
         $brand->delete();
 
         return redirect()
-            ->route('reference.brands.index')
+            ->route('brands.index')
             ->with('success', 'Brand deleted successfully.');
     }
 }

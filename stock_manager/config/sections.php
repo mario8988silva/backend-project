@@ -2,6 +2,15 @@
 
 // CONTENTS: ------------------------------------------------
 // STOCK MENU
+$stocksMenu = [
+    'index' => [
+        ['products.index', 'Products'],
+    ],
+    'create' => [
+        ['products.index', 'Products'],
+        ['orders.create', 'Order'],
+    ],
+];
 
 // SUPPLIERS MENU
 $suppliersMenu = [
@@ -24,9 +33,23 @@ $suppliersMenu = [
 ];
 
 // ORDERS MENU
+$ordersMenu = [
+    'index' => [
+        ['orders.index', 'Orders'],
+        ['suppliers.index', 'Suppliers'],
+        ['representatives.index', 'Representatives'],
+        ['invoices.index', 'Invoices'],
+    ],
+    'create' => [
+        ['orders.index', 'Orders'],
+        ['suppliers.index', 'Suppliers'],
+        ['representatives.index', 'Representatives'],
+        ['invoices.index', 'Invoices'],
+    ],
+];
 
 // PRODUCTS MENU
-$referenceMenu = [
+$productsMenu = [
     'index' => [
         ['products.index', 'Products'],
         ['brands.index', 'Brands'],
@@ -58,23 +81,24 @@ $referenceMenu = [
 // APPLIANCE: ------------------------------------------------
 return [
     // STOCK MENU
-
+    'stocks'          => $stocksMenu,
     // SUPPLIERS MENU
     'suppliers'       => $suppliersMenu,
     'representatives' => $suppliersMenu,
 
     // ORDERS MENU
+    'orders' => $ordersMenu,
 
     // PRODUCTS MENU
-    'products'       => $referenceMenu,
-    'brands'         => $referenceMenu,
-    'subcategories'  => $referenceMenu,
-    'categories'     => $referenceMenu,
-    'families'       => $referenceMenu,
-    'unit-types'     => $referenceMenu,
-    'iva-categories' => $referenceMenu,
-    'nutri-scores'   => $referenceMenu,
-    'eco-scores'     => $referenceMenu,
+    'products'       => $productsMenu,
+    'brands'         => $productsMenu,
+    'subcategories'  => $productsMenu,
+    'categories'     => $productsMenu,
+    'families'       => $productsMenu,
+    'unit-types'     => $productsMenu,
+    'iva-categories' => $productsMenu,
+    'nutri-scores'   => $productsMenu,
+    'eco-scores'     => $productsMenu,
 
     // TEAM MENU
     'users' => [

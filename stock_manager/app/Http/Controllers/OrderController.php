@@ -52,7 +52,7 @@ class OrderController extends Controller
         $order = Order::create($validated);
 
         return redirect()
-            ->route('transactions.orders.show', $order->id)
+            ->route('orders.show', $order->id)
             ->with('success', 'Order created successfully.');
     }
 
@@ -77,7 +77,7 @@ class OrderController extends Controller
         $order->update($validated);
 
         return redirect()
-            ->route('transactions.orders.show', $order->id)
+            ->route('orders.show', $order->id)
             ->with('success', 'Order updated successfully.');
     }
 
@@ -86,7 +86,7 @@ class OrderController extends Controller
         $order->delete();
 
         return redirect()
-            ->route('transactions.orders.index')
+            ->route('orders.index')
             ->with('success', 'Order deleted successfully.');
     }
 }

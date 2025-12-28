@@ -1,4 +1,9 @@
-<x-show :title="$brand->name" :editRoute="route('brands.edit', $brand)" :deleteRoute="route('brands.destroy', $brand)" :fields="[
+<x-show 
+:title="$brand->name" 
+:editRoute="route('brands.edit', $brand)" 
+:deleteRoute="route('brands.destroy', $brand)" 
+:indexRoute="route('brands.index')"
+:fields="[
         'ID' => $brand->id,
         'Name' => $brand->name,
         'Country' => $brand->country ?? '—',
@@ -7,6 +12,7 @@
         'Created At' => $brand->created_at->format('Y-m-d H:i'),
         'Updated At' => $brand->updated_at->format('Y-m-d H:i'),
     ]">
+
     @if($brand->products->count())
     <h3>Products</h3>
     <ul>

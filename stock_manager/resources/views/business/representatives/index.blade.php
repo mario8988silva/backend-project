@@ -23,7 +23,7 @@ $columns = [
         <td>
             <input type="text" name="email" placeholder="Email" value="{{ request('email') }}">
         </td>
-
+{{--
         <td>
             <select name="supplier_id">
                 <option value="">-- Supplier --</option>
@@ -34,7 +34,7 @@ $columns = [
                 @endforeach
             </select>
         </td>
-
+--}}
         <td></td>
         <td></td>
     </x-slot>

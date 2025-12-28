@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\UnitType;
 use App\Models\IvaCategory;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Schema;
 class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductsFactory> */
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         //
@@ -99,5 +100,10 @@ class Product extends Model
         return array_map(function ($col) {
             return ucwords(str_replace('_', ' ', $col));
         }, $columns);
+    }
+
+    public function wasteLogs()
+    {
+        return $this->hasMany(WasteLog::class);
     }
 }

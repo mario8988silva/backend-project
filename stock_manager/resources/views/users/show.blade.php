@@ -1,4 +1,4 @@
-<x-show :title="$user->name" :editRoute="route('users.edit', $user)" :deleteRoute="route('users.destroy', $user)" :fields="[
+<x-show :title="$user->name" :editRoute="route('users.edit', $user)" :deleteRoute="route('users.destroy', $user)" :indexRoute="route('users.index')" :fields="[
         'ID' => $user->id,
         'Name' => $user->name,
         'Email' => $user->email,

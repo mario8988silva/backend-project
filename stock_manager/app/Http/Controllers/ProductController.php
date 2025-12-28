@@ -10,8 +10,10 @@ use App\Models\Family;
 use App\Models\IvaCategory;
 use App\Models\NutriScore;
 use App\Models\Product;
+use App\Models\Status;
 use App\Models\Subcategory;
 use App\Models\UnitType;
+use App\Models\WasteLog;
 use App\Settlements\ProductBooleanFilterSettlement;
 use App\Settlements\ProductFilterSettlement;
 use App\Settlements\ProductSearchSettlement;
@@ -64,13 +66,14 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        // route --> /products/{id}
-        // fetch a single record & pass into the show view
-
         $product->load('subcategory', 'brand', 'unit_type', 'iva_category', 'nutri_score', 'eco_score');
 
-        return view('products.show', ["product" => $product]);
+        return view('products.show', [
+            'product'   => $product,
+            'statuses'  => Status::all(),
+        ]);
     }
+
 
     // Centralized lookup loader
     private function getLookups(): array
@@ -84,6 +87,7 @@ class ProductController extends Controller
             'nutri_scores' => NutriScore::all(),
             'subcategories' => Subcategory::all(),
             'unit_types' => UnitType::all(),
+            'statuses' => Status::all(),
         ];
     }
 
@@ -124,14 +128,24 @@ class ProductController extends Controller
             ->with('success', 'Product updated successfully!');
     }
 
-    public function destroy(Product $product)
+    public function destroy(Product $product, Request $request)
     {
-        // route --> /products/{id}
-        // handle the deletion of a product
+        $statuses = Status::where('state', 'Removed from Catalog')->value('id');
+
+        $quantity = $request->input('quantity', 1);
+
+        WasteLog::create([
+            'product_id' => $product->id,
+            'status_id'  => $statuses,
+            'quantity'   => $quantity,
+            'logged_at'  => now(),
+            'notes'      => $request->input('notes'),
+        ]);
 
         $product->delete();
 
-        return redirect()->route('products.index')
-            ->with('success', 'Product deleted successfully.');
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Product removed and logged as waste.');
     }
 }

@@ -2,6 +2,7 @@
     :title="$location->name"
     :editRoute="route('locations.edit', $location)"
     :deleteRoute="route('locations.destroy', $location)"
+    {{-- :indexRoute="route('products.index')" --}}
     :fields="[
         'ID' => $location->id,
         'Name' => $location->name,

@@ -1,22 +1,26 @@
 <x-layout>
+    <a href="{{ route('products.index') }}">go back index</a>
+
     <h2>{{ $product->name }}</h2>
 
     @if(!empty($product->image))
-        <img src="{{ $product->image }}" alt="Product image" width="200">
+    <img src="{{ $product->image }}" alt="Product image" width="200">
     @else
-        <span>No image available</span>
+    <span>No image available</span>
     @endif
 
     <br>
     <tr>
-        <td onclick="window.location='{{ route('products.edit', $product->id) }}'"><button type="submit">Edit</button></td>
-        <form action="{{ route('products.destroy', $product->id) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <td>
-            <button type="submit">Delete</button>
-            </td>
-        </form>
+        <td>
+            <a href="{{ route('products.edit', $product->id) }}">
+                <button type="button">Edit</button>
+            </a>
+        </td>
+
+        <button type="button" onclick="document.getElementById('deleteModal').showModal()">
+            Delete
+        </button>
+
     </tr>
 
     <ul>
@@ -40,6 +44,34 @@
         <li>lactose_free: {{ $product->lactose_free ?? '' }}</li>
         <li>vegan: {{ $product->vegan ?? '' }}</li>
         <li>vegetarian: {{ $product->vegetarian ?? '' }}</li>
-        <li>organic: {{ $product->organic ?? '' }}</li>    
+        <li>organic: {{ $product->organic ?? '' }}</li>
     </ul>
 </x-layout>
+
+<dialog id="deleteModal" class="modal">
+    <form method="POST" action="{{ route('products.destroy', $product) }}">
+        @csrf
+        @method('DELETE')
+
+        <h3>Remove Product</h3>
+
+        <p>How many units are being removed?</p>
+
+        <input type="number" name="quantity" min="1" value="1" required>
+
+        <p>Status:</p>
+        <select name="status_id" required>
+            <option value="">-- Select Status --</option>
+            @foreach($statuses as $status)
+            <option value="{{ $status->id }}">
+                {{ $status->state }}
+            </option>
+            @endforeach
+        </select>
+
+        <div style="margin-top: 1rem;">
+            <button type="submit">Confirm Removal</button>
+            <button type="button" onclick="document.getElementById('deleteModal').close()">Cancel</button>
+        </div>
+    </form>
+</dialog>

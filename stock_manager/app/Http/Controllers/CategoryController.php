@@ -54,7 +54,7 @@ class CategoryController extends Controller
         $category = Category::create($validated);
 
         return redirect()
-            ->route('reference.categories.show', $category->id)
+            ->route('categories.show', $category->id)
             ->with('success', 'Category created successfully.');
     }
 
@@ -77,7 +77,7 @@ class CategoryController extends Controller
         $category->update($validated);
 
         return redirect()
-            ->route('reference.categories.show', $category->id)
+            ->route('categories.show', $category->id)
             ->with('success', 'Category updated successfully.');
     }
 
@@ -86,7 +86,7 @@ class CategoryController extends Controller
         $category->delete();
 
         return redirect()
-            ->route('reference.categories.index')
+            ->route('categories.index')
             ->with('success', 'Category deleted successfully.');
     }
 }

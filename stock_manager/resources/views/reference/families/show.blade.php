@@ -1,4 +1,4 @@
-<x-show :title="$family->name" :editRoute="route('families.edit', $family)" :deleteRoute="route('families.destroy', $family)" :fields="[
+<x-show :title="$family->name" :editRoute="route('families.edit', $family)" :indexRoute="route('families.index')" :deleteRoute="route('families.destroy', $family)" :fields="[
         'ID' => $family->id,
         'Name' => $family->name,
         'Description' => $family->description ?? '—',

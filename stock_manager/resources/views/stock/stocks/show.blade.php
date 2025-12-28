@@ -1,4 +1,4 @@
-<x-show :title="'Stock Entry #' . $stock->id" :editRoute="route('stocks.edit', $stock)" :deleteRoute="route('stocks.destroy', $stock)" :fields="[
+<x-show :title="'Stock Entry #' . $stock->id" :editRoute="route('stocks.edit', $stock)" :deleteRoute="route('stocks.destroy', $stock)" :indexRoute="route('stocks.index')" :fields="[
         'ID' => $stock->id,
         'Product' => $stock->product->name ?? '—',
         'Order Item' => $stock->orderHasProduct

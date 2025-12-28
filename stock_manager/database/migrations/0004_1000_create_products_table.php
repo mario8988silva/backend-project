@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
+            $table->timestamps(); // created_at, updated_at
+            $table->softDeletes();
 
             $table->string('barcode', 45)->unique()->nullable(); // optional unique barcode
             $table->string('name', 255); // product name
@@ -36,8 +38,6 @@ return new class extends Migration
             $table->boolean('vegan')->default(false);
             $table->boolean('vegetarian')->default(false);
             $table->boolean('organic')->default(false);
-
-            $table->timestamps(); // created_at, updated_at
         });
     }
 

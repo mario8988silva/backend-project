@@ -66,36 +66,15 @@ $columns = [
 
             <tbody>
                 <tr>
+                    {{-- SELECT FILTERS --}}
                     <x-filter-select name="brand_id" label="Brand" :options="$brands" />
                     <x-filter-select name="subcategory_id" label="Subcategory" :options="$subcategories" />
                     <x-filter-select name="category_id" label="Category" :options="$categories" />
                     <x-filter-select name="family_id" label="Family" :options="$families" />
                     <x-filter-select name="unit_type_id" label="Unit Type" :options="$unit_types" />
                     <x-filter-select name="iva_category_id" label="IVA Category" :options="$iva_categories" />
-
-                    <td>
-                        <select name="nutri_score_id">
-                            <option value="">-- Nutri Score --</option>
-                            @foreach($nutri_scores as $nutri)
-                            <option value="{{ $nutri->id }}" {{ request('nutri_score_id')==$nutri->id ? 'selected' : '' }}>
-                                <!-- mudar grade para name, para normalizar arquitectura -->
-                                {{ $nutri->grade }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </td>
-
-                    <td>
-                        <select name="eco_score_id">
-                            <option value="">-- Eco Score --</option>
-                            @foreach($eco_scores as $eco)
-                            <option value="{{ $eco->id }}" {{ request('eco_score_id')==$eco->id ? 'selected' : '' }}>
-                                <!-- mudar grade para name, para normalizar arquitectura -->
-                                {{ $eco->grade }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </td>
+                    <x-filter-select name="nutri_score_id" label="Nutri Score" :options="$nutri_scores" />
+                    <x-filter-select name="eco_score_id" label="Eco Score" :options="$eco_scores" />
 
                     {{-- BOOLEAN FILTERS --}}
                     <x-filter-boolean name="sugar_free" />
@@ -104,19 +83,19 @@ $columns = [
                     <x-filter-boolean name="vegetarian" />
                     <x-filter-boolean name="organic" />
 
-                    {{-- TYPE --}}
+                    {{-- TYPE SEARCH--}}
                     <td>
                         <input type="text" name="search" placeholder="Search" value="{{ request('search') }}">
                     </td>
                 <tr>
 
-                    {{-- APPLY --}}
+                    {{-- APPLY/SUBMIT FILTERS--}}
                     <td>
 
                         <button type="submit">Apply Filters</button>
                     </td>
 
-                    <!-- Reset button -->
+                    <!-- RESET FILTERS -->
                     <td>
                         <a href="{{ route('products.index') }}" class="btn btn-secondary">
                             Reset Filters
@@ -224,13 +203,13 @@ $columns = [
                 <td>{{ $product->vegetarian ?? '' }}</td>
                 <td>{{ $product->organic ?? '' }}</td>
 
-                <td onclick="window.location='{{ route('products.show', $product->id) }}'">
-                    <form action="{{ route('products.destroy', $product->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Delete</button>
-                    </form>
+                <td>
+                    <button type="button" onclick="document.getElementById('deleteModal').showModal()">
+                        Delete
+                    </button>
+
                 </td>
+
 
                 <td>
                     <a href="{{ route('products.edit', $product->id) }}">
@@ -251,3 +230,31 @@ $columns = [
     <!-- pagination -->
     {{ $products->links()}}
 </x-layout>
+
+<dialog id="deleteModal" class="modal">
+    <form method="POST" action="{{ route('products.destroy', $product) }}">
+        @csrf
+        @method('DELETE')
+
+        <h3>Remove Product</h3>
+
+        <p>How many units are being removed?</p>
+
+        <input type="number" name="quantity" min="1" value="1" required>
+
+        <p>Status:</p>
+        <select name="status_id" required>
+            <option value="">-- Select Status --</option>
+            @foreach($statuses as $status)
+            <option value="{{ $status->id }}">
+                {{ $status->state }}
+            </option>
+            @endforeach
+        </select>
+
+        <div style="margin-top: 1rem;">
+            <button type="submit">Confirm Removal</button>
+            <button type="button" onclick="document.getElementById('deleteModal').close()">Cancel</button>
+        </div>
+    </form>
+</dialog>

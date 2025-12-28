@@ -1,4 +1,4 @@
-<x-show :title="'Sold Product #' . $soldProduct->id" :editRoute="route('sold-products.edit', $soldProduct)" :deleteRoute="route('sold-products.destroy', $soldProduct)" :fields="[
+<x-show :title="'Sold Product #' . $soldProduct->id" :editRoute="route('sold-products.edit', $soldProduct)" :deleteRoute="route('sold-products.destroy', $soldProduct)" :indexRoute="route('sold-products.index')":fields="[
         'ID' => $soldProduct->id,
         'Product' => $soldProduct->product->name ?? '—',
         'Order' => $soldProduct->order ? 'Order #' . $soldProduct->order->id : '—',

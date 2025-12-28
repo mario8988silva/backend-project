@@ -52,7 +52,7 @@ class LocationController extends Controller
         $location = Location::create($validated);
 
         return redirect()
-            ->route('operations.locations.show', $location->id)
+            ->route('locations.show', $location->id)
             ->with('success', 'Location created successfully.');
     }
 
@@ -74,7 +74,7 @@ class LocationController extends Controller
         $location->update($validated);
 
         return redirect()
-            ->route('operations.locations.show', $location->id)
+            ->route('locations.show', $location->id)
             ->with('success', 'Location updated successfully.');
     }
 
@@ -83,7 +83,7 @@ class LocationController extends Controller
         $location->delete();
 
         return redirect()
-            ->route('operations.locations.index')
+            ->route('locations.index')
             ->with('success', 'Location deleted successfully.');
     }
 }

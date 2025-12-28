@@ -11,21 +11,21 @@ class UnitTypeController extends Controller
     {
         $unitTypes = UnitType::orderBy('name')->paginate(25);
 
-        return view('reference.unit_types.index', [
+        return view('reference.unit-types.index', [
             'unit_types' => $unitTypes,
         ]);
     }
 
     public function show(UnitType $unitType)
     {
-        return view('reference.unit_types.show', [
+        return view('reference.unit-types.show', [
             'unit_type' => $unitType,
         ]);
     }
 
     public function create()
     {
-        return view('reference.unit_types.create');
+        return view('reference.unit-types.create');
     }
 
     public function store(Request $request)
@@ -38,13 +38,13 @@ class UnitTypeController extends Controller
         $unitType = UnitType::create($validated);
 
         return redirect()
-            ->route('reference.unit-types.show', $unitType->id)
+            ->route('unit-types.show', $unitType->id)
             ->with('success', 'Unit type created successfully.');
     }
 
     public function edit(UnitType $unitType)
     {
-        return view('reference.unit_types.edit', [
+        return view('reference.unit-types.edit', [
             'unit_type' => $unitType,
         ]);
     }
@@ -59,7 +59,7 @@ class UnitTypeController extends Controller
         $unitType->update($validated);
 
         return redirect()
-            ->route('reference.unit-types.show', $unitType->id)
+            ->route('unit-types.show', $unitType->id)
             ->with('success', 'Unit type updated successfully.');
     }
 
@@ -68,7 +68,7 @@ class UnitTypeController extends Controller
         $unitType->delete();
 
         return redirect()
-            ->route('reference.unit-types.index')
+            ->route('unit-types.index')
             ->with('success', 'Unit type deleted successfully.');
     }
 }

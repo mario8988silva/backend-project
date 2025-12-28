@@ -1,4 +1,8 @@
-<x-show :title="$supplier->name" :editRoute="route('suppliers.edit', $supplier)" :deleteRoute="route('suppliers.destroy', $supplier)" :fields="[
+<x-show :title="$supplier->name" 
+:editRoute="route('suppliers.edit', $supplier)" 
+:deleteRoute="route('suppliers.destroy', $supplier)" 
+:indexRoute="route('suppliers.index')"
+:fields="[
         'ID' => $supplier->id,
         'Name' => $supplier->name,
         'Phone' => $supplier->phone ?? '—',

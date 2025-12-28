@@ -70,7 +70,7 @@ class StockMovementController extends Controller
         $movement = StockMovement::create($validated);
 
         return redirect()
-            ->route('stock.stock-movements.show', $movement->id)
+            ->route('stock-movements.show', $movement->id)
             ->with('success', 'Stock movement recorded successfully.');
     }
 
@@ -97,7 +97,7 @@ class StockMovementController extends Controller
         $stockMovement->update($validated);
 
         return redirect()
-            ->route('stock.stock-movements.show', $stockMovement->id)
+            ->route('stock-movements.show', $stockMovement->id)
             ->with('success', 'Stock movement updated successfully.');
     }
 
@@ -106,7 +106,7 @@ class StockMovementController extends Controller
         $stockMovement->delete();
 
         return redirect()
-            ->route('stock.stock-movements.index')
+            ->route('stock-movements.index')
             ->with('success', 'Stock movement deleted successfully.');
     }
 }

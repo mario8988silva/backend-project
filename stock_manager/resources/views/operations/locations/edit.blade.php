@@ -1,1 +1,1 @@
-@include('locations._form', get_defined_vars())
+@include('operations.locations._form', get_defined_vars())

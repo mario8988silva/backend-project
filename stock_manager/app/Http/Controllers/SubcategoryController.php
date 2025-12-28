@@ -46,7 +46,7 @@ class SubcategoryController extends Controller
         $subcategory = Subcategory::create($validated);
 
         return redirect()
-            ->route('reference.subcategories.show', $subcategory->id)
+            ->route('subcategories.show', $subcategory->id)
             ->with('success', 'Subcategory created successfully.');
     }
 
@@ -69,7 +69,7 @@ class SubcategoryController extends Controller
         $subcategory->update($validated);
 
         return redirect()
-            ->route('reference.subcategories.show', $subcategory->id)
+            ->route('subcategories.show', $subcategory->id)
             ->with('success', 'Subcategory updated successfully.');
     }
 
@@ -78,7 +78,7 @@ class SubcategoryController extends Controller
         $subcategory->delete();
 
         return redirect()
-            ->route('reference.subcategories.index')
+            ->route('subcategories.index')
             ->with('success', 'Subcategory deleted successfully.');
     }
 }

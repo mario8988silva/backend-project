@@ -42,7 +42,7 @@ class SupplierController extends Controller
         $supplier = Supplier::create($validated);
 
         return redirect()
-            ->route('business.suppliers.show', $supplier->id)
+            ->route('suppliers.show', $supplier->id)
             ->with('success', 'Supplier created successfully.');
     }
 
@@ -67,7 +67,7 @@ class SupplierController extends Controller
         $supplier->update($validated);
 
         return redirect()
-            ->route('business.suppliers.show', $supplier->id)
+            ->route('suppliers.show', $supplier->id)
             ->with('success', 'Supplier updated successfully.');
     }
 
@@ -76,7 +76,7 @@ class SupplierController extends Controller
         $supplier->delete();
 
         return redirect()
-            ->route('business.suppliers.index')
+            ->route('suppliers.index')
             ->with('success', 'Supplier deleted successfully.');
     }
 }

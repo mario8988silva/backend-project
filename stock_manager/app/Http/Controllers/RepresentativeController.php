@@ -40,7 +40,7 @@ class RepresentativeController extends Controller
         $representative = Representative::create($validated);
 
         return redirect()
-            ->route('business.representatives.show', $representative->id)
+            ->route('representatives.show', $representative->id)
             ->with('success', 'Representative created successfully.');
     }
 
@@ -63,7 +63,7 @@ class RepresentativeController extends Controller
         $representative->update($validated);
 
         return redirect()
-            ->route('business.representatives.show', $representative->id)
+            ->route('representatives.show', $representative->id)
             ->with('success', 'Representative updated successfully.');
     }
 
@@ -72,7 +72,7 @@ class RepresentativeController extends Controller
         $representative->delete();
 
         return redirect()
-            ->route('business.representatives.index')
+            ->route('representatives.index')
             ->with('success', 'Representative deleted successfully.');
     }
 }

@@ -1,4 +1,4 @@
-<x-show :title="'Invoice #' . $invoice->number" :editRoute="route('invoices.edit', $invoice)" :deleteRoute="route('invoices.destroy', $invoice)" :fields="[
+<x-show :title="'Invoice #' . $invoice->number" :editRoute="route('invoices.edit', $invoice)" :deleteRoute="route('invoices.destroy', $invoice)" :indexRoute="route('invoices.index')" :fields="[
         'ID' => $invoice->id,
         'Number' => $invoice->number,
         'Issue Date' => $invoice->issue_date,

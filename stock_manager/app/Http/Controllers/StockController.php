@@ -63,7 +63,7 @@ class StockController extends Controller
         $stock = Stock::create($validated);
 
         return redirect()
-            ->route('stock.stocks.show', $stock->id)
+            ->route('stocks.show', $stock->id)
             ->with('success', 'Stock entry created successfully.');
     }
 
@@ -88,7 +88,7 @@ class StockController extends Controller
         $stock->update($validated);
 
         return redirect()
-            ->route('stock.stocks.show', $stock->id)
+            ->route('stocks.show', $stock->id)
             ->with('success', 'Stock updated successfully.');
     }
 
@@ -97,7 +97,7 @@ class StockController extends Controller
         $stock->delete();
 
         return redirect()
-            ->route('stock.stocks.index')
+            ->route('stocks.index')
             ->with('success', 'Stock entry deleted successfully.');
     }
 }

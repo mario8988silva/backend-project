@@ -2,18 +2,34 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\Supplier;
 use App\Models\CategoryHasSupplier;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CategoryHasSupplierSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        CategoryHasSupplier::factory()->count(50)->create();
+        $categories = Category::pluck('id')->toArray();
+        $suppliers  = Supplier::pluck('id')->toArray();
 
+        $pairs = [];
+
+        while (count($pairs) < 50) {
+            $categoryId = fake()->randomElement($categories);
+            $supplierId = fake()->randomElement($suppliers);
+
+            $key = $categoryId . '-' . $supplierId;
+
+            if (!isset($pairs[$key])) {
+                $pairs[$key] = true;
+
+                CategoryHasSupplier::create([
+                    'category_id' => $categoryId,
+                    'supplier_id' => $supplierId,
+                ]);
+            }
+        }
     }
 }

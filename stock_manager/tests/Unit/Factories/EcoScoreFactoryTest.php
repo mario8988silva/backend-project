@@ -20,7 +20,7 @@ class EcoScoreFactoryTest extends BaseFactoryTest
     {
         $instance = EcoScore::factory()->make();
 
-        $this->assertNotEmpty($instance->grade);
+        $this->assertNotEmpty($instance->name);
         $this->assertNotEmpty($instance->color);
         $this->assertNotEmpty($instance->description);
     }

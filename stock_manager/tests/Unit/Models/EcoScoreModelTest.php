@@ -14,7 +14,7 @@ class EcoScoreModelTest extends BaseModelTest
         $this->assertModelTable($model, 'eco_scores');
 
         $this->assertModelFillable($model, [
-            'grade',
+            'name',
             'color',
             'description',
         ]);

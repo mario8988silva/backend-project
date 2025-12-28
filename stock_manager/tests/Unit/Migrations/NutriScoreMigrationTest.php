@@ -10,7 +10,7 @@ class NutriScoreMigrationTest extends BaseMigrationTest
 
         $this->assertTableColumns('nutri_scores', [
             'id',
-            'grade',
+            'name',
             'color',
             'description',
             'created_at',

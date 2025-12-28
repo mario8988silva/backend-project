@@ -9,12 +9,22 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::orderBy('date', 'desc')->paginate(25);
+        $orders = Order::orderBy('order_date', 'desc')->paginate(25);
+
+        $representatives = \App\Models\Representative::orderBy('name')->get();
+        $users = \App\Models\User::orderBy('name')->get();
+        $statuses = \App\Models\Status::orderBy('state')->get();
+        $suppliers = \App\Models\Supplier::orderBy('name')->get();
 
         return view('transactions.orders.index', [
             'orders' => $orders,
+            'representatives' => $representatives,
+            'users' => $users,
+            'statuses' => $statuses,
+            'suppliers' => $suppliers,
         ]);
     }
+
 
     public function show(Order $order)
     {

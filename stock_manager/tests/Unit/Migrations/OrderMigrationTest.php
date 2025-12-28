@@ -14,7 +14,7 @@ class OrderMigrationTest extends BaseMigrationTest
             'user_id',
             'order_date',
             'delivery_date',
-            'invoice_id',
+            //'invoice_id',
             'status_id',
             'created_at',
             'updated_at',

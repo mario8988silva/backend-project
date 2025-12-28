@@ -56,7 +56,7 @@ $columns = [
         <td></td>
     </x-slot>
 
-    @foreach($wasteLogs as $log)
+    @foreach($waste_logs as $log)
     <tr>
         <td>{{ $log->product->name ?? '—' }}</td>
 

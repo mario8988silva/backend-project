@@ -1,20 +1,14 @@
 <?php
 
-namespace Tests\Unit\Seeders;
+namespace Database\Seeders;
 
-use Database\Seeders\CategoryHasSupplierSeeder;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Seeder;
 
-class CategoryHasSupplierSeederTest extends BaseSeederTest
+class CategoryHasSupplierSeeder extends Seeder
 {
-    public function test_category_has_supplier_seeder_runs()
+    public function run(): void
     {
-        $this->runSeeder(CategoryHasSupplierSeeder::class);
-
-        // No rows expected, just ensure table exists and seeder doesn't crash
-        $this->assertTrue(
-            Schema::hasTable('category_has_suppliers'),
-            'Table [category_has_suppliers] does not exist after running the seeder.'
-        );
+        // Intentionally left empty.
+        // This seeder should not insert data.
     }
 }

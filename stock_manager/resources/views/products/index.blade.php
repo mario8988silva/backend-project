@@ -31,7 +31,7 @@ $columns = [
 
     <form method="GET" action="{{ route('products.index') }}">
 
-        <table>            
+        <table>
             <thead>
                 <tr>
                     <th>Brand</th>
@@ -74,11 +74,11 @@ $columns = [
                     <x-filter-select name="iva_category_id" label="IVA Category" :options="$iva_categories" />
 
                     <td>
-                        <!-- mudar grade para name, para normalizar arquitectura -->
                         <select name="nutri_score_id">
                             <option value="">-- Nutri Score --</option>
                             @foreach($nutri_scores as $nutri)
                             <option value="{{ $nutri->id }}" {{ request('nutri_score_id')==$nutri->id ? 'selected' : '' }}>
+                                <!-- mudar grade para name, para normalizar arquitectura -->
                                 {{ $nutri->grade }}
                             </option>
                             @endforeach
@@ -90,6 +90,7 @@ $columns = [
                             <option value="">-- Eco Score --</option>
                             @foreach($eco_scores as $eco)
                             <option value="{{ $eco->id }}" {{ request('eco_score_id')==$eco->id ? 'selected' : '' }}>
+                                <!-- mudar grade para name, para normalizar arquitectura -->
                                 {{ $eco->grade }}
                             </option>
                             @endforeach

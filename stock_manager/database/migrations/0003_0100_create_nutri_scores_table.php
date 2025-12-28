@@ -13,7 +13,7 @@ return new class extends Migration
     {
        Schema::create('nutri_scores', function (Blueprint $table) {
         $table->id();
-        $table->char('grade', 1); // A, B, C, D, E
+        $table->char('name', 1); // A, B, C, D, E
         $table->string('color', 20); // 'Green', 'Yellow', 'Orange', 'Red'
         $table->string('description', 255)->nullable(); // optional notes
         $table->timestamps();

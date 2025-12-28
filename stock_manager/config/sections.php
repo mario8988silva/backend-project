@@ -1,5 +1,31 @@
 <?php
 
+// CONTENTS: ------------------------------------------------
+// STOCK MENU
+
+// SUPPLIERS MENU
+$suppliersMenu = [
+    'index' => [
+        ['suppliers.index', 'Suppliers'],
+        ['representatives.index', 'Representatives'],
+        ['categories.index', 'Categories'],
+        ['products.index', 'Products'],
+        ['invoices.index', 'Invoices'],
+        ['orders.index', 'Orders'],
+    ],
+    'create' => [
+        ['suppliers.create', 'Supplier'],
+        ['representatives.create', 'Representative'],
+        ['categories.create', 'Category'],
+        ['products.create', 'Product'],
+        ['invoices.create', 'Invoice'],
+        ['orders.create', 'Order'],
+    ],
+];
+
+// ORDERS MENU
+
+// PRODUCTS MENU
 $referenceMenu = [
     'index' => [
         ['products.index', 'Products'],
@@ -25,28 +51,21 @@ $referenceMenu = [
     ],
 ];
 
-$suppliersMenu = [
-    'index' => [
-        ['suppliers.index', 'Suppliers'],
-        ['representatives.index', 'Representatives'],
-        ['categories.index', 'Categories'],
-        ['products.index', 'Products'],
-        ['invoices.index', 'Invoices'],
-        ['orders.index', 'Orders'],
-    ],
-    'create' => [
-        ['suppliers.create', 'Supplier'],
-        ['representatives.create', 'Representative'],
-        ['categories.create', 'Category'],
-        ['products.create', 'Product'],
-        ['invoices.create', 'Invoice'],
-        ['orders.create', 'Order'],
-    ],
-];
+// TEAM MENU
 
+// WASTE LOG MENU
+
+// APPLIANCE: ------------------------------------------------
 return [
+    // STOCK MENU
 
-    // Reference domain (all share the same menu)
+    // SUPPLIERS MENU
+    'suppliers'       => $suppliersMenu,
+    'representatives' => $suppliersMenu,
+
+    // ORDERS MENU
+
+    // PRODUCTS MENU
     'products'       => $referenceMenu,
     'brands'         => $referenceMenu,
     'subcategories'  => $referenceMenu,
@@ -57,11 +76,7 @@ return [
     'nutri-scores'   => $referenceMenu,
     'eco-scores'     => $referenceMenu,
 
-    // Business domain
-    'suppliers'       => $suppliersMenu,
-    'representatives' => $suppliersMenu,
-
-    // Users domain
+    // TEAM MENU
     'users' => [
         'index' => [
             ['users.index', 'Team Member'],
@@ -70,8 +85,9 @@ return [
             ['users.create', 'Team Member'],
         ],
     ],
-];
 
+    // WASTE LOG MENU
+];
 
 /*
 'x' => [

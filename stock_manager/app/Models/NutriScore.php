@@ -14,7 +14,7 @@ class NutriScore extends Model
     use HasFactory;
 
     protected $fillable = [
-        'grade',
+        'name',
         'color',
         'description',
     ];

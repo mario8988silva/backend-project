@@ -14,7 +14,7 @@ class NutriScoreModelTest extends BaseModelTest
         $this->assertModelTable($model, 'nutri_scores');
 
         $this->assertModelFillable($model, [
-            'grade',
+            'name',
             'color',
             'description',
         ]);

@@ -25,6 +25,7 @@ return new class extends Migration
                 ->nullOnDelete();
 
             $table->foreignId('supplier_id')
+                ->nullable()
                 ->constrained('suppliers')
                 ->nullOnDelete();
 
@@ -32,12 +33,12 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('users')
                 ->nullOnDelete();
-
+            /*
             $table->foreignId('invoice_id')
                 ->nullable()
                 ->constrained('invoices')
                 ->nullOnDelete();
-
+*/
             $table->foreignId('status_id')
                 ->nullable()
                 ->constrained('statuses')

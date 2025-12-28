@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Status;
 use App\Models\WasteLog;
 use Illuminate\Http\Request;
 
@@ -9,23 +10,31 @@ class WasteLogController extends Controller
 {
     public function index()
     {
-        $wasteLogs = WasteLog::orderBy('wasted_at', 'desc')->paginate(25);
+        $wasteLogs = WasteLog::orderBy('logged_at', 'desc')->paginate(25);
 
-        return view('transactions.waste_logs.index', [
+        $products = \App\Models\Product::orderBy('name')->get();
+        $orders = \App\Models\Order::orderBy('order_date', 'desc')->get();
+        $statuses = Status::orderBy('state')->get();
+
+        return view('transactions.waste-logs.index', [
             'waste_logs' => $wasteLogs,
+            'products' => $products,
+            'orders' => $orders,
+            'statuses' => $statuses,
         ]);
     }
 
+
     public function show(WasteLog $wasteLog)
     {
-        return view('transactions.waste_logs.show', [
+        return view('transactions.waste-logs.show', [
             'waste_log' => $wasteLog,
         ]);
     }
 
     public function create()
     {
-        return view('transactions.waste_logs.create');
+        return view('transactions.waste-logs.create');
     }
 
     public function store(Request $request)
@@ -47,7 +56,7 @@ class WasteLogController extends Controller
 
     public function edit(WasteLog $wasteLog)
     {
-        return view('transactions.waste_logs.edit', [
+        return view('transactions.waste-logs.edit', [
             'waste_log' => $wasteLog,
         ]);
     }

@@ -20,7 +20,7 @@ class NutriScoreFactoryTest extends BaseFactoryTest
     {
         $instance = NutriScore::factory()->make();
 
-        $this->assertNotEmpty($instance->grade);
+        $this->assertNotEmpty($instance->name);
         $this->assertNotEmpty($instance->color);
         $this->assertNotEmpty($instance->description);
     }

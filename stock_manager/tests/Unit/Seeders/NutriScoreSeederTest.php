@@ -15,11 +15,11 @@ class NutriScoreSeederTest extends BaseSeederTest
         $this->assertTableHasRows('nutri_scores', 5);
 
         $expected = [
-            ['grade' => 'A', 'color' => 'Green'],
-            ['grade' => 'B', 'color' => 'LightGreen'],
-            ['grade' => 'C', 'color' => 'Yellow'],
-            ['grade' => 'D', 'color' => 'Orange'],
-            ['grade' => 'E', 'color' => 'Red'],
+            ['name' => 'A', 'color' => 'Green'],
+            ['name' => 'B', 'color' => 'LightGreen'],
+            ['name' => 'C', 'color' => 'Yellow'],
+            ['name' => 'D', 'color' => 'Orange'],
+            ['name' => 'E', 'color' => 'Red'],
         ];
 
         foreach ($expected as $row) {

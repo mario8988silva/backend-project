@@ -19,18 +19,18 @@ class EcoScoreFactory extends Factory
     {
         // Define fixed grades/colors mapping
         $grades = [
-            ['grade' => 'A', 'color' => 'Green',  'description' => 'Excellent sustainability'],
-            ['grade' => 'B', 'color' => 'LightGreen', 'description' => 'Good sustainability'],
-            ['grade' => 'C', 'color' => 'Yellow', 'description' => 'Moderate sustainability'],
-            ['grade' => 'D', 'color' => 'Orange', 'description' => 'Poor sustainability'],
-            ['grade' => 'E', 'color' => 'Red',    'description' => 'Very poor sustainability'],
+            ['name' => 'A', 'color' => 'Green',  'description' => 'Excellent sustainability'],
+            ['name' => 'B', 'color' => 'LightGreen', 'description' => 'Good sustainability'],
+            ['name' => 'C', 'color' => 'Yellow', 'description' => 'Moderate sustainability'],
+            ['name' => 'D', 'color' => 'Orange', 'description' => 'Poor sustainability'],
+            ['name' => 'E', 'color' => 'Red',    'description' => 'Very poor sustainability'],
         ];
 
         // Pick one at random
         $choice = $this->faker->randomElement($grades);
 
         return [
-            'grade' => $choice['grade'],
+            'name' => $choice['name'],
             'color' => $choice['color'],
             'description' => $choice['description'],
         ];

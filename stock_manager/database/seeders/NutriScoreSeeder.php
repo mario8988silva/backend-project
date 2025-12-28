@@ -14,11 +14,11 @@ class NutriScoreSeeder extends Seeder
     public function run(): void
     {
         $nutriScores = [
-            ['grade' => 'A', 'color' => 'Green',      'description' => 'Excellent nutritional quality'],
-            ['grade' => 'B', 'color' => 'LightGreen', 'description' => 'Good nutritional quality'],
-            ['grade' => 'C', 'color' => 'Yellow',     'description' => 'Moderate nutritional quality'],
-            ['grade' => 'D', 'color' => 'Orange',     'description' => 'Poor nutritional quality'],
-            ['grade' => 'E', 'color' => 'Red',        'description' => 'Very poor nutritional quality'],
+            ['name' => 'A', 'color' => 'Green',      'description' => 'Excellent nutritional quality'],
+            ['name' => 'B', 'color' => 'LightGreen', 'description' => 'Good nutritional quality'],
+            ['name' => 'C', 'color' => 'Yellow',     'description' => 'Moderate nutritional quality'],
+            ['name' => 'D', 'color' => 'Orange',     'description' => 'Poor nutritional quality'],
+            ['name' => 'E', 'color' => 'Red',        'description' => 'Very poor nutritional quality'],
         ];
 
         foreach ($nutriScores as $nutriScore) {

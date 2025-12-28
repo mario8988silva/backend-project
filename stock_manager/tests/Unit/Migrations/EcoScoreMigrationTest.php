@@ -10,7 +10,7 @@ class EcoScoreMigrationTest extends BaseMigrationTest
 
         $this->assertTableColumns('eco_scores', [
             'id',
-            'grade',
+            'name',
             'color',
             'description',
             'created_at',

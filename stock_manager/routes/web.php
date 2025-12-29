@@ -19,6 +19,7 @@ use App\Http\Controllers\{
     StatusController,
     StockController,
     StockMovementController,
+    StockOverviewController,
     SubcategoryController,
     SupplierController,
     UnitTypeController,
@@ -71,8 +72,25 @@ $crudControllers = [
     //
     'stocks' => StockController::class,
     'stock-movements' => StockMovementController::class,
+    'overview' => StockOverviewController::class
 ];
 
 foreach ($crudControllers as $uri => $controller) {
     Route::middleware('auth')->resource($uri, $controller);
 }
+
+// Custom Order Status Workflow Routes
+Route::middleware('auth')->group(function () {
+
+    Route::post('orders/{order}/submit', [OrderController::class, 'submit'])
+        ->name('orders.submit');
+
+    Route::post('orders/{order}/receive', [OrderController::class, 'receive'])
+        ->name('orders.receive');
+
+    Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])
+        ->name('orders.cancel');
+});
+
+Route::middleware('auth')->get('orders/{order}/receive', [OrderController::class, 'receiveForm'])
+    ->name('orders.receive.form');

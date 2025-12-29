@@ -51,33 +51,4 @@
         </li>
     </ul>
     @endif
-
-    <h2>Status: {{ $order->status->state }}</h2>
-
-    @if($order->isDraft())
-    <form action="{{ route('orders.submit', $order) }}" method="POST">
-        @csrf
-        <button type="submit">Submit Order</button>
-    </form>
-    @endif
-
-    @if($order->isSubmitted())
-    <form action="{{ route('orders.receive', $order) }}" method="POST">
-        @csrf
-        <button type="submit">Mark as Received</button>
-    </form>
-    @endif
-
-    @if(!$order->isCancelled() && !$order->isReceived())
-    <form action="{{ route('orders.cancel', $order) }}" method="POST">
-        @csrf
-        <button type="submit">Cancel Order</button>
-    </form>
-    @endif
-    
-    @if($order->isSubmitted())
-    <a href="{{ route('orders.receive.form', $order) }}">Receive Order</a>
-    @endif
-
-
 </x-show>

@@ -1,5 +1,6 @@
 @php
 $menu = [
+    ['overview.index', 'Make an Order'],
     ['stocks.index', 'Stock'],
     ['suppliers.index', 'Suppliers'],
     ['orders.index', 'Orders'],

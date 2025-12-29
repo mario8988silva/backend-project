@@ -20,7 +20,7 @@ class Order extends Model
         'user_id',
         'order_date',
         'delivery_date',
-        'invoice_id',
+        //'invoice_id',
         'status_id',
     ];
 
@@ -41,14 +41,35 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    /*
     public function invoice()
     {
         return $this->hasOne(Invoice::class);
     }
-
+*/
 
     public function status()
     {
         return $this->belongsTo(Status::class);
+    }
+
+    public function isDraft()
+    {
+        return $this->status?->state === 'ORDER DRAFT';
+    }
+
+    public function isSubmitted()
+    {
+        return $this->status?->state === 'ORDER SUBMITTED';
+    }
+
+    public function isReceived()
+    {
+        return $this->status?->state === 'ARRIVED';
+    }
+
+    public function isCancelled()
+    {
+        return $this->status?->state === 'ORDER CANCELLED';
     }
 }

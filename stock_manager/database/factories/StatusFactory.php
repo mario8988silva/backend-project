@@ -15,11 +15,11 @@ class StatusFactory extends Factory
     public function definition(): array
     {
         $statuses = [
-            'ORDER',
+            'ORDER CANCELLED',
+            'ORDER DRAFT',
+            'ORDER SUBMITTED',
             'ORDER PENDING',
-            'ORDER MADE',
-            'SUPPLIER',
-            'ARRIVAL',
+            'ARRIVED',
             'ARRIVAL CHECK',
             'ORDER CHECK',
             'ORDER CLOSED',

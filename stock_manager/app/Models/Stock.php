@@ -11,6 +11,9 @@ use App\Models\Status;
 
 class Stock extends Model
 {
+    /** @use HasFactory<\Database\Factories\StockFactory> */
+    use HasFactory;
+
     protected $fillable = [
         'product_id',
         'order_has_product_id',
@@ -35,6 +38,8 @@ class Stock extends Model
         return $this->belongsTo(Status::class);
     }
 
-    /** @use HasFactory<\Database\Factories\StockFactory> */
-    use HasFactory;
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

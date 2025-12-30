@@ -72,4 +72,104 @@ class Order extends Model
     {
         return $this->status?->state === 'ORDER CANCELLED';
     }
+
+    public function stockEntries()
+    {
+        return $this->hasManyThrough(
+            Stock::class,
+            OrderHasProduct::class,
+            'order_id',              // FK on order_has_products
+            'order_has_product_id',  // FK on stocks
+            'id',                    // local key on orders
+            'id'                     // local key on order_has_products
+        );
+    }
+
+
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
+    }
+
+    public function hasDamagedItems()
+    {
+        return $this->products->sum('pivot.damaged_qty') > 0;
+    }
+
+    public function hasMissingItems()
+    {
+        return $this->products->sum('pivot.missing_qty') > 0;
+    }
+
+    public function hasQuantityMismatch()
+    {
+        foreach ($this->products as $product) {
+            if ($product->pivot->checked_qty !== $product->pivot->quantity) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function damagedCount()
+    {
+        return $this->products->sum('pivot.damaged_qty');
+    }
+
+    public function missingCount()
+    {
+        return $this->products->sum('pivot.missing_qty');
+    }
+
+    public function mismatchCount()
+    {
+        $count = 0;
+
+        foreach ($this->products as $product) {
+            if ($product->pivot->checked_qty !== $product->pivot->quantity) {
+                $count++;
+            }
+        }
+
+        return $count;
+    }
+
+    public function lightweightTimeline()
+    {
+        $events = [
+            'Order Created' => $this->created_at,
+        ];
+
+        // If submitted (anything beyond draft)
+        if (!$this->isDraft()) {
+            $events['Order Submitted'] = $this->updated_at;
+        }
+
+        // If received
+        if ($this->isReceived()) {
+            $events['Order Received'] = $this->updated_at;
+        }
+
+        // If stock entries exist
+        if ($this->stockEntries()->exists()) {
+            $events['Stock Entries Created'] = $this->stockEntries()->min('created_at');
+        }
+
+        // If stock movements exist
+        if ($this->stockMovements()->exists()) {
+            $events['Stock Movements Created'] = $this->stockMovements()->min('created_at');
+        }
+
+        // If closed
+        if ($this->status?->state === 'ORDER CLOSED') {
+            $events['Order Closed'] = $this->updated_at;
+        }
+
+        return collect($events)->sortBy(fn($time) => $time);
+    }
+
+    public function soldProducts()
+    {
+        return $this->hasMany(\App\Models\SoldProduct::class);
+    }
 }

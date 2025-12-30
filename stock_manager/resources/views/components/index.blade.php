@@ -27,7 +27,7 @@
             <tr>
                 @foreach($columns as [$column, $label])
                 <th>
-                    <x-sort-links :column="$column" :label="$label" />
+                    <x-sort-links :column="$column" :label="$label" :route="$routeName ?? request()->route()->getName()" />
                 </th>
                 @endforeach
 

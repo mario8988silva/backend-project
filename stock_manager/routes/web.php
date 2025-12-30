@@ -94,3 +94,26 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('auth')->get('orders/{order}/receive', [OrderController::class, 'receiveForm'])
     ->name('orders.receive.form');
+
+Route::middleware('auth')->group(function () {
+
+    // ARRIVAL CHECK (GET + POST)
+    Route::get('orders/{order}/arrival-check', [OrderController::class, 'arrivalCheckForm'])
+        ->name('orders.arrival-check.form');
+
+    Route::post('orders/{order}/arrival-check', [OrderController::class, 'arrivalCheck'])
+        ->name('orders.arrival-check');
+});
+
+Route::middleware('auth')->group(function () {
+
+    // ORDER CHECK (GET + POST)
+    Route::get('orders/{order}/order-check', [OrderController::class, 'orderCheckForm'])
+        ->name('orders.order-check.form');
+
+    Route::post('orders/{order}/order-check', [OrderController::class, 'orderCheck'])
+        ->name('orders.order-check');
+});
+
+Route::middleware('auth')->post('orders/{order}/close', [OrderController::class, 'close'])
+    ->name('orders.close');

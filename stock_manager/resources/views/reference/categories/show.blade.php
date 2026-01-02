@@ -13,6 +13,7 @@
         'Created At' => $category->created_at->format('Y-m-d H:i'),
         'Updated At' => $category->updated_at->format('Y-m-d H:i'),
     ]">
+    
     {{-- OPTIONAL EXTRA SECTION --}}
     @if($category->subcategories->count())
     <h3>Subcategories</h3>

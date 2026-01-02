@@ -6,8 +6,8 @@
     'textField' => 'name',
 ])
 
-<td>
-    <select name="{{ $name }}">
+<div>
+    <select name="{{ $name }}" class="input w-full">
         <option value="">-- {{ $label ?? ucfirst($name) }} --</option>
 
         @foreach($options as $option)
@@ -22,4 +22,4 @@
             </option>
         @endforeach
     </select>
-</td>
+</div>

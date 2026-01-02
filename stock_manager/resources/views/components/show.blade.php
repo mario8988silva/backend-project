@@ -29,12 +29,9 @@
         @endif
 
         @if($deleteRoute)
-        <form action="{{ $deleteRoute }}" method="POST" style="display:inline;">
-            @csrf
-            @method('DELETE')
-            <button type="submit">Delete</button>
-        </form>
+        <x-delete-button :action="$deleteRoute" />
         @endif
+
     </div>
 
     {{-- DETAILS --}}

@@ -1,10 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ProductController;
 use App\Http\Controllers\{
+    AuthController,
+    UserController,
+    ProductController,
     BrandController,
     CategoryController,
     EcoScoreController,
@@ -26,15 +26,23 @@ use App\Http\Controllers\{
     WasteLogController
 };
 
-// Landing page
-Route::get('/', fn() => view('auth.login'));
+/*
+|--------------------------------------------------------------------------
+| Landing Page
+|--------------------------------------------------------------------------
+*/
 
-// -----------------------------------------------------------------------------------------------------------
-// Authentication Routes: ------------------------------------------------------------------------------------
-// Logout
+Route::get('/', fn () => view('auth.login'));
+
+
+/*
+|--------------------------------------------------------------------------
+| Authentication
+|--------------------------------------------------------------------------
+*/
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Guest-only routes -----------------------------------------------------------------------------------------
 Route::middleware('guest')->controller(AuthController::class)->group(function () {
     Route::get('/login', 'showLogin')->name('login');
     Route::post('/login', 'login');
@@ -42,78 +50,93 @@ Route::middleware('guest')->controller(AuthController::class)->group(function ()
     Route::post('/register', 'register');
 });
 
-// Full CRUD for Users ---------------------------------------------------------------------------------------
+
+/*
+|--------------------------------------------------------------------------
+| Users (Full CRUD)
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware('auth')->resource('users', UserController::class);
 
-// Full CRUD for all other controllers -----------------------------------------------------------------------
+
+/*
+|--------------------------------------------------------------------------
+| Generic CRUD Controllers
+|--------------------------------------------------------------------------
+*/
+
 $crudControllers = [
-    //
-    'brands' => BrandController::class,
-    'categories' => CategoryController::class,
-    'subcategories' => SubcategoryController::class,
-    'families' => FamilyController::class,
-    'unit-types' => UnitTypeController::class,
-    'iva-categories' => IvaCategoryController::class,
-    'nutri-scores' => NutriScoreController::class,
-    'eco-scores' => EcoScoreController::class,
-    //
-    'products' => ProductController::class,
-    //
-    'suppliers' => SupplierController::class,
+    // Reference Data
+    'brands'          => BrandController::class,
+    'categories'      => CategoryController::class,
+    'subcategories'   => SubcategoryController::class,
+    'families'        => FamilyController::class,
+    'unit-types'      => UnitTypeController::class,
+    'iva-categories'  => IvaCategoryController::class,
+    'nutri-scores'    => NutriScoreController::class,
+    'eco-scores'      => EcoScoreController::class,
+
+    // Products
+    'products'        => ProductController::class,
+
+    // Suppliers & Representatives
+    'suppliers'       => SupplierController::class,
     'representatives' => RepresentativeController::class,
-    //
-    'locations' => LocationController::class,
-    'status' => StatusController::class,
-    //
-    'invoices' => InvoiceController::class,
-    'orders' => OrderController::class,
-    'sold-products' => SoldProductController::class,
-    'waste-logs' => WasteLogController::class,
-    //
-    'stocks' => StockController::class,
+
+    // Locations & Status
+    'locations'       => LocationController::class,
+    'status'          => StatusController::class,
+
+    // Orders, Invoices, Sales, Waste
+    'invoices'        => InvoiceController::class,
+    'orders'          => OrderController::class,
+    'sold-products'   => SoldProductController::class,
+    'waste-logs'      => WasteLogController::class,
+
+    // Stock
+    'stocks'          => StockController::class,
     'stock-movements' => StockMovementController::class,
-    'overview' => StockOverviewController::class
+    'overview'        => StockOverviewController::class,
 ];
 
-foreach ($crudControllers as $uri => $controller) {
-    Route::middleware('auth')->resource($uri, $controller);
-}
-
-// Custom Order Status Workflow Routes
-Route::middleware('auth')->group(function () {
-
-    Route::post('orders/{order}/submit', [OrderController::class, 'submit'])
-        ->name('orders.submit');
-
-    Route::post('orders/{order}/receive', [OrderController::class, 'receive'])
-        ->name('orders.receive');
-
-    Route::post('orders/{order}/cancel', [OrderController::class, 'cancel'])
-        ->name('orders.cancel');
+Route::middleware('auth')->group(function () use ($crudControllers) {
+    foreach ($crudControllers as $uri => $controller) {
+        Route::resource($uri, $controller);
+    }
 });
 
-Route::middleware('auth')->get('orders/{order}/receive', [OrderController::class, 'receiveForm'])
-    ->name('orders.receive.form');
+
+/*
+|--------------------------------------------------------------------------
+| Order Workflow (Custom Actions)
+|--------------------------------------------------------------------------
+*/
 
 Route::middleware('auth')->group(function () {
 
-    // ARRIVAL CHECK (GET + POST)
-    Route::get('orders/{order}/arrival-check', [OrderController::class, 'arrivalCheckForm'])
-        ->name('orders.arrival-check.form');
+    // Submit / Receive / Cancel
+    Route::post('orders/{order}/submit',  [OrderController::class, 'submit'])->name('orders.submit');
+    Route::post('orders/{order}/receive', [OrderController::class, 'receive'])->name('orders.receive');
+    Route::post('orders/{order}/cancel',  [OrderController::class, 'cancel'])->name('orders.cancel');
 
+    // Receive Form
+    Route::get('orders/{order}/receive', [OrderController::class, 'receiveForm'])
+        ->name('orders.receive.form');
+
+    // Arrival Check
+    Route::get('orders/{order}/arrival-check',  [OrderController::class, 'arrivalCheckForm'])
+        ->name('orders.arrival-check.form');
     Route::post('orders/{order}/arrival-check', [OrderController::class, 'arrivalCheck'])
         ->name('orders.arrival-check');
-});
 
-Route::middleware('auth')->group(function () {
-
-    // ORDER CHECK (GET + POST)
-    Route::get('orders/{order}/order-check', [OrderController::class, 'orderCheckForm'])
+    // Order Check
+    Route::get('orders/{order}/order-check',  [OrderController::class, 'orderCheckForm'])
         ->name('orders.order-check.form');
-
     Route::post('orders/{order}/order-check', [OrderController::class, 'orderCheck'])
         ->name('orders.order-check');
-});
 
-Route::middleware('auth')->post('orders/{order}/close', [OrderController::class, 'close'])
-    ->name('orders.close');
+    // Close Order
+    Route::post('orders/{order}/close', [OrderController::class, 'close'])
+        ->name('orders.close');
+});

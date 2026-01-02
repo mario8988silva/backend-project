@@ -102,3 +102,26 @@ touch tests/Unit/Migrations/WasteLogMigrationTest.php
 touch tests/Unit/Seeders/WasteLogSeederTest.php
 touch tests/Unit/Factories/WasteLogFactoryTest.php
 touch tests/Unit/Models/WasteLogModelTest.php
+
+---------------------------
+
+mkdir resources/views/transactions/orders/show/
+touch resources/views/transactions/orders/show/_warnings.blade.php
+touch resources/views/transactions/orders/show/_products.blade.php
+touch resources/views/transactions/orders/show/_stock_entries.blade.php
+touch resources/views/transactions/orders/show/_representative.blade.php
+touch resources/views/transactions/orders/show/_invoice.blade.php
+touch resources/views/transactions/orders/show/_status_actions.blade.php
+touch resources/views/transactions/orders/show/_stock_movements.blade.php
+touch resources/views/transactions/orders/show/_timeline.blade.php
+
+
+
+-------------------------------------
+
+
+mkdir resources/views/transactions/orders/edit/
+touch resources/views/transactions/orders/edit/_details.blade.php
+touch resources/views/transactions/orders/edit/_existing_products.blade.php
+touch resources/views/transactions/orders/edit/_new_products.blade.php
+

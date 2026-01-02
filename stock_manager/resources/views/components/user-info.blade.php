@@ -1,17 +1,10 @@
-<ul>
+<ul class="flex items-center gap-4 text-sm">
+    <li>{{ Auth::user()->name }}</li>
+
     <li>
-        <form action="{{ route('logout')}} " method="post">
+        <form action="{{ route('logout') }}" method="post">
             @csrf
-            <button>Logout</button>
+            <button class="btn-secondary">Logout</button>
         </form>
     </li>
-
-    <li>{{ Auth::user()->name }}
-        {{--
-        <a href="{{ route('team.show') }}">
-        {{ Auth::user()->name }}
-        </a>
-        --}}
-    </li>
 </ul>
-<hr>

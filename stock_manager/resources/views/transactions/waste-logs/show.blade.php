@@ -1,3 +1,4 @@
+{{--
 <x-show :title="'Waste Log #' . $wasteLog->id" :editRoute="route('waste-logs.edit', $wasteLog)" :deleteRoute="route('waste-logs.destroy', $wasteLog)" :indexRoute="route('waste-logs.index')" :fields="[
         'ID' => $wasteLog->id,
         'Product' => $wasteLog->product->name ?? '—',
@@ -9,7 +10,9 @@
         'Created At' => $wasteLog->created_at->format('Y-m-d H:i'),
         'Updated At' => $wasteLog->updated_at->format('Y-m-d H:i'),
     ]">
-    {{-- OPTIONAL EXTRA SECTION: Product --}}
+    --}}
+    {{-- Product --}}
+    {{--
     @if($wasteLog->product)
     <h3>Product</h3>
     <ul>
@@ -21,7 +24,7 @@
     </ul>
     @endif
 
-    {{-- OPTIONAL EXTRA SECTION: Order --}}
+    {{-- Order --}}
     @if($wasteLog->order)
     <h3>Order</h3>
     <ul>
@@ -32,16 +35,5 @@
         </li>
     </ul>
     @endif
-
-    {{-- OPTIONAL EXTRA SECTION: Status --}}
-    @if($wasteLog->status)
-    <h3>Status</h3>
-    <ul>
-        <li>
-            <a href="{{ route('statuses.show', $wasteLog->status) }}">
-                {{ $wasteLog->status->state }}
-            </a>
-        </li>
-    </ul>
-    @endif
 </x-show>
+--}}

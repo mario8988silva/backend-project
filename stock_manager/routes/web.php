@@ -23,7 +23,7 @@ use App\Http\Controllers\{
     SubcategoryController,
     SupplierController,
     UnitTypeController,
-    WasteLogController
+    //WasteLogController
 };
 
 /*
@@ -92,7 +92,7 @@ $crudControllers = [
     'invoices'        => InvoiceController::class,
     'orders'          => OrderController::class,
     'sold-products'   => SoldProductController::class,
-    'waste-logs'      => WasteLogController::class,
+    //'waste-logs'      => WasteLogController::class,
 
     // Stock
     'stocks'          => StockController::class,

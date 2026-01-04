@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Invoice;
 use App\Models\Order;
+use App\Models\Representative;
 use App\Models\SoldProduct;
 use App\Models\Status;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,21 +15,33 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::orderBy('order_date', 'desc')->paginate(25);
-
-        $representatives = \App\Models\Representative::orderBy('name')->get();
-        $users = \App\Models\User::orderBy('name')->get();
-        $statuses = \App\Models\Status::orderBy('state')->get();
-        $suppliers = \App\Models\Supplier::orderBy('name')->get();
+        $orders = Order::with(['representative', 'user', 'status', 'invoice'])
+            ->orderBy('order_date', 'desc')
+            ->paginate(25);
 
         return view('transactions.orders.index', [
             'orders' => $orders,
-            'representatives' => $representatives,
-            'users' => $users,
-            'statuses' => $statuses,
-            'suppliers' => $suppliers,
+
+            // Labels shown above each filter input
+            'filtersLabels' => [
+                'representative_id' => 'Representative',
+                'user_id' => 'User',
+                'order_from' => 'Order From',
+                'delivery_to' => 'Delivery To',
+                'status_id' => 'Status',
+            ],
+
+            // Data passed to <x-filters> to build selects or inputs
+            'filters' => [
+                'representative_id' => Representative::orderBy('name')->get(),
+                'user_id' => User::orderBy('name')->get(),
+                'order_from' => null,      // date input
+                'delivery_to' => null,     // date input
+                'status_id' => Status::orderBy('state')->get(),
+            ],
         ]);
     }
+
 
 
     public function show(Order $order)
@@ -439,4 +454,6 @@ class OrderController extends Controller
             ->route('orders.show', $order)
             ->with('success', 'Order successfully closed.');
     }
+
+
 }

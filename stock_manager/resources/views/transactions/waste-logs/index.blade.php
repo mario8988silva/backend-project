@@ -1,91 +1,59 @@
+{{--
 @php
 $columns = [
-['product', 'Product'],
-['order', 'Order'],
-['status', 'Status'],
+['product.name', 'Product'],
+['order.id', 'Order'],
+['status.state', 'Status'],
 ['quantity', 'Qty'],
 ['logged_at', 'Logged At'],
 ['created_at', 'Created'],
 ['updated_at', 'Updated'],
 ];
+
+$filtersLabels = [
+'Product',
+'Order',
+'Status',
+'Logged From',
+];
+
+$filters = [
+// PRODUCT
+view('components.filter-select', [
+'name' => 'product_id',
+'options' => $products->map(fn($p) => ['id' => $p->id, 'name' => $p->name]),
+'valueField' => 'id',
+'textField' => 'name',
+'placeholder' => '-- Product --',
+])->render(),
+
+// ORDER
+view('components.filter-select', [
+'name' => 'order_id',
+'options' => $orders->map(fn($o) => ['id' => $o->id, 'name' => 'Order #' . $o->id]),
+'valueField' => 'id',
+'textField' => 'name',
+'placeholder' => '-- Order --',
+])->render(),
+
+// STATUS
+view('components.filter-select', [
+'name' => 'status_id',
+'options' => $statuses->map(fn($s) => ['id' => $s->id, 'name' => $s->state]),
+'valueField' => 'id',
+'textField' => 'name',
+'placeholder' => '-- Status --',
+])->render(),
+
+// LOGGED FROM (DATE)
+view('components.filter-date', [
+'name' => 'logged_from',
+'label' => 'Logged From',
+])->render(),
+];
 @endphp
 
-<x-index :title="'Waste Logs List'" :columns="$columns">
+<x-index title="Waste Logs List" :columns="$columns" :filtersLabels="$filtersLabels" :filters="$filters" :items="$waste_logs" />
 
-    <x-slot name="filters">
-        <td>
-            <select name="product_id">
-                <option value="">-- Product --</option>
-                @foreach($products as $product)
-                <option value="{{ $product->id }}" {{ request('product_id') == $product->id ? 'selected' : '' }}>
-                    {{ $product->name }}
-                </option>
-                @endforeach
-            </select>
-        </td>
-
-        <td>
-            <select name="order_id">
-                <option value="">-- Order --</option>
-                @foreach($orders as $order)
-                <option value="{{ $order->id }}" {{ request('order_id') == $order->id ? 'selected' : '' }}>
-                    Order #{{ $order->id }}
-                </option>
-                @endforeach
-            </select>
-        </td>
-
-        <td>
-            <select name="status_id">
-                <option value="">-- Status --</option>
-                @foreach($statuses as $status)
-                <option value="{{ $status->id }}" {{ request('status_id') == $status->id ? 'selected' : '' }}>
-                    {{ $status->name }}
-                </option>
-                @endforeach
-            </select>
-        </td>
-
-        <td></td>
-
-        <td>
-            <input type="date" name="logged_from" value="{{ request('logged_from') }}">
-        </td>
-
-        <td></td>
-        <td></td>
-    </x-slot>
-
-    @foreach($waste_logs as $log)
-    <tr>
-        <td>{{ $log->product->name ?? '—' }}</td>
-
-        <td>{{ $log->order->id ?? '—' }}</td>
-
-        <td>{{ $log->status->name ?? '—' }}</td>
-
-        <td>{{ $log->quantity }}</td>
-
-        <td>{{ $log->logged_at }}</td>
-
-        <td>{{ $log->created_at->format('Y-m-d') }}</td>
-        <td>{{ $log->updated_at->format('Y-m-d') }}</td>
-
-        <td>
-            <form method="POST" action="{{ route('waste-logs.destroy', $log) }}">
-                @csrf @method('DELETE')
-                <button>Delete</button>
-            </form>
-        </td>
-
-        <td>
-            <a href="{{ route('waste-logs.edit', $log) }}">Edit</a>
-        </td>
-
-        <td>
-            <a href="{{ route('waste-logs.show', $log) }}">See</a>
-        </td>
-    </tr>
-    @endforeach
-
-</x-index>
+{{ $waste_logs->links() }}
+--}}

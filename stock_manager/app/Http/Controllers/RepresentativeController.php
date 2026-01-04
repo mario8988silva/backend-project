@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Representative;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 class RepresentativeController extends Controller
@@ -25,8 +26,11 @@ class RepresentativeController extends Controller
 
     public function create()
     {
-        return view('business.representatives.create');
+        $suppliers = Supplier::all();
+
+        return view('business.representatives.create', compact('suppliers'));
     }
+
 
     public function store(Request $request)
     {
@@ -46,9 +50,8 @@ class RepresentativeController extends Controller
 
     public function edit(Representative $representative)
     {
-        return view('business.representatives.edit', [
-            'representative' => $representative,
-        ]);
+        $suppliers = Supplier::all();
+        return view('business.representatives.edit', ['representative' => $representative, 'suppliers' => $suppliers,]);
     }
 
     public function update(Request $request, Representative $representative)

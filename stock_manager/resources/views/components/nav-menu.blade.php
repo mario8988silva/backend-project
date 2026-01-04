@@ -6,7 +6,7 @@ $menu = [
 ['orders.index', 'Orders'],
 ['products.index', 'Products'],
 ['users.index', 'Team'],
-['waste-logs.index', 'Waste Log'],
+//['waste-logs.index', 'Waste Log'],
 ];
 @endphp
 

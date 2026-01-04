@@ -11,23 +11,26 @@ class SoldProductController extends Controller
     {
         $soldProducts = SoldProduct::orderBy('sold_at', 'desc')->paginate(25);
 
-        return view('transactions.sold_products.index', [
+        return view('transactions.sold-products.index', [
             'sold_products' => $soldProducts,
         ]);
     }
 
+    /*
     public function show(SoldProduct $soldProduct)
     {
-        return view('transactions.sold_products.show', [
+        return view('transactions.sold-products.show', [
             'sold_product' => $soldProduct,
         ]);
     }
-
+    */
+    /*
     public function create()
     {
-        return view('transactions.sold_products.create');
+        return view('transactions.sold-products.create');
     }
-
+    */
+    /*
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -45,14 +48,16 @@ class SoldProductController extends Controller
             ->route('sold-products.show', $soldProduct->id)
             ->with('success', 'Sold product recorded successfully.');
     }
-
+    */
+    /*
     public function edit(SoldProduct $soldProduct)
     {
-        return view('transactions.sold_products.edit', [
+        return view('transactions.sold-products.edit', [
             'sold_product' => $soldProduct,
         ]);
     }
-
+    */
+    /*
     public function update(Request $request, SoldProduct $soldProduct)
     {
         $validated = $request->validate([
@@ -70,7 +75,8 @@ class SoldProductController extends Controller
             ->route('sold-products.show', $soldProduct->id)
             ->with('success', 'Sold product updated successfully.');
     }
-
+    */
+    /*
     public function destroy(SoldProduct $soldProduct)
     {
         $soldProduct->delete();
@@ -79,4 +85,5 @@ class SoldProductController extends Controller
             ->route('sold-products.index')
             ->with('success', 'Sold product deleted successfully.');
     }
+    */
 }

@@ -3,7 +3,7 @@
         'Name' => $user->name,
         'Email' => $user->email,
         'Phone' => $user->phone ?? '—',
-        'Role' => $user->role->name ?? '—',
+        'Role' => $user->role->value ?? '—',
         'Email Verified' => $user->email_verified_at
             ? $user->email_verified_at->format('Y-m-d H:i')
             : 'Not verified',

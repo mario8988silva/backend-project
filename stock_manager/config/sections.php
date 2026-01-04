@@ -69,8 +69,6 @@ $productsMenu = [
         ['families.create', 'Family'],
         ['unit-types.create', 'Unit Type'],
         ['iva-categories.create', 'IVA Category'],
-        ['nutri-scores.create', 'Nutri Score'],
-        ['eco-scores.create', 'Eco Score'],
     ],
 ];
 

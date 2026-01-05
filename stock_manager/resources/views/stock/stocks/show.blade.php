@@ -38,7 +38,7 @@
     </ul>
     @endif
 
-    {{-- OPTIONAL EXTRA SECTION: Status --}}
+    {{-- OPTIONAL EXTRA SECTION: Status --}}{{--
     @if($stock->status)
     <h3>Status</h3>
     <ul>
@@ -49,4 +49,5 @@
         </li>
     </ul>
     @endif
+    --}}
 </x-show>

@@ -5,7 +5,7 @@ $columns = [
     ['order_date', 'Order Date'],
     ['delivery_date', 'Delivery Date'],
     ['status.state', 'Status'],
-    ['invoice.number', 'Invoice'],
+    //['invoice.number', 'Invoice'],
     ['created_at', 'Created'],
     ['updated_at', 'Updated'],
 ];

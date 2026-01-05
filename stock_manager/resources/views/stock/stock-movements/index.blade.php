@@ -1,98 +1,63 @@
 @php
 $columns = [
-    ['product', 'Product'],
+    ['product.name', 'Product'],
     ['movement_type', 'Type'],
     ['quantity', 'Qty'],
-    ['order', 'Order'],
-    ['stock', 'Stock Entry'],
+    ['order.id', 'Order'],
+    ['stock.id', 'Stock Entry'],
     ['moved_at', 'Moved At'],
     ['created_at', 'Created'],
     ['updated_at', 'Updated'],
 ];
+
+$filtersLabels = [
+    'Product',
+    'Type',
+    'Order',
+    'Moved From',
+];
+
+$filters = [/*
+    // Product filter
+    view('components.filter-select', [
+        'name' => 'product_id',
+        'options' => $products,
+        'selected' => request('product_id'),
+    ])->render(),
+
+    // Movement type filter
+    view('components.filter-select', [
+        'name' => 'movement_type',
+        'options' => collect([
+            (object)['id' => 'IN', 'name' => 'IN'],
+            (object)['id' => 'OUT', 'name' => 'OUT'],
+            (object)['id' => 'ADJUST', 'name' => 'ADJUST'],
+        ]),
+        'selected' => request('movement_type'),
+    ])->render(),
+
+    // Order filter
+    view('components.filter-select', [
+        'name' => 'order_id',
+        'options' => $orders->map(fn($o) => (object)[
+            'id' => $o->id,
+            'name' => 'Order #' . $o->id
+        ]),
+        'selected' => request('order_id'),
+    ])->render(),
+
+    // Moved From (date)
+    view('components.filter-date', [
+        'name' => 'moved_from',
+        'label' => 'Moved From',
+    ])->render(),*/
+];
 @endphp
 
-<x-index :title="'Stock Movements List'" :columns="$columns">
-
-    <x-slot name="filters">
-        <td>
-            <select name="product_id">
-                <option value="">-- Product --</option>
-                @foreach($products as $product)
-                    <option value="{{ $product->id }}"
-                        {{ request('product_id') == $product->id ? 'selected' : '' }}>
-                        {{ $product->name }}
-                    </option>
-                @endforeach
-            </select>
-        </td>
-
-        <td>
-            <select name="movement_type">
-                <option value="">-- Type --</option>
-                <option value="IN"  {{ request('movement_type')=='IN' ? 'selected' : '' }}>IN</option>
-                <option value="OUT" {{ request('movement_type')=='OUT' ? 'selected' : '' }}>OUT</option>
-                <option value="ADJUST" {{ request('movement_type')=='ADJUST' ? 'selected' : '' }}>ADJUST</option>
-            </select>
-        </td>
-
-        <td></td>
-
-        <td>
-            <select name="order_id">
-                <option value="">-- Order --</option>
-                @foreach($orders as $order)
-                    <option value="{{ $order->id }}"
-                        {{ request('order_id') == $order->id ? 'selected' : '' }}>
-                        Order #{{ $order->id }}
-                    </option>
-                @endforeach
-            </select>
-        </td>
-
-        <td></td>
-
-        <td>
-            <input type="date"
-                   name="moved_from"
-                   value="{{ request('moved_from') }}">
-        </td>
-
-        <td></td>
-        <td></td>
-    </x-slot>
-
-    @foreach($stockMovements as $movement)
-    <tr>
-        <td>{{ $movement->product->name ?? '—' }}</td>
-
-        <td>{{ $movement->movement_type }}</td>
-
-        <td>{{ $movement->quantity }}</td>
-
-        <td>{{ $movement->order?->id ? 'Order #' . $movement->order->id : '—' }}</td>
-
-        <td>{{ $movement->stock?->id ? 'Stock #' . $movement->stock->id : '—' }}</td>
-
-        <td>{{ $movement->moved_at }}</td>
-
-        <td>{{ $movement->created_at->format('Y-m-d') }}</td>
-        <td>{{ $movement->updated_at->format('Y-m-d') }}</td>
-
-        <td>
-            <form method="POST" action="{{ route('stock-movements.destroy', $movement) }}">
-                @csrf @method('DELETE')
-                <button>Delete</button>
-            </form>
-        </td>
-
-        <td>
-            <a href="{{ route('stock-movements.edit', $movement) }}">Edit</a>
-        </td>
-
-        <td>
-            <a href="{{ route('stock-movements.show', $movement) }}">See</a>
-        </td>
-    </tr>
-    @endforeach
-
-</x-index>
+<x-index 
+    title="Stock Movements List"
+    :columns="$columns"
+    :filtersLabels="$filtersLabels"
+    :filters="$filters"
+    :items="$stockMovements"
+/>

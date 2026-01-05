@@ -12,6 +12,7 @@ class Invoice extends Model
 {
     use HasFactory;
 
+    /*
     protected $fillable = [
         'number',
         'issue_date',
@@ -32,4 +33,5 @@ class Invoice extends Model
     {
         return $this->belongsTo(Supplier::class);
     }
+    */
 }

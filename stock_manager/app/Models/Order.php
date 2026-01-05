@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Product;
 use App\Models\Representative;
 use App\Models\User;
-use App\Models\Invoice;
+//use App\Models\Invoice;
 use App\Models\Status;
 
 class Order extends Model
@@ -20,14 +20,21 @@ class Order extends Model
         'user_id',
         'order_date',
         'delivery_date',
-        //'invoice_id',
         'status_id',
+        //'invoice_id',
     ];
 
     public function products()
     {
         return $this->belongsToMany(Product::class, 'order_has_products')
-            ->withPivot('quantity', 'expiry_date')
+            ->withPivot(
+                'quantity',
+                'expiry_date',
+                //'checked_qty',
+                //'damaged_qty',
+                //'missing_qty',
+                //'check_notes'
+            )
             ->withTimestamps();
     }
 
@@ -46,7 +53,7 @@ class Order extends Model
     {
         return $this->hasOne(Invoice::class);
     }
-*/
+    */
 
     public function status()
     {
@@ -170,6 +177,6 @@ class Order extends Model
 
     public function soldProducts()
     {
-        return $this->hasMany(\App\Models\SoldProduct::class);
+        return $this->hasMany(SoldProduct::class);
     }
 }

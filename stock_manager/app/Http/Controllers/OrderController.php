@@ -2,27 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Invoice;
 use App\Models\Order;
+use App\Models\Product;
 use App\Models\Representative;
-use App\Models\SoldProduct;
 use App\Models\Status;
 use App\Models\User;
+use App\Models\Location;
+use App\Models\Stock;
+use App\Models\StockMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    public function index()
+    // INDEX — Filters + Sorting + Pagination
+
+    public function index(Request $request)
     {
-        $orders = Order::with(['representative', 'user', 'status', 'invoice'])
-            ->orderBy('order_date', 'desc')
-            ->paginate(25);
+        $query = Order::with(['representative', 'user', 'status']);
+
+        // Apply filters
+        if ($request->filled('representative_id')) {
+            $query->where('representative_id', $request->representative_id);
+        }
+
+        if ($request->filled('user_id')) {
+            $query->where('user_id', $request->user_id);
+        }
+
+        if ($request->filled('order_from')) {
+            $query->whereDate('order_date', '>=', $request->order_from);
+        }
+
+        if ($request->filled('delivery_to')) {
+            $query->whereDate('delivery_date', '<=', $request->delivery_to);
+        }
+
+        if ($request->filled('status_id')) {
+            $query->where('status_id', $request->status_id);
+        }
+
+        // Sorting
+        $sort = $request->get('sort', 'order_date');
+        $direction = $request->get('direction', 'desc');
+
+        $query->orderBy($sort, $direction);
+
+        // Pagination
+        $orders = $query->paginate(25)->withQueryString();
 
         return view('transactions.orders.index', [
             'orders' => $orders,
 
-            // Labels shown above each filter input
             'filtersLabels' => [
                 'representative_id' => 'Representative',
                 'user_id' => 'User',
@@ -31,83 +62,79 @@ class OrderController extends Controller
                 'status_id' => 'Status',
             ],
 
-            // Data passed to <x-filters> to build selects or inputs
             'filters' => [
-                'representative_id' => Representative::orderBy('name')->get(),
-                'user_id' => User::orderBy('name')->get(),
-                'order_from' => null,      // date input
-                'delivery_to' => null,     // date input
-                'status_id' => Status::orderBy('state')->get(),
+                'representative_id' => view('components.filter-select', [
+                    'name' => 'representative_id',
+                    'options' => Representative::orderBy('name')->get(),
+                    'selected' => request('representative_id'),
+                ]),
+
+                'user_id' => view('components.filter-select', [
+                    'name' => 'user_id',
+                    'options' => User::orderBy('name')->get(),
+                    'selected' => request('user_id'),
+                ]),
+
+                'order_from' => view('components.filter-date', [
+                    'name' => 'order_from',
+                    'label' => 'Order From',
+                ]),
+
+                'delivery_to' => view('components.filter-date', [
+                    'name' => 'delivery_to',
+                    'label' => 'Delivery To',
+                ]),
+
+                'status_id' => view('components.filter-select', [
+                    'name' => 'status_id',
+                    'options' => Status::orderBy('state')->get(),
+                    'selected' => request('status_id'),
+                ]),
             ],
         ]);
     }
 
-
+    // SHOW
 
     public function show(Order $order)
     {
-        return view('transactions.orders.show', [
-            'order' => $order,
-        ]);
+        $order->load(['representative', 'user', 'status', 'products']);
+        return view('transactions.orders.show', compact('order'));
     }
 
-    /*
+    // CREATE — Redirect to stock overview
+
     public function create()
     {
-        return view('transactions.orders.create');
-    }
-    */
-    public function create()
-    {
-        // “Make an order” should start from the stock overview
         return redirect()->route('overview.index');
     }
 
 
-    /*
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'number'      => 'required|string|max:255|unique:orders,number',
-            'date'        => 'required|date',
-            'client_id'   => 'nullable|exists:clients,id',
-            'total'       => 'nullable|numeric|min:0',
-            'status'      => 'nullable|string|max:50',
-            'notes'       => 'nullable|string|max:1000',
-        ]);
-
-        $order = Order::create($validated);
-
-        return redirect()
-            ->route('orders.show', $order->id)
-            ->with('success', 'Order created successfully.');
-    }
-    */
+    // STORE — Create Draft Order
 
     public function store(Request $request)
     {
         $quantities = collect($request->input('products', []))
-            ->filter(fn($qty) => $qty > 0);
+            ->filter(fn($qty) => (int) $qty > 0);
 
         if ($quantities->isEmpty()) {
             return back()->withErrors('You must select at least one product.');
         }
 
-        $draftStatus = Status::where('state', 'ORDER DRAFT')->first();
+        $draftStatus = Status::firstWhere('state', 'ORDER DRAFT');
 
         $order = Order::create([
-            'representative_id' => null,                // can be filled later
-            'user_id'           => Auth::id(),          // the logged-in user
+            'representative_id' => null,
+            'user_id'           => Auth::id(),
             'order_date'        => now(),
             'delivery_date'     => null,
-            //'invoice_id'        => null,
-            'status_id'         => $draftStatus?->id,   // or a default ID
+            'status_id'         => $draftStatus?->id,
         ]);
 
         foreach ($quantities as $productId => $qty) {
             $order->products()->attach($productId, [
                 'quantity'    => $qty,
-                'expiry_date' => null, // can come later
+                'expiry_date' => null,
             ]);
         }
 
@@ -116,64 +143,35 @@ class OrderController extends Controller
             ->with('success', 'Order created successfully.');
     }
 
+    // EDIT — Only Draft Orders
 
     public function edit(Order $order)
     {
-        if ($order->status->state !== 'ORDER DRAFT') {
-            return redirect()->route('orders.show', $order)->withErrors('Only draft orders can be edited.');
+        if (! $order->isDraft()) {
+            return redirect()->route('orders.show', $order)
+                ->withErrors('Only draft orders can be edited.');
         }
-        // Existing products in the order
+
         $existingProducts = $order->products;
 
-        // Products NOT in the order
-        $newProducts = \App\Models\Product::whereNotIn(
+        $newProducts = Product::whereNotIn(
             'id',
             $existingProducts->pluck('id')
         )->orderBy('name')->get();
-
-        // Metadata options
-        $representatives = \App\Models\Representative::orderBy('name')->get();
-        $statuses = \App\Models\Status::orderBy('state')->get();
 
         return view('transactions.orders.edit', [
             'order'            => $order,
             'existingProducts' => $existingProducts,
             'newProducts'      => $newProducts,
-            'representatives'  => $representatives,
-            'statuses'         => $statuses,
+            'representatives'  => Representative::orderBy('name')->get(),
+            'statuses'         => Status::orderBy('state')->get(),
         ]);
-
-        if (!$order->isDraft()) {
-            return redirect()
-                ->route('orders.show', $order)
-                ->withErrors('Only draft orders can be edited.');
-        }
     }
 
-
-    /*
-    public function update(Request $request, Order $order)
-    {
-        $validated = $request->validate([
-            'number'      => 'required|string|max:255|unique:orders,number,' . $order->id,
-            'date'        => 'required|date',
-            'client_id'   => 'nullable|exists:clients,id',
-            'total'       => 'nullable|numeric|min:0',
-            'status'      => 'nullable|string|max:50',
-            'notes'       => 'nullable|string|max:1000',
-        ]);
-
-        $order->update($validated);
-
-        return redirect()
-            ->route('orders.show', $order->id)
-            ->with('success', 'Order updated successfully.');
-    }
-    */
+    // UPDATE — Metadata + Pivot Updates
 
     public function update(Request $request, Order $order)
     {
-        // Validate metadata
         $validated = $request->validate([
             'representative_id' => 'nullable|exists:representatives,id',
             'delivery_date'     => 'nullable|date',
@@ -181,16 +179,13 @@ class OrderController extends Controller
             'notes'             => 'nullable|string|max:1000',
         ]);
 
-        // Update metadata
         $order->update($validated);
 
-
-        // EXISTING PRODUCTS
+        // Existing products
         $existing = collect($request->input('existing', []))
             ->map(fn($qty) => (int) $qty);
 
         foreach ($existing as $productId => $qty) {
-
             if ($qty <= 0) {
                 $order->products()->detach($productId);
                 continue;
@@ -201,15 +196,14 @@ class OrderController extends Controller
             ]);
         }
 
-
-        // NEW PRODUCTS
+        // New products
         $new = collect($request->input('new', []))
             ->map(fn($qty) => (int) $qty)
             ->filter(fn($qty) => $qty > 0);
 
         foreach ($new as $productId => $qty) {
             $order->products()->attach($productId, [
-                'quantity' => $qty,
+                'quantity'    => $qty,
                 'expiry_date' => null,
             ]);
         }
@@ -219,14 +213,15 @@ class OrderController extends Controller
             ->with('success', 'Order updated successfully.');
     }
 
+
+    // DELETE — Only if no sold products
+
     public function destroy(Order $order)
     {
-        // 1. Prevent deletion if sold products exist
         if ($order->soldProducts()->exists()) {
             return back()->withErrors('This order has sold products and cannot be deleted.');
         }
 
-        // 2. Safe to delete
         $order->delete();
 
         return redirect()
@@ -234,21 +229,22 @@ class OrderController extends Controller
             ->with('success', 'Order deleted successfully.');
     }
 
+    // SUBMIT
+
     public function submit(Order $order)
     {
-        if (!$order->isDraft()) {
+        if (! $order->isDraft()) {
             return back()->withErrors('Only draft orders can be submitted.');
         }
 
-        $submittedStatus = Status::where('state', 'ORDER SUBMITTED')->first();
+        $submitted = Status::firstWhere('state', 'ORDER SUBMITTED');
 
-
-        $order->update([
-            'status_id' => $submittedStatus->id,
-        ]);
+        $order->update(['status_id' => $submitted->id]);
 
         return back()->with('success', 'Order submitted successfully.');
     }
+
+    // CANCEL
 
     public function cancel(Order $order)
     {
@@ -256,89 +252,71 @@ class OrderController extends Controller
             return back()->withErrors('Received orders cannot be cancelled.');
         }
 
-        $cancelledStatus = Status::where('state', 'ORDER CANCELLED')->first();
+        $cancelled = Status::firstWhere('state', 'ORDER CANCELLED');
 
-
-        $order->update([
-            'status_id' => $cancelledStatus->id,
-        ]);
+        $order->update(['status_id' => $cancelled->id]);
 
         return back()->with('success', 'Order cancelled.');
     }
 
+    // RECEIVE — Form
+
     public function receiveForm(Order $order)
     {
-        if (!$order->isSubmitted()) {
-            return redirect()
-                ->route('orders.show', $order)
+        if (! $order->isSubmitted()) {
+            return redirect()->route('orders.show', $order)
                 ->withErrors('Only submitted orders can be received.');
         }
 
-        $locations = \App\Models\Location::orderBy('name')->get();
-
         return view('transactions.orders.receive', [
-            'order' => $order,
-            'locations' => $locations,
+            'order'     => $order,
+            'locations' => Location::orderBy('name')->get(),
         ]);
     }
 
+    // RECEIVE — Process
+
     public function receive(Request $request, Order $order)
     {
-        if (!$order->isSubmitted()) {
+        if (! $order->isSubmitted()) {
             return back()->withErrors('Only submitted orders can be received.');
         }
 
         $data = $request->validate([
             'items' => 'required|array',
             'items.*.received_qty' => 'required|integer|min:0',
-            'items.*.expiry_date' => 'nullable|date',
-            'items.*.location_id' => 'nullable|exists:locations,id',
-            'items.*.notes' => 'nullable|string|max:500',
+            'items.*.expiry_date'  => 'nullable|date',
+            'items.*.location_id'  => 'nullable|exists:locations,id',
+            'items.*.notes'        => 'nullable|string|max:500',
         ]);
 
         foreach ($data['items'] as $productId => $item) {
-
             if ($item['received_qty'] <= 0) {
                 continue;
             }
 
-            // 1. Create stock entry
-            $stock = \App\Models\Stock::create([
+            $stock = Stock::create([
                 'product_id' => $productId,
-                'quantity' => $item['received_qty'],
+                'quantity'   => $item['received_qty'],
                 'expiry_date' => $item['expiry_date'] ?? null,
                 'location_id' => $item['location_id'] ?? null,
-                'status_id' => Status::where('state', 'IN STOCK')->first()->id,
-                'notes' => $item['notes'] ?? null,
-                'order_id' => $order->id,
+                'status_id'  => Status::firstWhere('state', 'IN STOCK')->id,
+                'notes'      => $item['notes'] ?? null,
+                'order_has_product_id' => $order->products()->where('product_id', $productId)->first()->pivot->id,
             ]);
 
-            /*
-            // 2. Create stock movement
-            \App\Models\StockMovement::create([
-                'product_id' => $productId,
-                'stock_id' => $stock->id,
+            StockMovement::create([
+                'product_id'   => $productId,
+                'stock_id'     => $stock->id,
+                'order_id'     => $order->id,
                 'movement_type' => 'IN',
-                'quantity' => $item['received_qty'],
-                'reference_type' => 'order',
-                'reference_id' => $order->id,
-            ]);
-            */
-
-            // 2. Create stock movement
-            \App\Models\StockMovement::create([
-                'product_id' => $productId,
-                'stock_id' => $stock->id,
-                'order_id' => $order->id,   // <-- correct field
-                'movement_type' => 'IN',
-                'quantity' => $item['received_qty'],
-                'moved_at' => now(),
+                'quantity'     => $item['received_qty'],
+                'moved_at'     => now(),
             ]);
         }
 
-        // 3. Update order status
         $order->update([
-            'status_id' => Status::where('state', 'ARRIVED')->first()->id,
+            'status_id' => Status::firstWhere('state', 'ARRIVED')->id,
         ]);
 
         return redirect()
@@ -346,43 +324,31 @@ class OrderController extends Controller
             ->with('success', 'Order received and stock updated.');
     }
 
+    // ARRIVAL CHECK
+
     public function arrivalCheckForm(Order $order)
     {
-        if (!$order->isReceived()) {
-            return redirect()
-                ->route('orders.show', $order)
+        if (! $order->isReceived()) {
+            return redirect()->route('orders.show', $order)
                 ->withErrors('Only ARRIVED orders can enter Arrival Check.');
         }
 
-        return view('transactions.orders.arrival-check', [
-            'order' => $order,
-        ]);
+        return view('transactions.orders.arrival-check', compact('order'));
     }
 
     public function arrivalCheck(Request $request, Order $order)
     {
-        if (!$order->isReceived()) {
+        if (! $order->isReceived()) {
             return back()->withErrors('Only ARRIVED orders can enter Arrival Check.');
         }
 
         $data = $request->validate([
-            'invoice_number' => 'required|string|max:50',
-            'invoice_date' => 'required|date',
-            'invoice_total' => 'required|numeric|min:0',
-            'payment_method' => 'required|string|max:50',
-            'payment_confirmed' => 'required|boolean',
             'notes' => 'nullable|string|max:1000',
         ]);
 
-        // Save invoice metadata directly on the order
         $order->update([
-            'invoice_number' => $data['invoice_number'],
-            'invoice_date' => $data['invoice_date'],
-            'invoice_total' => $data['invoice_total'],
-            'payment_method' => $data['payment_method'],
-            'payment_confirmed' => $data['payment_confirmed'],
-            'notes' => $data['notes'] ?? null,
-            'status_id' => Status::where('state', 'ARRIVAL CHECK')->first()->id,
+            'notes'     => $data['notes'] ?? null,
+            'status_id' => Status::firstWhere('state', 'ARRIVAL CHECK')->id,
         ]);
 
         return redirect()
@@ -390,17 +356,17 @@ class OrderController extends Controller
             ->with('success', 'Arrival Check completed successfully.');
     }
 
+
+    // ORDER CHECK
+
     public function orderCheckForm(Order $order)
     {
         if ($order->status->state !== 'ARRIVAL CHECK') {
-            return redirect()
-                ->route('orders.show', $order)
+            return redirect()->route('orders.show', $order)
                 ->withErrors('Only orders in ARRIVAL CHECK can enter Order Check.');
         }
 
-        return view('transactions.orders.order-check', [
-            'order' => $order,
-        ]);
+        return view('transactions.orders.order-check', compact('order'));
     }
 
     public function orderCheck(Request $request, Order $order)
@@ -414,12 +380,10 @@ class OrderController extends Controller
             'items.*.checked_qty' => 'required|integer|min:0',
             'items.*.damaged_qty' => 'required|integer|min:0',
             'items.*.missing_qty' => 'required|integer|min:0',
-            'items.*.notes' => 'nullable|string|max:500',
+            'items.*.notes'       => 'nullable|string|max:500',
         ]);
 
         foreach ($data['items'] as $productId => $item) {
-
-            // Save check results on pivot table
             $order->products()->updateExistingPivot($productId, [
                 'checked_qty' => $item['checked_qty'],
                 'damaged_qty' => $item['damaged_qty'],
@@ -428,9 +392,8 @@ class OrderController extends Controller
             ]);
         }
 
-        // Move to next status
         $order->update([
-            'status_id' => Status::where('state', 'ORDER CHECK')->first()->id,
+            'status_id' => Status::firstWhere('state', 'ORDER CHECK')->id,
         ]);
 
         return redirect()
@@ -438,22 +401,21 @@ class OrderController extends Controller
             ->with('success', 'Order Check completed successfully.');
     }
 
+
+    // CLOSE ORDER
+
     public function close(Order $order)
     {
         if ($order->status->state !== 'ORDER CHECK') {
             return back()->withErrors('Only orders in ORDER CHECK can be closed.');
         }
 
-        $closedStatus = Status::where('state', 'ORDER CLOSED')->first();
+        $closed = Status::firstWhere('state', 'ORDER CLOSED');
 
-        $order->update([
-            'status_id' => $closedStatus->id,
-        ]);
+        $order->update(['status_id' => $closed->id]);
 
         return redirect()
             ->route('orders.show', $order)
             ->with('success', 'Order successfully closed.');
     }
-
-
 }

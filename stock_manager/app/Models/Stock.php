@@ -42,4 +42,9 @@ class Stock extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
+    }
 }

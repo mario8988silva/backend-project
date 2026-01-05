@@ -7,7 +7,7 @@ use Database\Factories\Concerns\PicksExistingOrNull;
 
 use App\Models\Order;
 use App\Models\Supplier;
-
+/*
 class InvoiceFactory extends Factory
 {
     use PicksExistingOrNull;
@@ -26,3 +26,4 @@ class InvoiceFactory extends Factory
         ];
     }
 }
+*/

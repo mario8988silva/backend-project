@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
 {
+    /*
     public function index()
     {
         $invoices = Invoice::orderBy('date', 'desc')->paginate(25);
@@ -79,4 +80,5 @@ class InvoiceController extends Controller
             ->route('invoices.index')
             ->with('success', 'Invoice deleted successfully.');
     }
+    */
 }

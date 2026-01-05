@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        /*
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
@@ -31,13 +32,16 @@ return new class extends Migration
                 ->constrained('suppliers')
                 ->nullOnDelete();
         });
+        */
     }
 
     /**
      * Reverse the migrations.
      */
+    /*
     public function down(): void
     {
         Schema::dropIfExists('invoices');
     }
+    */
 };

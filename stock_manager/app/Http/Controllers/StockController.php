@@ -31,7 +31,12 @@ class StockController extends Controller
         $products = Product::all();
         $statuses = Status::all();
 
-        return view('stock.stocks.index', compact('stocks', 'products', 'statuses'));
+        return view('stock.stocks.index', [
+            'stocks' => $stocks,
+            'products' => Product::orderBy('name')->get(),
+            'statuses' => Status::orderBy('state')->get(),
+            'locations' => Location::orderBy('name')->get(),
+        ]);
     }
 
     public function show(Stock $stock)

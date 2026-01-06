@@ -14,19 +14,20 @@ use App\Models\Status;
 use App\Models\Subcategory;
 use App\Models\UnitType;
 use App\Models\WasteLog;
-use App\Settlements\ProductBooleanFilterSettlement;
-use App\Settlements\ProductFilterSettlement;
-use App\Settlements\ProductSearchSettlement;
-use App\Settlements\ProductSortSettlement;
+use App\Settlements\UniversalBooleanFilterSettlement;
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index(Request $request, ProductSearchSettlement $searchSettlement, ProductSortSettlement $sortSettlement, ProductBooleanFilterSettlement $booleanSettlement, ProductFilterSettlement $filterSettlement)
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalBooleanFilterSettlement $booleanSettlement, UniversalFilterSettlement $filterSettlement)
     {
 
         // 1. Generate headers
         $headers = Product::indexHeaders();
+
         // 2. Build query
         $query = Product::query();
 

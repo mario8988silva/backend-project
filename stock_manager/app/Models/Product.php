@@ -106,4 +106,107 @@ class Product extends Model
     {
         return $this->hasMany(WasteLog::class);
     }
+
+    // -----------------------------------------
+    public static function searchable(): array
+    {
+        return [
+            'name',
+            'barcode',
+            'description',
+            'brand.name',
+            'subcategory.name',
+            'subcategory.category.name',
+            'subcategory.category.family.name',
+            'unit_type.name',
+            'iva_category.name',
+            'nutri_score.name',
+            'eco_score.name',
+        ];
+    }
+
+    // -----------------------------------------
+    public static function sortable(): array
+    {
+        return [
+            'created_at',
+            'updated_at',
+            'barcode',
+            'name',
+            'image',
+            'description',
+            'unit_type_id',
+            'iva_category_id',
+            'nutri_score_id',
+            'eco_score_id',
+            'sugar_free',
+            'gluten_free',
+            'lactose_free',
+            'vegan',
+            'vegetarian',
+            'organic',
+        ];
+    }
+
+    public static function relationSorts(): array
+    {
+        return [
+            'brand' => [
+                ['table' => 'brands', 'local' => 'products.brand_id', 'foreign' => 'brands.id'],
+                'brands.name',
+            ],
+            'subcategory' => [
+                ['table' => 'subcategories', 'local' => 'products.subcategory_id', 'foreign' => 'subcategories.id'],
+                'subcategories.name',
+            ],
+            'category' => [
+                ['table' => 'subcategories', 'local' => 'products.subcategory_id', 'foreign' => 'subcategories.id'],
+                ['table' => 'categories', 'local' => 'subcategories.category_id', 'foreign' => 'categories.id'],
+                'categories.name',
+            ],
+            'family' => [
+                ['table' => 'subcategories', 'local' => 'products.subcategory_id', 'foreign' => 'subcategories.id'],
+                ['table' => 'categories', 'local' => 'subcategories.category_id', 'foreign' => 'categories.id'],
+                ['table' => 'families', 'local' => 'categories.family_id', 'foreign' => 'families.id'],
+                'families.name',
+            ],
+        ];
+    }
+
+    // -----------------------------------------
+
+    public static function localFilters(): array
+    {
+        return [
+            'brand_id',
+            'subcategory_id',
+            'unit_type_id',
+            'iva_category_id',
+            'nutri_score_id',
+            'eco_score_id',
+        ];
+    }
+    public static function foreignFilters(): array
+    {
+        return [
+            'category_id' => fn($q, $v) =>
+            $q->whereHas('subcategory.category', fn($q2) => $q2->where('id', $v)),
+
+            'family_id' => fn($q, $v) =>
+            $q->whereHas('subcategory.category.family', fn($q2) => $q2->where('id', $v)),
+        ];
+    }
+
+    // -----------------------------------------
+
+    public static function booleanFilters(): array
+    {
+        return [
+            'sugar_free',
+            'gluten_free',
+            'vegan',
+            'vegetarian',
+            'organic',
+        ];
+    }
 }

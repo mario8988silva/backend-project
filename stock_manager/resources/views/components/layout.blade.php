@@ -18,9 +18,11 @@
         <div class="flex flex-wrap items-center justify-between gap-6 mb-6">
 
             {{-- Title --}}
-            <h1 class="text-xl font-semibold whitespace-nowrap">
-                Stock Manager
-            </h1>
+            <a href="{{ route('home') }}">
+                <h1 class="text-xl font-semibold whitespace-nowrap">
+                    Stock Manager
+                </h1>
+            </a>
 
             {{-- User Info OR Login/Register --}}
             @auth

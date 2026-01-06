@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Settlements;
 
 use Illuminate\Http\Request;
@@ -6,7 +7,41 @@ use Illuminate\Database\Eloquent\Builder;
 use App\Services\LocalFilterService;
 use App\Services\ForeignFilterService;
 
-class ProductFilterSettlement
+class UniversalFilterSettlement
+{
+    public function __construct(
+        private LocalFilterService $localFilter,
+        private ForeignFilterService $foreignFilter
+    ) {}
+
+    public function apply(Request $request, Builder $query): Builder
+    {
+        $model = $query->getModel();
+
+        // Local filters (simple where)
+        if (method_exists($model, 'localFilters')) {
+            $this->localFilter->apply(
+                $request,
+                $query,
+                $model::localFilters()
+            );
+        }
+
+        // Foreign filters (whereHas)
+        if (method_exists($model, 'foreignFilters')) {
+            $this->foreignFilter->apply(
+                $request,
+                $query,
+                $model::foreignFilters()
+            );
+        }
+
+        return $query;
+    }
+}
+
+/*
+class UniversalFilterSettlement
 {
     public function __construct(
         private LocalFilterService $localFilter,
@@ -42,3 +77,4 @@ class ProductFilterSettlement
         return $query;
     }
 }
+*/

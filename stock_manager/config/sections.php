@@ -4,11 +4,16 @@
 // STOCK MENU
 $stocksMenu = [
     'index' => [
-        ['products.index', 'Products'],
+        ['stocks.index', 'Stocks'],
+        ['stock-movements.index', 'Stock Movements'],
+        ['sold-products.index', 'Sold Products'],
+        //['waste-log.index', 'Waste Log'],
+        ['locations.index', 'Locations'],
+        //['statuses.index', 'Statuses'],
     ],
     'create' => [
-        ['products.index', 'Products'],
-        ['orders.create', 'Order'],
+        ['locations.create', 'Location'],
+        //['statuses.create', 'Status'],
     ],
 ];
 
@@ -17,18 +22,10 @@ $suppliersMenu = [
     'index' => [
         ['suppliers.index', 'Suppliers'],
         ['representatives.index', 'Representatives'],
-        ['categories.index', 'Categories'],
-        ['products.index', 'Products'],
-        ['invoices.index', 'Invoices'],
-        ['orders.index', 'Orders'],
     ],
     'create' => [
         ['suppliers.create', 'Supplier'],
         ['representatives.create', 'Representative'],
-        ['categories.create', 'Category'],
-        ['products.create', 'Product'],
-        ['invoices.create', 'Invoice'],
-        ['orders.create', 'Order'],
     ],
 ];
 
@@ -36,15 +33,10 @@ $suppliersMenu = [
 $ordersMenu = [
     'index' => [
         ['orders.index', 'Orders'],
-        ['suppliers.index', 'Suppliers'],
-        ['representatives.index', 'Representatives'],
-        ['invoices.index', 'Invoices'],
+        //['invoices.index', 'Invoices'],
     ],
     'create' => [
-        ['orders.index', 'Orders'],
-        ['suppliers.index', 'Suppliers'],
-        ['representatives.index', 'Representatives'],
-        ['invoices.index', 'Invoices'],
+        ['overview.index', 'Order'],
     ],
 ];
 
@@ -73,30 +65,37 @@ $productsMenu = [
 ];
 
 // TEAM MENU
-
+// ---------
 // WASTE LOG MENU
 
 // APPLIANCE: ------------------------------------------------
 return [
     // STOCK MENU
-    'stocks'          => $stocksMenu,
+    'stocks'            => $stocksMenu,
+    'stock-movements'   => $stocksMenu,
+    'sold-products'     => $stocksMenu,
+    //'waste log'         => $stocksMenu,
+    'locations'         => $stocksMenu,
+    'stasuses'          => $stocksMenu,
+
+
     // SUPPLIERS MENU
-    'suppliers'       => $suppliersMenu,
-    'representatives' => $suppliersMenu,
+    'suppliers'         => $suppliersMenu,
+    'representatives'   => $suppliersMenu,
 
     // ORDERS MENU
-    'orders' => $ordersMenu,
+    'orders'            => $ordersMenu,
 
     // PRODUCTS MENU
-    'products'       => $productsMenu,
-    'brands'         => $productsMenu,
-    'subcategories'  => $productsMenu,
-    'categories'     => $productsMenu,
-    'families'       => $productsMenu,
-    'unit-types'     => $productsMenu,
-    'iva-categories' => $productsMenu,
-    'nutri-scores'   => $productsMenu,
-    'eco-scores'     => $productsMenu,
+    'products'          => $productsMenu,
+    'brands'            => $productsMenu,
+    'subcategories'     => $productsMenu,
+    'categories'        => $productsMenu,
+    'families'          => $productsMenu,
+    'unit-types'        => $productsMenu,
+    'iva-categories'    => $productsMenu,
+    'nutri-scores'      => $productsMenu,
+    'eco-scores'        => $productsMenu,
 
     // TEAM MENU
     'users' => [

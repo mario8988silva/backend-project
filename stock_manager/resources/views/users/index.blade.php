@@ -36,6 +36,6 @@ view('components.filter-select', [
 
 @endphp
 
-<x-index title="Users List" :columns="$columns" :filtersLabels="$filtersLabels" :filters="$filters" :items="$users" />
+<x-index title="Team's List" :columns="$columns" :filtersLabels="$filtersLabels" :filters="$filters" :items="$users" />
 
 {{ $users->links() }}

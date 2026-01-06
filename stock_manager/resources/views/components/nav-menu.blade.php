@@ -1,12 +1,11 @@
 @php
 $menu = [
-['overview.index', 'Make an Order'],
 ['stocks.index', 'Stock'],
-['suppliers.index', 'Suppliers'],
-['orders.index', 'Orders'],
 ['products.index', 'Products'],
+['orders.index', 'Orders'],
+['suppliers.index', 'Suppliers'],
 ['users.index', 'Team'],
-//['waste-logs.index', 'Waste Log'],
+// lixeira/soft-delete deposit,
 ];
 @endphp
 

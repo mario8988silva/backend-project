@@ -1,6 +1,7 @@
 <ul class="flex items-center gap-4 text-sm">
-    <li>{{ Auth::user()->name }}</li>
-
+    <a href="{{ route('users.show', Auth::user()) }}">
+        <li>{{ Auth::user()->name }}</li>
+    </a>
     <li>
         <form action="{{ route('logout') }}" method="post">
             @csrf

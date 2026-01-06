@@ -25,6 +25,7 @@ use App\Http\Controllers\{
     UnitTypeController,
     //WasteLogController
 };
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,11 @@ use App\Http\Controllers\{
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn () => view('auth.login'));
+Route::get('/', function () {
+    return Auth::check()
+        ? redirect()->route('stocks.index')
+        : redirect()->route('login');
+})->name('home');
 
 
 /*

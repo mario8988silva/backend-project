@@ -6,7 +6,34 @@ use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Builder;
 use App\Services\SortService;
 
-class ProductSortSettlement
+class UniversalSortSettlement
+{
+    public function __construct(private SortService $sorter) {}
+
+    public function apply(Request $request, Builder $query): Builder
+    {
+        $model = $query->getModel();
+
+        $sortable = method_exists($model, 'sortable')
+            ? $model::sortable()
+            : [];
+
+        $relationSorts = method_exists($model, 'relationSorts')
+            ? $model::relationSorts()
+            : [];
+
+        return $this->sorter->apply(
+            $request,
+            $query,
+            $sortable,
+            $relationSorts,
+            $model->getTable()
+        );
+    }
+}
+
+/*
+class UniversalSortSettlement
 {
     public function __construct(private SortService $sorter) {}
 
@@ -56,3 +83,4 @@ class ProductSortSettlement
         return $this->sorter->apply($request, $query, $this->sortable, $this->relationSorts, 'products');
     }
 }
+*/

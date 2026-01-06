@@ -8,7 +8,9 @@
 
 <div>
     <select name="{{ $name }}" class="input w-full">
-        <option value="">-- {{ $label ?? ucfirst($name) }} --</option>
+        <option value="">
+            -- {{ $label ?? \Illuminate\Support\Str::headline($name) }} --
+        </option>
 
         @foreach($options as $option)
             @php

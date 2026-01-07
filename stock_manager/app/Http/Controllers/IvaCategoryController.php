@@ -3,17 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\IvaCategory;
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 
 class IvaCategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalFilterSettlement $filterSettlement)
     {
-        $ivaCategories = IvaCategory::orderBy('name')->paginate(25);
+        // 1. Generate headers
+        $headers = IvaCategory::indexHeaders();
 
-        return view('reference.iva-categories.index', [
-            'iva_categories' => $ivaCategories,
-        ]);
+        // 2. Build query
+        $query = IvaCategory::query();
+
+        // 3. Apply filters
+        $filterSettlement->apply($request, $query);
+
+        // 4. Apply search
+        $searchSettlement->apply($request, $query);
+
+        // 6. Apply sorting
+        $sortSettlement->apply($request, $query);
+
+        // 7. Pagination
+        $ivaCategories = $query->paginate(25);
+
+        // 8. Return view WITH headers
+        return view('reference.iva-categories.index', array_merge(
+            [
+                'iva_categories' => $ivaCategories,
+                'headers'  => $headers,
+            ],
+        ));
     }
 
     public function show(IvaCategory $ivaCategory)

@@ -4,20 +4,53 @@ namespace App\Http\Controllers;
 
 use App\Models\Subcategory;
 use App\Models\Category;
+use App\Models\Family;
+use App\Settlements\UniversalBooleanFilterSettlement;
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 
 class SubcategoryController extends Controller
 {
-    public function index()
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalFilterSettlement $filterSettlement)
     {
-        $subcategories = Subcategory::with('category')
-            ->orderBy('name')
-            ->paginate(25);
+        // 1. Generate headers
+        $headers = Subcategory::indexHeaders();
 
-        return view('reference.subcategories.index', [
-            'subcategories' => $subcategories,
-        ]);
+        // 2. Build query
+        $query = Subcategory::query();
+
+        // 3. Apply filters
+        $filterSettlement->apply($request, $query);
+
+        // 4. Apply search
+        $searchSettlement->apply($request, $query);
+
+        // 6. Apply sorting
+        $sortSettlement->apply($request, $query);
+
+        // 7. Pagination
+        $subcategories = $query->paginate(25);
+
+        // 8. Return view WITH headers
+        return view('reference.subcategories.index', array_merge(
+            [
+                'subcategories' => $subcategories,
+                'headers'  => $headers,
+            ],
+            $this->getLookups()
+        ));
     }
+
+    private function getLookups(): array
+    {
+        return [
+            'categories' => Category::orderBy('name')->get(),
+            'families' => Family::orderBy('name')->get(),
+        ];
+    }
+
 
     public function show(Subcategory $subcategory)
     {

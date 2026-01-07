@@ -1,26 +1,22 @@
 @php
 $columns = [
-    ['name', 'Name'],
-    ['country', 'Country'],
-    ['description', 'Description'],
-    ['created_at', 'Created'],
-    ['updated_at', 'Updated'],
+['name', 'Name'],
+['country', 'Country'],
+['description', 'Description'],
+['created_at', 'Created'],
+['updated_at', 'Updated'],
 ];
 
-$filtersLabels = ['Name', 'Country'];
+$filtersLabels = ['Search'];
 
 $filters = [
-    view('components.filter-text', ['name' => 'name', 'label' => 'Name'])->render(),
-    view('components.filter-text', ['name' => 'country', 'label' => 'Country'])->render(),
+view('components.filter-text', [
+'name' => 'search',
+'label' => 'search'
+])->render(),
 ];
 @endphp
 
-<x-index 
-    title="Brands List"
-    :columns="$columns"
-    :filtersLabels="$filtersLabels"
-    :filters="$filters"
-    :items="$brands"
-/>
+<x-index title="Brands List" :columns="$columns" :filtersLabels="$filtersLabels" :filters="$filters" :items="$brands" />
 
 {{ $brands->links() }}

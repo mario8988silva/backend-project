@@ -7,13 +7,12 @@ $columns = [
     ['updated_at', 'Updated'],
 ];
 
-$filtersLabels = ['Name', 'Symbol', 'Description'];
+$filtersLabels = ['Search'];
 
 $filters = [
-    view('components.filter-text', ['name' => 'name', 'label' => 'Name'])->render(),
-    view('components.filter-text', ['name' => 'symbol', 'label' => 'Symbol'])->render(),
-    view('components.filter-text', ['name' => 'description', 'label' => 'Description'])->render(),
+    view('components.filter-text', ['name' => 'search', 'label' => 'Search'])->render(),
 ];
+
 @endphp
 
 <x-index 

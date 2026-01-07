@@ -3,17 +3,40 @@
 namespace App\Http\Controllers;
 
 use App\Models\UnitType;
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 
 class UnitTypeController extends Controller
 {
-    public function index()
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalFilterSettlement $filterSettlement)
     {
-        $unitTypes = UnitType::orderBy('name')->paginate(25);
+        // 1. Generate headers
+        $headers = UnitType::indexHeaders();
 
-        return view('reference.unit-types.index', [
-            'unit_types' => $unitTypes,
-        ]);
+        // 2. Build query
+        $query = UnitType::query();
+
+        // 3. Apply filters
+        $filterSettlement->apply($request, $query);
+
+        // 4. Apply search
+        $searchSettlement->apply($request, $query);
+
+        // 6. Apply sorting
+        $sortSettlement->apply($request, $query);
+
+        // 7. Pagination
+        $unitTypes = $query->paginate(25);
+
+        // 8. Return view WITH headers
+        return view('reference.unit-types.index', array_merge(
+            [
+                'unit_types' => $unitTypes,
+                'headers'  => $headers,
+            ],
+        ));
     }
 
     public function show(UnitType $unitType)

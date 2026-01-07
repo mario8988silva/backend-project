@@ -7,11 +7,32 @@ $columns = [
     ['updated_at', 'Updated'],
 ];
 
-$filtersLabels = ['Name'];
+$filtersLabels = ['Category', 'Family', 'Search'];
 
 $filters = [
-    view('components.filter-text', ['name' => 'name', 'label' => 'Name'])->render(),
+    view('components.filter-select', [
+        'name' => 'category_id',
+        'label' => 'Category',
+        'options' => $categories,
+        'valueField' => 'id',
+        'textField' => 'name',
+    ])->render(),
+
+    view('components.filter-select', [
+        'name' => 'family_id',
+        'label' => 'Family',
+        'options' => $families,
+        'valueField' => 'id',
+        'textField' => 'name',
+    ])->render(),
+
+    view('components.filter-text', [
+        'name' => 'search',
+        'label' => 'Search'
+    ])->render(),
 ];
+
+
 @endphp
 
 <x-index 

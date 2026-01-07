@@ -4,26 +4,43 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Family;
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalFilterSettlement $filterSettlement)
     {
-        $query = Category::with('family');
+        // 1. Generate headers
+        $headers = Category::indexHeaders();
 
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
+        // 2. Build query
+        $query = Category::query();
 
-        if ($request->filled('family_id')) {
-            $query->where('family_id', $request->family_id);
-        }
+        // 3. Apply filters
+        $filterSettlement->apply($request, $query);
 
-        $categories = $query->paginate(20)->withQueryString();
-        $families = Family::all();
+        // 4. Apply search
+        $searchSettlement->apply($request, $query);
 
-        return view('reference.categories.index', compact('categories', 'families'));
+        // 6. Apply sorting
+        $sortSettlement->apply($request, $query);
+
+        // 7. Pagination
+        $categories = $query->paginate(25);
+
+        // 8. Return view WITH headers
+        return view('reference.categories.index', [
+            'categories' => $categories,
+            'headers' => $headers,
+            'families' => Family::orderBy('name')->get()->map(fn($f) => [
+                'id' => $f->id,
+                'name' => $f->name,
+            ]),
+
+        ]);
     }
 
 

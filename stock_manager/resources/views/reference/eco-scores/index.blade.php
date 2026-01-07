@@ -1,27 +1,19 @@
 @php
 $columns = [
-    ['name', 'Name'],
-    ['label', 'Label'],
-    ['description', 'Description'],
-    ['created_at', 'Created'],
-    ['updated_at', 'Updated'],
+['name', 'Name'],
+['label', 'Label'],
+['description', 'Description'],
+['created_at', 'Created'],
+['updated_at', 'Updated'],
 ];
 
-$filtersLabels = ['Name', 'Label', 'Description'];
+$filtersLabels = ['Search'];
 
 $filters = [
-    view('components.filter-text', ['name' => 'name', 'label' => 'Name'])->render(),
-    view('components.filter-text', ['name' => 'label', 'label' => 'Label'])->render(),
-    view('components.filter-text', ['name' => 'description', 'label' => 'Description'])->render(),
+view('components.filter-text', ['name' => 'search', 'label' => 'Search'])->render(),
 ];
 @endphp
 
-<x-index 
-    title="Eco Scores List"
-    :columns="$columns"
-    :filtersLabels="$filtersLabels"
-    :filters="$filters"
-    :items="$eco_scores"
-/>
+<x-index title="Eco Scores List" :columns="$columns" :filtersLabels="$filtersLabels" :filters="$filters" :items="$eco_scores" />
 
 {{ $eco_scores->links() }}

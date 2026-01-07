@@ -3,23 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\Family;
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 
 class FamilyController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalFilterSettlement $filterSettlement)
     {
-        $query = Family::with('categories');
 
-        if ($request->filled('name')) {
-            $query->where('name', 'like', '%' . $request->name . '%');
-        }
+        // 1. Generate headers
+        $headers = Family::indexHeaders();
 
-        $families = $query->paginate(20)->withQueryString();
+        // 2. Build query
+        $query = Family::query();
 
-        return view('reference.families.index', compact('families'));
+        // 3. Apply filters
+        $filterSettlement->apply($request, $query);
+
+        // 4. Apply search
+        $searchSettlement->apply($request, $query);
+
+        // 6. Apply sorting
+        $sortSettlement->apply($request, $query);
+
+        // 7. Pagination
+        $families = $query->paginate(25);
+
+        // 8. Return view WITH headers
+        return view('reference.families.index', array_merge(
+            [
+                'families' => $families,
+                'headers'  => $headers,
+            ],
+        ));
     }
-
 
     public function show(Family $family)
     {

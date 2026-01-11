@@ -6,5 +6,6 @@
             <strong>{{ $label }}</strong><br>
             <span>{{ $timestamp->format('Y-m-d H:i') }}</span>
         </li>
+        <br>
     @endforeach
 </ul>

@@ -30,7 +30,7 @@ class StockMovementController extends Controller
             $query->whereDate('moved_at', '>=', $request->moved_from);
         }
 
-        $stockMovements = $query->paginate(20)->withQueryString();
+        $stockMovements = $query->paginate(25)->withQueryString();
 
         $products = Product::all();
         $orders = Order::all();
@@ -48,7 +48,7 @@ class StockMovementController extends Controller
         $stockMovement->load(['product', 'location']);
 
         return view('stock.stock-movements.show', [
-            'movement' => $stockMovement,
+            'stockMovement' => $stockMovement,
         ]);
     }
 

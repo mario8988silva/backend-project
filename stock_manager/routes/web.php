@@ -14,6 +14,7 @@ use App\Http\Controllers\{
     LocationController,
     NutriScoreController,
     OrderController,
+    OrderSessionController,
     RepresentativeController,
     SoldProductController,
     StatusController,
@@ -91,7 +92,7 @@ $crudControllers = [
 
     // Locations & Status
     'locations'       => LocationController::class,
-    'status'          => StatusController::class,
+    'statuses'          => StatusController::class,
 
     // Orders, Invoices, Sales, Waste
     'invoices'        => InvoiceController::class,
@@ -121,6 +122,8 @@ Route::middleware('auth')->group(function () use ($crudControllers) {
 Route::middleware('auth')->group(function () {
 
     // Submit / Receive / Cancel
+    Route::post('/order/session/update', [OrderSessionController::class, 'update'])->name('order.session.update');
+    Route::post('/overview/update', [StockOverviewController::class, 'update'])->name('overview.update');
     Route::post('orders/{order}/submit',  [OrderController::class, 'submit'])->name('orders.submit');
     Route::post('orders/{order}/receive', [OrderController::class, 'receive'])->name('orders.receive');
     Route::post('orders/{order}/cancel',  [OrderController::class, 'cancel'])->name('orders.cancel');
@@ -136,10 +139,14 @@ Route::middleware('auth')->group(function () {
         ->name('orders.arrival-check');
 
     // Order Check
+    Route::post('/orders/{order}/auto-receive', [OrderController::class, 'autoReceive'])
+        ->name('orders.autoReceive');
     Route::get('orders/{order}/order-check',  [OrderController::class, 'orderCheckForm'])
         ->name('orders.order-check.form');
     Route::post('orders/{order}/order-check', [OrderController::class, 'orderCheck'])
         ->name('orders.order-check');
+
+
 
     // Close Order
     Route::post('orders/{order}/close', [OrderController::class, 'close'])

@@ -4,17 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Settlements\UniversalBooleanFilterSettlement;
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalBooleanFilterSettlement $booleanSettlement, UniversalFilterSettlement $filterSettlement)
     {
-        $users = User::paginate(20);
-        $roles = Role::orderBy('value')->get();
+        // 1. Generate headers
+        $headers = User::indexHeaders();
 
-        return view('users.index', compact('users', 'roles'));
+        // 2. Build query
+        $query = User::query();
+
+        // 3. Apply filters
+        $filterSettlement->apply($request, $query);
+
+        // 4. Apply search
+        $searchSettlement->apply($request, $query);
+
+        // 6. Apply sorting
+        $sortSettlement->apply($request, $query);
+
+        // 7. Pagination
+        $users = $query->with(
+            'role',
+        )->paginate(25);
+
+        // 8. Return view WITH headers
+        //return view('products.index', ["products" => $products]);
+        // Merge products with lookup tables
+        return view('users.index', array_merge(
+            [
+                'users' => $users,
+                'headers' => $headers,
+            ],
+            $this->getLookups()
+        ));
     }
+
+    private function getLookups(): array
+    {
+        return [
+            'roles' => Role::orderBy('value')->get(),
+        ];
+    }
+
 
 
     public function show(User $user)

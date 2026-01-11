@@ -1,5 +1,6 @@
 @php
 $columns = [
+['id', 'ID'],
 ['updated_at', 'Updated At'],
 ['barcode', 'Barcode'],
 ['name', 'Name'],

@@ -4,17 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Models\Representative;
 use App\Models\Supplier;
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 
 class RepresentativeController extends Controller
 {
-    public function index()
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalFilterSettlement $filterSettlement)
     {
-        $representatives = Representative::orderBy('name')->paginate(25);
 
-        return view('business.representatives.index', [
-            'representatives' => $representatives,
-        ]);
+
+        // 1. Generate headers
+        $headers = Representative::indexHeaders();
+
+        // 2. Build query
+        $query = Representative::query();
+
+        // 3. Apply filters
+        $filterSettlement->apply($request, $query);
+
+        // 4. Apply search
+        $searchSettlement->apply($request, $query);
+
+        // 6. Apply sorting
+        $sortSettlement->apply($request, $query);
+
+        // 7. Pagination
+        $representatives = $query->with(
+            'supplier',
+        )->paginate(25);
+
+        // 8. Return view WITH headers
+        //return view('products.index', ["products" => $products]);
+        // Merge products with lookup tables
+        return view('business.representatives.index', array_merge(
+            [
+                'representatives' => $representatives,
+                'headers'  => $headers,
+            ],
+            $this->getLookups()
+        ));
+    }
+
+    // Centralized lookup loader
+    private function getLookups(): array
+    {
+        return [
+            'suppliers' => Supplier::all(),
+        ];
     }
 
     public function show(Representative $representative)

@@ -55,7 +55,7 @@
     </ul>
     @endif
     --}}
-    {{-- Invoices --}}
+    {{-- Invoices --}}{{--
     @if($supplier->invoices->count())
     <h3>Invoices</h3>
     <ul>
@@ -68,4 +68,5 @@
         @endforeach
     </ul>
     @endif
+    --}}
 </x-show>

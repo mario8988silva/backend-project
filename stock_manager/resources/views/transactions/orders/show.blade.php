@@ -10,13 +10,12 @@
         'Updated At' => $order->updated_at->format('Y-m-d H:i'),
     ]">
 
-    @include('transactions.orders.show._warnings')
-    @include('transactions.orders.show._products')
-    @include('transactions.orders.show._stock_entries')
     @include('transactions.orders.show._representative')
-    {{--@include('transactions.orders.show._invoice')--}}
     @include('transactions.orders.show._status_actions')
+    @include('transactions.orders.show._warnings')
+    @include('transactions.orders.show._stock_entries')
+    {{--@include('transactions.orders.show._invoice')--}}
     @include('transactions.orders.show._stock_movements')
     @include('transactions.orders.show._timeline')
-
+    @include('transactions.orders.show._products')
 </x-show>

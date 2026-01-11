@@ -3,17 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
 {
-    public function index()
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalFilterSettlement $filterSettlement)
     {
-        $suppliers = Supplier::orderBy('name')->paginate(25);
 
-        return view('business.suppliers.index', [
-            'suppliers' => $suppliers,
-        ]);
+        // 1. Generate headers
+        $headers = Supplier::indexHeaders();
+
+        // 2. Build query
+        $query = Supplier::query();
+
+        // 3. Apply filters
+        $filterSettlement->apply($request, $query);
+
+        // 4. Apply search
+        $searchSettlement->apply($request, $query);
+
+        // 6. Apply sorting
+        $sortSettlement->apply($request, $query);
+
+        // 7. Pagination
+        $suppliers = $query->paginate(25);
+
+        // 8. Return view WITH headers
+        //return view('products.index', ["products" => $products]);
+        // Merge products with lookup tables
+        return view('business.suppliers.index', array_merge(
+            [
+                'suppliers' => $suppliers,
+                'headers'  => $headers,
+            ],
+        ));
     }
 
     public function show(Supplier $supplier)

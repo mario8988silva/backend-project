@@ -5,11 +5,11 @@
 $stocksMenu = [
     'index' => [
         ['stocks.index', 'Stocks'],
-        ['stock-movements.index', 'Stock Movements'],
+        //['stock-movements.index', 'Stock Movements'],
         ['sold-products.index', 'Sold Products'],
         //['waste-log.index', 'Waste Log'],
         ['locations.index', 'Locations'],
-        //['statuses.index', 'Statuses'],
+        ['statuses.index', 'Statuses'],
     ],
     'create' => [
         ['locations.create', 'Location'],
@@ -72,12 +72,11 @@ $productsMenu = [
 return [
     // STOCK MENU
     'stocks'            => $stocksMenu,
-    'stock-movements'   => $stocksMenu,
+    //'stock-movements'   => $stocksMenu,
     'sold-products'     => $stocksMenu,
     //'waste log'         => $stocksMenu,
     'locations'         => $stocksMenu,
-    'stasuses'          => $stocksMenu,
-
+    'statuses'          => $stocksMenu,
 
     // SUPPLIERS MENU
     'suppliers'         => $suppliersMenu,
@@ -85,6 +84,7 @@ return [
 
     // ORDERS MENU
     'orders'            => $ordersMenu,
+    'overview'          => $ordersMenu,
 
     // PRODUCTS MENU
     'products'          => $productsMenu,

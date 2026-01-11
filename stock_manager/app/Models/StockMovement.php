@@ -38,4 +38,16 @@ class StockMovement extends Model
     {
         return $this->belongsTo(Stock::class);
     }
+
+    public function location()
+    {
+        return $this->hasOneThrough(
+            Location::class,
+            Stock::class,
+            'id',          // Stock.id
+            'id',          // Location.id
+            'stock_id',    // StockMovement.stock_id
+            'location_id'  // Stock.location_id
+        );
+    }
 }

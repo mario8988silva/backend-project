@@ -10,6 +10,9 @@ use App\Models\User;
 use App\Models\Location;
 use App\Models\Stock;
 use App\Models\StockMovement;
+use App\Settlements\UniversalFilterSettlement;
+use App\Settlements\UniversalSearchSettlement;
+use App\Settlements\UniversalSortSettlement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,81 +20,51 @@ class OrderController extends Controller
 {
     // INDEX — Filters + Sorting + Pagination
 
-    public function index(Request $request)
+    public function index(Request $request, UniversalSearchSettlement $searchSettlement, UniversalSortSettlement $sortSettlement, UniversalFilterSettlement $filterSettlement)
     {
-        $query = Order::with(['representative', 'user', 'status']);
 
-        // Apply filters
-        if ($request->filled('representative_id')) {
-            $query->where('representative_id', $request->representative_id);
-        }
+        // 1. Generate headers
+        $headers = Order::indexHeaders();
 
-        if ($request->filled('user_id')) {
-            $query->where('user_id', $request->user_id);
-        }
+        // 2. Build query
+        $query = Order::query();
 
-        if ($request->filled('order_from')) {
-            $query->whereDate('order_date', '>=', $request->order_from);
-        }
+        // 3. Apply filters
+        $filterSettlement->apply($request, $query);
 
-        if ($request->filled('delivery_to')) {
-            $query->whereDate('delivery_date', '<=', $request->delivery_to);
-        }
+        // 4. Apply search
+        $searchSettlement->apply($request, $query);
 
-        if ($request->filled('status_id')) {
-            $query->where('status_id', $request->status_id);
-        }
+        // 6. Apply sorting
+        $sortSettlement->apply($request, $query);
 
-        // Sorting
-        $sort = $request->get('sort', 'order_date');
-        $direction = $request->get('direction', 'desc');
+        // 7. Pagination
+        $orders = $query->with(
+            'representative',
+            'user',
+            'status',
+        )->paginate(25);
 
-        $query->orderBy($sort, $direction);
-
-        // Pagination
-        $orders = $query->paginate(25)->withQueryString();
-
-        return view('transactions.orders.index', [
-            'orders' => $orders,
-
-            'filtersLabels' => [
-                'representative_id' => 'Representative',
-                'user_id' => 'User',
-                'order_from' => 'Order From',
-                'delivery_to' => 'Delivery To',
-                'status_id' => 'Status',
+        // 8. Return view WITH headers
+        //return view('products.index', ["products" => $products]);
+        // Merge products with lookup tables
+        return view('transactions.orders.index', array_merge(
+            [
+                'orders' => $orders,
+                'headers'  => $headers,
             ],
+            $this->getLookups()
+        ));
+    }
 
-            'filters' => [
-                'representative_id' => view('components.filter-select', [
-                    'name' => 'representative_id',
-                    'options' => Representative::orderBy('name')->get(),
-                    'selected' => request('representative_id'),
-                ]),
-
-                'user_id' => view('components.filter-select', [
-                    'name' => 'user_id',
-                    'options' => User::orderBy('name')->get(),
-                    'selected' => request('user_id'),
-                ]),
-
-                'order_from' => view('components.filter-date', [
-                    'name' => 'order_from',
-                    'label' => 'Order From',
-                ]),
-
-                'delivery_to' => view('components.filter-date', [
-                    'name' => 'delivery_to',
-                    'label' => 'Delivery To',
-                ]),
-
-                'status_id' => view('components.filter-select', [
-                    'name' => 'status_id',
-                    'options' => Status::orderBy('state')->get(),
-                    'selected' => request('status_id'),
-                ]),
-            ],
-        ]);
+    // Centralized lookup loader
+    private function getLookups(): array
+    {
+        return [
+            'representatives' => Representative::all(),
+            'users' => User::all(),
+            'statuses' => Status::all(),
+        ];
     }
 
     // SHOW
@@ -114,13 +87,25 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        $quantities = collect($request->input('products', []))
-            ->filter(fn($qty) => (int) $qty > 0);
+        // 1. Load everything from the session
+        $sessionQuantities = session('order.products', []);
 
-        if ($quantities->isEmpty()) {
+        // 2. Load only the current page inputs
+        $pageQuantities = $request->input('products', []);
+
+
+
+        // 3. Merge them (page overrides session)
+        $merged = collect($sessionQuantities)
+            ->merge($pageQuantities)
+            ->filter(fn($qty, $productId) => $productId > 0 && (int)$qty > 0)
+            ->map(fn($qty) => (int) $qty);
+
+        if ($merged->isEmpty()) {
             return back()->withErrors('You must select at least one product.');
         }
 
+        // 4. Create the order
         $draftStatus = Status::firstWhere('state', 'ORDER DRAFT');
 
         $order = Order::create([
@@ -131,17 +116,22 @@ class OrderController extends Controller
             'status_id'         => $draftStatus?->id,
         ]);
 
-        foreach ($quantities as $productId => $qty) {
+        // 5. Attach ALL products from ALL pages
+        foreach ($merged as $productId => $qty) {
             $order->products()->attach($productId, [
                 'quantity'    => $qty,
                 'expiry_date' => null,
             ]);
         }
 
+        // 6. Clear session
+        session()->forget('order.products');
+
         return redirect()
             ->route('orders.show', $order)
             ->with('success', 'Order created successfully.');
     }
+
 
     // EDIT — Only Draft Orders
 
@@ -295,16 +285,21 @@ class OrderController extends Controller
                 continue;
             }
 
-            $stock = Stock::create([
-                'product_id' => $productId,
-                'quantity'   => $item['received_qty'],
-                'expiry_date' => $item['expiry_date'] ?? null,
-                'location_id' => $item['location_id'] ?? null,
-                'status_id'  => Status::firstWhere('state', 'IN STOCK')->id,
-                'notes'      => $item['notes'] ?? null,
-                'order_has_product_id' => $order->products()->where('product_id', $productId)->first()->pivot->id,
-            ]);
+            // 1. Find or create aggregated stock row
+            $stock = Stock::firstOrCreate(
+                ['product_id' => $productId],
+                [
+                    'quantity' => 0,
+                    'location_id' => $item['location_id'] ?? null,
+                    'status_id' => Status::firstWhere('state', 'IN STOCK')->id,
+                    'order_has_product_id' => $order->products()->where('product_id', $productId)->first()->pivot->id,
+                ]
+            );
 
+            // 2. Increment quantity
+            $stock->increment('quantity', $item['received_qty']);
+
+            // 3. Log movement
             StockMovement::create([
                 'product_id'   => $productId,
                 'stock_id'     => $stock->id,
@@ -323,6 +318,47 @@ class OrderController extends Controller
             ->route('orders.show', $order)
             ->with('success', 'Order received and stock updated.');
     }
+
+    public function autoReceive(Order $order)
+    {
+        if (! $order->isSubmitted()) {
+            return back()->withErrors('Only submitted orders can be marked as received.');
+        }
+
+        foreach ($order->products as $product) {
+            $qty = $product->pivot->quantity;
+
+            if ($qty <= 0) {
+                continue;
+            }
+
+            $stock = Stock::create([
+                'product_id' => $product->id,
+                'quantity'   => $qty,
+                'location_id' => null,
+                'status_id'  => Status::firstWhere('state', 'IN STOCK')->id,
+                'order_has_product_id' => $product->pivot->id,
+            ]);
+
+            StockMovement::create([
+                'product_id'   => $product->id,
+                'stock_id'     => $stock->id,
+                'order_id'     => $order->id,
+                'movement_type' => 'IN',
+                'quantity'     => $qty,
+                'moved_at'     => now(),
+            ]);
+        }
+
+        $order->update([
+            'status_id' => Status::firstWhere('state', 'ARRIVED')->id,
+        ]);
+
+        return redirect()
+            ->route('orders.show', $order)
+            ->with('success', 'Order automatically received and stock updated.');
+    }
+
 
     // ARRIVAL CHECK
 

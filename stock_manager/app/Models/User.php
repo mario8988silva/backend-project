@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Traits\HasIndexHeaders;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,7 +12,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasIndexHeaders;
 
     /**
      * The attributes that are mass assignable.
@@ -57,5 +59,54 @@ class User extends Authenticatable
     public function permissions()
     {
         return $this->role ? $this->role->permissions : collect();
+    }
+
+    // -----------------------------------------
+    public static function searchable(): array
+    {
+        return [
+            'name',
+            'email',
+            'phone',
+            'role.name',
+        ];
+    }
+
+    // -----------------------------------------
+    public static function sortable(): array
+    {
+        return [
+            'name',
+            'email',
+            'phone',
+            'role_id',
+            'created_at',
+        ];
+    }
+
+    public static function relationSorts(): array
+    {
+        return [
+            'role' => [
+                ['table' => 'roles', 'local' => 'users.role_id', 'foreign' => 'roles.id'],
+                'roles.name',
+            ],
+        ];
+    }
+
+    // -----------------------------------------
+
+    public static function localFilters(): array
+    {
+        return [
+            'name',
+            'email',
+            'phone',
+            'role_id',
+        ];
+    }
+    public static function foreignFilters(): array
+    {
+        return ['role_name' => fn($q, $v) => $q->whereHas('role', fn($q2) => $q2->where('name', 'like', "%$v%")),];
     }
 }

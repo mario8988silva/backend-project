@@ -11,9 +11,28 @@ class StockOverviewController extends Controller
     {
         // Load all products + their stock entries
         $products = Product::with(['stocks', 'brand', 'subcategory.category'])
-            ->orderBy('name')
-            ->paginate(50);
+            ->orderBy('id')
+            ->paginate(25);
 
-        return view('stock.overview.index', compact('products'));
+        // Load saved quantities from session
+        $sessionQuantities = session('order.products', []);
+
+        return view('stock.overview.index', [
+            'products' => $products,
+            'sessionQuantities' => $sessionQuantities,
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $products = session('order.products', []);
+
+        foreach ($request->input('products', []) as $id => $qty) {
+            $products[$id] = (int) $qty;
+        }
+
+        session(['order.products' => $products]);
+
+        return response()->json(['success' => true]);
     }
 }

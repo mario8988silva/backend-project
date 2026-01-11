@@ -14,12 +14,13 @@ use App\Models\NutriScore;
 use App\Models\EcoScore;
 use App\Models\Order;
 use App\Models\Stock;
+use App\Traits\HasIndexHeaders;
 use Illuminate\Support\Facades\Schema;
 
 class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductsFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory, HasIndexHeaders;
 
     protected $fillable = [
         //

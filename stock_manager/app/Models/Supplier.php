@@ -9,11 +9,12 @@ use App\Models\Representative;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Invoice;
+use App\Traits\HasIndexHeaders;
 
 class Supplier extends Model
 {
     /** @use HasFactory<\Database\Factories\SupplierFactory> */
-    use HasFactory;
+    use HasFactory, HasIndexHeaders;
 
     protected $fillable = [
         'name',
@@ -33,7 +34,7 @@ class Supplier extends Model
     {
         return $this->belongsToMany(Category::class, 'category_has_suppliers');
     }
-    
+
     // A supplier can have many products
     public function products()
     {
@@ -44,4 +45,46 @@ class Supplier extends Model
     {
         return $this->hasMany(Invoice::class);
     }
+
+    // -----------------------------------------
+    public static function searchable(): array
+    {
+        return [
+            'name',
+            'phone',
+            'email',
+            'address',
+            'notes',
+        ];
+    }
+
+    // -----------------------------------------
+    public static function sortable(): array
+    {
+        return [
+            'name',
+            'phone',
+            'email',
+            'address',
+            'notes',
+            'created_at',
+        ];
+    }
+
+
+    // -----------------------------------------
+
+    public static function localFilters(): array
+    {
+        return [
+            'name',
+            'phone',
+            'email',
+            'address',
+            'notes',
+        ];
+    }
+
+    // -----------------------------------------
+
 }

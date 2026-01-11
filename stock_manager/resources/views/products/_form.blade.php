@@ -151,7 +151,7 @@
                             value="{{ $nutriScore->id }}"
                             {{ $nutriScore->id == old('nutri_score_id', $product->nutri_score_id ?? '') ? 'selected' : '' }}
                         >
-                            {{ $nutriScore->grade }}
+                            {{ $nutriScore->name }}
                         </option>
                     @endforeach
                 </select>
@@ -170,7 +170,7 @@
                             value="{{ $ecoScore->id }}"
                             {{ $ecoScore->id == old('eco_score_id', $product->eco_score_id ?? '') ? 'selected' : '' }}
                         >
-                            {{ $ecoScore->grade }}
+                            {{ $ecoScore->name }}
                         </option>
                     @endforeach
                 </select>

@@ -10,10 +10,11 @@ use App\Models\Representative;
 use App\Models\User;
 //use App\Models\Invoice;
 use App\Models\Status;
+use App\Traits\HasIndexHeaders;
 
 class Order extends Model
 {
-    use HasFactory;
+    use HasFactory, HasIndexHeaders;
 
     protected $fillable = [
         'representative_id',
@@ -147,27 +148,26 @@ class Order extends Model
             'Order Created' => $this->created_at,
         ];
 
-        // If submitted (anything beyond draft)
         if (!$this->isDraft()) {
             $events['Order Submitted'] = $this->updated_at;
         }
 
-        // If received
         if ($this->isReceived()) {
             $events['Order Received'] = $this->updated_at;
         }
 
-        // If stock entries exist
-        if ($this->stockEntries()->exists()) {
-            $events['Stock Entries Created'] = $this->stockEntries()->min('created_at');
+        // Stock entries
+        $minEntry = $this->stockEntries()->min('stocks.created_at');
+        if ($minEntry) {
+            $events['Stock Entries Created'] = \Carbon\Carbon::parse($minEntry);
         }
 
-        // If stock movements exist
-        if ($this->stockMovements()->exists()) {
-            $events['Stock Movements Created'] = $this->stockMovements()->min('created_at');
+        // Stock movements
+        $minMovement = $this->stockMovements()->min('stock_movements.created_at');
+        if ($minMovement) {
+            $events['Stock Movements Created'] = \Carbon\Carbon::parse($minMovement);
         }
 
-        // If closed
         if ($this->status?->state === 'ORDER CLOSED') {
             $events['Order Closed'] = $this->updated_at;
         }
@@ -175,8 +175,83 @@ class Order extends Model
         return collect($events)->sortBy(fn($time) => $time);
     }
 
+
     public function soldProducts()
     {
         return $this->hasMany(SoldProduct::class);
     }
+
+    // -----------------------------------------
+    public static function searchable(): array
+    {
+        return [
+            'order_date',
+            'delivery_date',
+            'representative.name',
+            'user.name',
+            'status.state',
+        ];
+    }
+
+    // -----------------------------------------
+    public static function sortable(): array
+    {
+        return [
+            'order_date',
+            'delivery_date',
+            'representative_id',
+            'user_id',
+            'status_id',
+            'created_at',
+        ];
+    }
+
+
+    public static function relationSorts(): array
+    {
+        return [
+            'representative' => [
+                ['table' => 'representatives', 'local' => 'orders.representative_id', 'foreign' => 'representatives.id'],
+                'representatives.name',
+            ],
+            'user' => [
+                ['table' => 'users', 'local' => 'orders.user_id', 'foreign' => 'users.id'],
+                'users.name',
+            ],
+            'status' => [
+                ['table' => 'statuses', 'local' => 'orders.status_id', 'foreign' => 'statuses.id'],
+                'statuses.state',
+            ],
+        ];
+    }
+
+
+    // -----------------------------------------
+
+    public static function localFilters(): array
+    {
+        return [
+            'representative_id',
+            'user_id',
+            'status_id',
+            'order_date',
+            'delivery_date',
+        ];
+    }
+
+    public static function foreignFilters(): array
+    {
+        return [
+            'representative_name' => fn($q, $v) =>
+            $q->whereHas('representative', fn($q2) => $q2->where('name', 'like', "%$v%")),
+
+            'user_name' => fn($q, $v) =>
+            $q->whereHas('user', fn($q2) => $q2->where('name', 'like', "%$v%")),
+
+            'status_state' => fn($q, $v) =>
+            $q->whereHas('status', fn($q2) => $q2->where('state', 'like', "%$v%")),
+        ];
+    }
+
+    // -----------------------------------------
 }

@@ -1,4 +1,3 @@
-
 <x-show 
     :title="$product->name"
     :image="$product->image"

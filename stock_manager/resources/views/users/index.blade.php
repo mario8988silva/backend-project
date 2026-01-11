@@ -8,30 +8,14 @@ $columns = [
 ];
 
 $filtersLabels = [
-'Name',
-'Email',
 'Role',
+'Search',
 ];
 
 $filters = [
-view('components.filter-text', [
-'name' => 'name',
-'label' => 'Name',
-])->render(),
+view('components.filter-select', ['name' => 'role_id', 'label' => 'Role', 'options' => $roles])->render(),
 
-view('components.filter-text', [
-'name' => 'email',
-'label' => 'Email',
-])->render(),
-
-view('components.filter-select', [
-'name' => 'role_id',
-'options' => $roles->map(fn($r) => ['id' => $r->id, 'name' => $r->value]),
-'valueField' => 'id',
-'textField' => 'name',
-'placeholder' => '-- Role --',
-])->render(),
-
+view('components.filter-text', ['name' => 'search', 'label' => 'Search'])->render(),
 ];
 
 @endphp

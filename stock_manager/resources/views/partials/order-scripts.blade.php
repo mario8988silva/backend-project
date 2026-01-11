@@ -48,7 +48,7 @@
         let dialog = document.getElementById(`dialog-${id}`);
         let dialogInput = document.getElementById(`dialog-input-${id}`);
 
-        dialogInput.value = input.value; // <-- THIS FIXES EVERYTHING
+        dialogInput.value = input.value;
         dialog.showModal();
     };
 

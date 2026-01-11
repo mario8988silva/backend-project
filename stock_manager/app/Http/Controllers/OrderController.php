@@ -93,19 +93,19 @@ class OrderController extends Controller
         // 2. Load only the current page inputs
         $pageQuantities = $request->input('products', []);
 
+        // 3. Merge using array union (preserves numeric keys)
+        $merged = $sessionQuantities + $pageQuantities;
 
-
-        // 3. Merge them (page overrides session)
-        $merged = collect($sessionQuantities)
-            ->merge($pageQuantities)
+        // 4. Filter out zeros and cast quantities
+        $merged = collect($merged)
             ->filter(fn($qty, $productId) => $productId > 0 && (int)$qty > 0)
-            ->map(fn($qty) => (int) $qty);
+            ->map(fn($qty) => (int)$qty);
 
         if ($merged->isEmpty()) {
             return back()->withErrors('You must select at least one product.');
         }
 
-        // 4. Create the order
+        // 5. Create the order
         $draftStatus = Status::firstWhere('state', 'ORDER DRAFT');
 
         $order = Order::create([
@@ -116,7 +116,7 @@ class OrderController extends Controller
             'status_id'         => $draftStatus?->id,
         ]);
 
-        // 5. Attach ALL products from ALL pages
+        // 6. Attach products
         foreach ($merged as $productId => $qty) {
             $order->products()->attach($productId, [
                 'quantity'    => $qty,
@@ -124,7 +124,7 @@ class OrderController extends Controller
             ]);
         }
 
-        // 6. Clear session
+        // 7. Clear session
         session()->forget('order.products');
 
         return redirect()
